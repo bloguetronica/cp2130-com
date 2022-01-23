@@ -6,17 +6,212 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>231</width>
+    <height>201</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>MainWindow</string>
+  <property name="minimumSize">
+   <size>
+    <width>231</width>
+    <height>201</height>
+   </size>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
-  <widget class="QMenuBar" name="menubar"/>
-  <widget class="QStatusBar" name="statusbar"/>
+  <property name="maximumSize">
+   <size>
+    <width>231</width>
+    <height>201</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>CP2130 Commander</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/icons/icons/active64.png</normaloff>
+    <normalon>:/icons/icons/active64.png</normalon>
+    <disabledoff>:/icons/icons/greyed64.png</disabledoff>
+    <disabledon>:/icons/icons/greyed64.png</disabledon>
+    <activeoff>:/icons/icons/active64.png</activeoff>
+    <activeon>:/icons/icons/active64.png</activeon>
+    <selectedoff>:/icons/icons/selected64.png</selectedoff>
+    <selectedon>:/icons/icons/selected64.png</selectedon>:/icons/icons/active64.png</iconset>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLineEdit" name="lineEditVID">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>10</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="maxLength">
+     <number>4</number>
+    </property>
+    <property name="placeholderText">
+     <string>0x</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEditPID">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>50</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="maxLength">
+     <number>4</number>
+    </property>
+    <property name="placeholderText">
+     <string>0x</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelVID">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>17</y>
+      <width>105</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Vendor ID:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelPID">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>57</y>
+      <width>105</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Product ID:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBoxDevices">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>90</y>
+      <width>211</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="currentText">
+     <string>Select device...</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>Select device...</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QPushButton" name="pushButtonRefresh">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>130</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Refresh</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButtonOpen">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>130</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Open</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>231</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <action name="actionQuit">
+   <property name="text">
+    <string>&amp;Quit</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>&amp;About</string>
+   </property>
+  </action>
  </widget>
- <resources/>
- <connections/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>actionQuit</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>115</x>
+     <y>100</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
