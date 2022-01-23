@@ -19,6 +19,12 @@
 
 
 // Includes
+#include <QMessageBox>
+#include <QRegExp>
+#include <QRegExpValidator>
+#include <QString>
+#include <QStringList>
+#include "cp2130.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -27,6 +33,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->lineEditVID->setValidator(new QRegExpValidator(QRegExp("[A-Fa-f\\d]+"), this));
+    ui->lineEditPID->setValidator(new QRegExpValidator(QRegExp("[A-Fa-f\\d]+"), this));
+    ui->lineEditVID->setFocus();
 }
 
 MainWindow::~MainWindow()
@@ -34,3 +43,61 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::on_comboBoxDevices_currentIndexChanged(int index)
+{
+    if (index == 0) {
+        ui->pushButtonOpen->setEnabled(false);
+    } else {
+        ui->pushButtonOpen->setEnabled(true);
+    }
+}
+
+void MainWindow::on_lineEditPID_textEdited()
+{
+    ui->lineEditPID->setText(ui->lineEditPID->text().toLower());
+    validateInput();
+}
+
+void MainWindow::on_lineEditVID_textEdited()
+{
+    ui->lineEditVID->setText(ui->lineEditVID->text().toLower());
+    validateInput();
+}
+
+void MainWindow::on_pushButtonRefresh_clicked()
+{
+    refresh();
+}
+
+// Refreshes the combo box list
+void MainWindow::refresh()
+{
+    int errcnt = 0;
+    QString errstr;
+    QStringList comboBoxList = {tr("Select device...")};
+    comboBoxList += CP2130::listDevices(vid_, pid_, errcnt, errstr);
+    if (errcnt > 0) {
+        QMessageBox::critical(this, tr("Critical Error"), tr("%1\nThis is a critical error and execution will be aborted.").arg(errstr));
+        exit(EXIT_FAILURE);  // This error is critical because either libusb failed to initialize, or could not retrieve a list of devices
+    } else {
+        ui->comboBoxDevices->clear();
+        ui->comboBoxDevices->addItems(comboBoxList);
+    }
+}
+
+// Checks for valid user input, enabling or disabling the combo box and the "Refresh" button, accordingly
+void MainWindow::validateInput()
+{
+    QString vidstr = ui->lineEditVID->text();
+    QString pidstr = ui->lineEditPID->text();
+    if (vidstr.size() == 4 && pidstr.size() == 4) {
+        vid_ = static_cast<quint16>(vidstr.toInt(nullptr, 16));
+        pid_ = static_cast<quint16>(pidstr.toInt(nullptr, 16));
+        ui->comboBoxDevices->setEnabled(true);
+        ui->pushButtonRefresh->setEnabled(true);
+    } else {
+        ui->comboBoxDevices->setEnabled(false);
+        ui->pushButtonRefresh->setEnabled(false);
+    }
+    refresh();  // This also disables the "Open" button - Note that this is the intended behavior!
+}
