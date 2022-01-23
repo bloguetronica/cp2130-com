@@ -18,19 +18,26 @@
    Please feel free to contact me via e-mail: samuel.fmlourenco@gmail.com */
 
 
+#ifndef ABOUTDIALOG_H
+#define ABOUTDIALOG_H
+
 // Includes
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include <QDialog>
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{
-    ui->setupUi(this);
+namespace Ui {
+class AboutDialog;
 }
 
-MainWindow::~MainWindow()
+class AboutDialog : public QDialog
 {
-    delete ui;
-}
+    Q_OBJECT
 
+public:
+    explicit AboutDialog(QWidget *parent = nullptr);
+    ~AboutDialog();
+
+private:
+    Ui::AboutDialog *ui;
+};
+
+#endif // ABOUTDIALOG_H

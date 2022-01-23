@@ -19,18 +19,17 @@
 
 
 // Includes
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "commanderwindow.h"
+#include "ui_commanderwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) :
+CommanderWindow::CommanderWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::CommanderWindow)
 {
     ui->setupUi(this);
 }
 
-MainWindow::~MainWindow()
+CommanderWindow::~CommanderWindow()
 {
     delete ui;
 }
-

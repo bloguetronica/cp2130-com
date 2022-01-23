@@ -18,19 +18,26 @@
    Please feel free to contact me via e-mail: samuel.fmlourenco@gmail.com */
 
 
+#ifndef COMMANDERWINDOW_H
+#define COMMANDERWINDOW_H
+
 // Includes
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include <QMainWindow>
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{
-    ui->setupUi(this);
+namespace Ui {
+class CommanderWindow;
 }
 
-MainWindow::~MainWindow()
+class CommanderWindow : public QMainWindow
 {
-    delete ui;
-}
+    Q_OBJECT
 
+public:
+    explicit CommanderWindow(QWidget *parent = nullptr);
+    ~CommanderWindow();
+
+private:
+    Ui::CommanderWindow *ui;
+};
+
+#endif // COMMANDERWINDOW_H

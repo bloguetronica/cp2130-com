@@ -19,18 +19,17 @@
 
 
 // Includes
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "aboutdialog.h"
+#include "ui_aboutdialog.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+AboutDialog::AboutDialog(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::AboutDialog)
 {
     ui->setupUi(this);
 }
 
-MainWindow::~MainWindow()
+AboutDialog::~AboutDialog()
 {
     delete ui;
 }
-
