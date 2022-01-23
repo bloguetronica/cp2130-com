@@ -77,7 +77,7 @@ void MainWindow::on_pushButtonOpen_clicked()
     QString serialstr = ui->comboBoxDevices->currentText();  // Extract the serial number from the chosen item in the combo box
     CommanderWindow *deview = new CommanderWindow(this);  // Create a new window that will close when its parent window closes
     deview->setAttribute(Qt::WA_DeleteOnClose);  // This will not only free the allocated memory once the window is closed, but will also automatically call the destructor of the respective device, which in turn closes it
-    //deview->openDevice(vid_, pid_, serialstr);  // Access the selected device and prepare its view
+    deview->openDevice(vid_, pid_, serialstr);  // Access the selected device and prepare its view
     deview->show();  // Then open the corresponding window
 }
 

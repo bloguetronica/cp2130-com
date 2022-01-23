@@ -23,6 +23,8 @@
 
 // Includes
 #include <QMainWindow>
+#include <QString>
+#include "cp2130.h"
 
 namespace Ui {
 class CommanderWindow;
@@ -36,8 +38,16 @@ public:
     explicit CommanderWindow(QWidget *parent = nullptr);
     ~CommanderWindow();
 
+    void openDevice(quint16 vid, quint16 pid, const QString &serialstr);
+
+private slots:
+    void on_actionAbout_triggered();
+
 private:
     Ui::CommanderWindow *ui;
+    CP2130 cp2130_;
+    QString serialstr_;
+    quint16 pid_, vid_;
 };
 
 #endif // COMMANDERWINDOW_H

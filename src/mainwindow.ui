@@ -39,7 +39,7 @@
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>
-  <widget class="QWidget" name="centralwidget">
+  <widget class="QWidget" name="centralWidget">
    <widget class="QLineEdit" name="lineEditVID">
     <property name="geometry">
      <rect>
@@ -192,7 +192,7 @@
   </action>
   <action name="actionAbout">
    <property name="text">
-    <string>&amp;About</string>
+    <string>&amp;About CP2130 Commander</string>
    </property>
   </action>
  </widget>
