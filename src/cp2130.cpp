@@ -1,4 +1,4 @@
-/* CP2130 class for Qt - Version 2.2.0
+/* CP2130 class for Qt - Version 2.2.1
    Copyright (c) 2021-2022 Samuel Lourenço
 
    This library is free software: you can redistribute it and/or modify it
@@ -223,12 +223,12 @@ bool CP2130::isOpen() const
 void CP2130::bulkTransfer(quint8 endpointAddr, unsigned char *data, int length, int *transferred, int &errcnt, QString &errstr)
 {
     if (!isOpen()) {
-        errcnt += 1;
+        ++errcnt;
         errstr += QObject::tr("In bulkTransfer(): device is not open.\n");  // Program logic error
     } else {
         int result = libusb_bulk_transfer(handle_, endpointAddr, data, length, transferred, TR_TIMEOUT);
         if (result != 0 || (transferred != nullptr && *transferred != length)) {  // Since version 2.0.2, the number of transferred bytes is also verified, as long as a valid (non-null) pointer is passed via "transferred"
-            errcnt += 1;
+            ++errcnt;
             if (endpointAddr < 0x80) {
                 errstr += QObject::tr("Failed bulk OUT transfer to endpoint %1 (address 0x%2).\n").arg(0x0F & endpointAddr).arg(endpointAddr, 2, 16, QChar('0'));
             } else {
@@ -260,7 +260,7 @@ void CP2130::close()
 void CP2130::configureGPIO(quint8 pin, quint8 mode, bool value,  int &errcnt, QString &errstr)
 {
     if (pin > 10) {
-        errcnt += 1;
+        ++errcnt;
         errstr += QObject::tr("In configureGPIO(): Pin number must be between 0 and 10.\n");  // Program logic error
     } else {
         unsigned char controlBufferOut[SET_GPIO_MODE_AND_LEVEL_WLEN] = {
@@ -276,7 +276,7 @@ void CP2130::configureGPIO(quint8 pin, quint8 mode, bool value,  int &errcnt, QS
 void CP2130::configureSPIDelays(quint8 channel, const SPIDelays &delays, int &errcnt, QString &errstr)
 {
     if (channel > 10) {
-        errcnt += 1;
+        ++errcnt;
         errstr += QObject::tr("In configureSPIDelays(): SPI channel value must be between 0 and 10.\n");  // Program logic error
     } else {
         unsigned char controlBufferOut[SET_SPI_DELAY_WLEN] = {
@@ -294,7 +294,7 @@ void CP2130::configureSPIDelays(quint8 channel, const SPIDelays &delays, int &er
 void CP2130::configureSPIMode(quint8 channel, const SPIMode &mode, int &errcnt, QString &errstr)
 {
     if (channel > 10) {
-        errcnt += 1;
+        ++errcnt;
         errstr += QObject::tr("In configureSPIMode(): SPI channel value must be between 0 and 10.\n");  // Program logic error
     } else {
         unsigned char controlBufferOut[SET_SPI_WORD_WLEN] = {
@@ -309,12 +309,12 @@ void CP2130::configureSPIMode(quint8 channel, const SPIMode &mode, int &errcnt, 
 void CP2130::controlTransfer(quint8 bmRequestType, quint8 bRequest, quint16 wValue, quint16 wIndex, unsigned char *data, quint16 wLength, int &errcnt, QString &errstr)
 {
     if (!isOpen()) {
-        errcnt += 1;
+        ++errcnt;
         errstr += QObject::tr("In controlTransfer(): device is not open.\n");  // Program logic error
     } else {
         int result = libusb_control_transfer(handle_, bmRequestType, bRequest, wValue, wIndex, data, wLength, TR_TIMEOUT);
         if (result != wLength) {
-            errcnt += 1;
+            ++errcnt;
             errstr += QObject::tr("Failed control transfer (0x%1, 0x%2).\n").arg(bmRequestType, 2, 16, QChar('0')).arg(bRequest, 2, 16, QChar('0'));
             if (result == LIBUSB_ERROR_NO_DEVICE || result == LIBUSB_ERROR_IO || result == LIBUSB_ERROR_PIPE) {  // Note that libusb_control_transfer() may return "LIBUSB_ERROR_IO" [-1] or "LIBUSB_ERROR_PIPE" [-9] on device disconnect (version 2.0.2)
                 disconnected_ = true;  // This reports that the device has been disconnected
@@ -327,7 +327,7 @@ void CP2130::controlTransfer(quint8 bmRequestType, quint8 bRequest, quint16 wVal
 void CP2130::disableCS(quint8 channel, int &errcnt, QString &errstr)
 {
     if (channel > 10) {
-        errcnt += 1;
+        ++errcnt;
         errstr += QObject::tr("In disableCS(): SPI channel value must be between 0 and 10.\n");  // Program logic error
     } else {
         unsigned char controlBufferOut[SET_GPIO_CHIP_SELECT_WLEN] = {
@@ -342,7 +342,7 @@ void CP2130::disableCS(quint8 channel, int &errcnt, QString &errstr)
 void CP2130::disableSPIDelays(quint8 channel, int &errcnt, QString &errstr)
 {
     if (channel > 10) {
-        errcnt += 1;
+        ++errcnt;
         errstr += QObject::tr("In disableSPIDelays(): SPI channel value must be between 0 and 10.\n");  // Program logic error
     } else {
         unsigned char controlBufferOut[SET_SPI_DELAY_WLEN] = {
@@ -360,7 +360,7 @@ void CP2130::disableSPIDelays(quint8 channel, int &errcnt, QString &errstr)
 void CP2130::enableCS(quint8 channel, int &errcnt, QString &errstr)
 {
     if (channel > 10) {
-        errcnt += 1;
+        ++errcnt;
         errstr += QObject::tr("In enableCS(): SPI channel value must be between 0 and 10.\n");  // Program logic error
     } else {
         unsigned char controlBufferOut[SET_GPIO_CHIP_SELECT_WLEN] = {
@@ -384,7 +384,7 @@ bool CP2130::getCS(quint8 channel, int &errcnt, QString &errstr)
 {
     bool cs;
     if (channel > 10) {
-        errcnt += 1;
+        ++errcnt;
         errstr += QObject::tr("In getCS(): SPI channel value must be between 0 and 10.\n");  // Program logic error
         cs = false;
     } else {
@@ -414,7 +414,7 @@ CP2130::EventCounter CP2130::getEventCounter(int &errcnt, QString &errstr)
     controlTransfer(GET, GET_EVENT_COUNTER, 0x0000, 0x0000, controlBufferIn, GET_EVENT_COUNTER_WLEN, errcnt, errstr);
     CP2130::EventCounter evtcntr;
     evtcntr.overflow = (0x80 & controlBufferIn[0]) != 0x00;                              // Event counter overflow bit corresponds to bit 7 of byte 0
-    evtcntr.mode = 0x07 & controlBufferIn[0];                                            // GPIO.4/EVTCNTR pin mode corresponds to bits 3:0 of byte 0
+    evtcntr.mode = 0x07 & controlBufferIn[0];                                            // GPIO.4/EVTCNTR pin mode corresponds to bits 2:0 of byte 0
     evtcntr.value = static_cast<quint16>(controlBufferIn[1] << 8 | controlBufferIn[2]);  // Event count value corresponds to bytes 1 and 2 (big-endian conversion)
     return evtcntr;
 }
@@ -582,7 +582,7 @@ CP2130::SPIDelays CP2130::getSPIDelays(quint8 channel, int &errcnt, QString &err
 {
     SPIDelays delays;
     if (channel > 10) {
-        errcnt += 1;
+        ++errcnt;
         errstr += QObject::tr("In getSPIDelays(): SPI channel value must be between 0 and 10.\n");  // Program logic error
         delays = {false, false, false, false, 0x0000, 0x0000, 0x0000};
     } else {
@@ -604,7 +604,7 @@ CP2130::SPIMode CP2130::getSPIMode(quint8 channel, int &errcnt, QString &errstr)
 {
     SPIMode mode;
     if (channel > 10) {
-        errcnt += 1;
+        ++errcnt;
         errstr += QObject::tr("In getSPIMode(): SPI channel value must be between 0 and 10.\n");  // Program logic error
         mode = {false, 0x00, false, false};
     } else {
@@ -717,7 +717,7 @@ void CP2130::reset(int &errcnt, QString &errstr)
 void CP2130::selectCS(quint8 channel, int &errcnt, QString &errstr)
 {
     if (channel > 10) {
-        errcnt += 1;
+        ++errcnt;
         errstr += QObject::tr("In selectCS(): SPI channel value must be between 0 and 10.\n");  // Program logic error
     } else {
         unsigned char controlBufferOut[SET_GPIO_CHIP_SELECT_WLEN] = {
@@ -971,7 +971,7 @@ void CP2130::writeManufacturerDesc(const QString &manufacturer, int &errcnt, QSt
 {
     size_t strsize = static_cast<size_t>(manufacturer.size());
     if (strsize > DESCMXL_MANUFACTURER) {
-        errcnt += 1;
+        ++errcnt;
         errstr += QObject::tr("In writeManufacturerDesc(): manufacturer descriptor string cannot be longer than 62 characters.\n");  // Program logic error
     } else {
         writeDescGeneric(manufacturer, SET_MANUFACTURING_STRING_1, errcnt, errstr);  // Refactored in version 2.1.0
@@ -1007,7 +1007,7 @@ void CP2130::writeProductDesc(const QString &product, int &errcnt, QString &errs
 {
     size_t strsize = static_cast<size_t>(product.size());
     if (strsize > DESCMXL_PRODUCT) {
-        errcnt += 1;
+        ++errcnt;
         errstr += QObject::tr("In writeProductDesc(): product descriptor string cannot be longer than 62 characters.\n");  // Program logic error
     } else {
         writeDescGeneric(product, SET_PRODUCT_STRING_1, errcnt, errstr);  // Refactored in version 2.1.0
@@ -1031,7 +1031,7 @@ void CP2130::writeSerialDesc(const QString &serial, int &errcnt, QString &errstr
 {
     size_t strsize = static_cast<size_t>(serial.size());
     if (strsize > DESCMXL_SERIAL) {
-        errcnt += 1;
+        ++errcnt;
         errstr += QObject::tr("In writeSerialDesc(): serial descriptor string cannot be longer than 30 characters.\n");  // Program logic error
     } else {
         writeDescGeneric(serial, SET_SERIAL_STRING, errcnt, errstr);  // Refactored in version 2.1.0
@@ -1059,17 +1059,17 @@ QStringList CP2130::listDevices(quint16 vid, quint16 pid, int &errcnt, QString &
     QStringList devices;
     libusb_context *context;
     if (libusb_init(&context) != 0) {  // Initialize libusb. In case of failure
-        errcnt += 1;
+        ++errcnt;
         errstr += QObject::tr("Could not initialize libusb.\n");
     } else {  // If libusb is initialized
         libusb_device **devs;
         ssize_t devlist = libusb_get_device_list(context, &devs);  // Get a device list
         if (devlist < 0) {  // If the previous operation fails to get a device list
-            errcnt += 1;
+            ++errcnt;
             errstr += QObject::tr("Failed to retrieve a list of devices.\n");
         } else {
             for (ssize_t i = 0; i < devlist; ++i) {  // Run through all listed devices
-                struct libusb_device_descriptor desc;
+                libusb_device_descriptor desc;
                 if (libusb_get_device_descriptor(devs[i], &desc) == 0 && desc.idVendor == vid && desc.idProduct == pid) {  // If the device descriptor is retrieved, and both VID and PID correspond to the respective given values
                     libusb_device_handle *handle;
                     if (libusb_open(devs[i], &handle) == 0) {  // Open the listed device. If successfull
