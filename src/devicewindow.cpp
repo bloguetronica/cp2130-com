@@ -195,7 +195,7 @@ void::DeviceWindow::disableView()
     ui->statusBar->setEnabled(false);
 }
 
-// Enables or disables the GPIO check boxes
+// Enables or disables the chip select check boxes
 void DeviceWindow::enableChipSelectBoxes()
 {
     ui->checkBoxCS0->setEnabled(pinconfig_.gpio0 == CP2130::PCCS);
