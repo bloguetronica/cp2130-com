@@ -56,9 +56,9 @@ void DeviceWindow::openDevice(quint16 vid, quint16 pid, const QString &serialstr
         vid_ = vid;  // Pass VID
         pid_ = pid;  // and PID
         serialstr_ = serialstr;  // and the serial number as well
-        readPinConfiguration();
+        readConfiguration();
         this->setWindowTitle(tr("CP2130 Device (S/N: %1)").arg(serialstr_));
-        applyPinConfiguration();
+        initializeView();
         timer_ = new QTimer(this);  // Create a timer
         QObject::connect(timer_, SIGNAL(timeout()), this, SLOT(update()));
         timer_->start(200);
@@ -181,13 +181,6 @@ void DeviceWindow::update()
     }
 }
 
-// This is the routine that is used to apply the pin configuration to the window
-void DeviceWindow::applyPinConfiguration()
-{
-    enableGPIOControlBoxes();
-    enableChipSelectBoxes();
-}
-
 // Partially disables device window
 void::DeviceWindow::disableView()
 {
@@ -195,24 +188,8 @@ void::DeviceWindow::disableView()
     ui->statusBar->setEnabled(false);
 }
 
-// Enables or disables the chip select check boxes
-void DeviceWindow::enableChipSelectBoxes()
-{
-    ui->checkBoxCS0->setEnabled(pinconfig_.gpio0 == CP2130::PCCS);
-    ui->checkBoxCS1->setEnabled(pinconfig_.gpio1 == CP2130::PCCS);
-    ui->checkBoxCS2->setEnabled(pinconfig_.gpio2 == CP2130::PCCS);
-    ui->checkBoxCS3->setEnabled(pinconfig_.gpio3 == CP2130::PCCS);
-    ui->checkBoxCS4->setEnabled(pinconfig_.gpio4 == CP2130::PCCS);
-    ui->checkBoxCS5->setEnabled(pinconfig_.gpio5 == CP2130::PCCS);
-    ui->checkBoxCS6->setEnabled(pinconfig_.gpio6 == CP2130::PCCS);
-    ui->checkBoxCS7->setEnabled(pinconfig_.gpio7 == CP2130::PCCS);
-    ui->checkBoxCS8->setEnabled(pinconfig_.gpio8 == CP2130::PCCS);
-    ui->checkBoxCS9->setEnabled(pinconfig_.gpio9 == CP2130::PCCS);
-    ui->checkBoxCS10->setEnabled(pinconfig_.gpio10 == CP2130::PCCS);
-}
-
-// Enables or disables the GPIO check boxes
-void DeviceWindow::enableGPIOControlBoxes()
+// Initializes the GPIO check boxes
+void DeviceWindow::initializeGPIOControlBoxes()
 {
     ui->checkBoxGPIO0->setEnabled(pinconfig_.gpio0 == CP2130::PCOUTOD || pinconfig_.gpio0 == CP2130::PCOUTPP);
     ui->checkBoxGPIO1->setEnabled(pinconfig_.gpio1 == CP2130::PCOUTOD || pinconfig_.gpio1 == CP2130::PCOUTPP);
@@ -227,6 +204,29 @@ void DeviceWindow::enableGPIOControlBoxes()
     ui->checkBoxGPIO10->setEnabled(pinconfig_.gpio10 == CP2130::PCOUTOD || pinconfig_.gpio10 == CP2130::PCOUTPP);
 }
 
+// Initializes the SPI configuration controls
+void DeviceWindow::initializeSPIConfigurationControls()
+{
+    if (spimodes_.size() != 0) {
+        QList<QString> keys = spimodes_.keys();
+        for (QString key : keys) {
+            ui->comboBoxChannel->addItem(key);
+        }
+        ui->comboBoxChannel->setEnabled(true);
+        ui->comboBoxCSPinMode->setEnabled(true);
+        ui->comboBoxFrequency->setEnabled(true);
+        ui->spinBoxCPol->setEnabled(true);
+        ui->spinBoxCPha->setEnabled(true);
+    }
+}
+
+// This is the routine that is used to initialize the device window
+void DeviceWindow::initializeView()
+{
+    initializeGPIOControlBoxes();
+    initializeSPIConfigurationControls();
+}
+
 // Checks for errors and validates (or ultimately halts) device operations
 bool DeviceWindow::opCheck(const QString &op, int errcnt, QString errstr)
 {
@@ -234,20 +234,20 @@ bool DeviceWindow::opCheck(const QString &op, int errcnt, QString errstr)
     if (errcnt > 0) {
         if (cp2130_.disconnected()) {
             timer_->stop();  // This prevents further errors
-            QMessageBox::critical(this, tr("Error"), tr("Device disconnected.\n\nThe corresponding window will be disabled."));
             disableView();  // Disable device window
             cp2130_.close();
+            QMessageBox::critical(this, tr("Error"), tr("Device disconnected."));
         } else {
             errstr.chop(1);  // Remove the last character, which is always a newline
             QMessageBox::critical(this, tr("Error"), tr("%1 operation returned the following error(s):\n– %2", "", errcnt).arg(op, errstr.replace("\n", "\n– ")));
             erracc_ += errcnt;
             if (erracc_ > ERR_LIMIT) {  // If the session accumulated more errors than the limit set by "ERR_LIMIT" [10]
                 timer_->stop();  // Again, this prevents further errors
-                QMessageBox::critical(this, tr("Error"), tr("Detected too many errors.\n\nThe device window will be disabled."));
                 disableView();  // Disable device window
                 cp2130_.reset(errcnt, errstr);  // Try to reset the device for sanity purposes, but don't check if it was successful
                 cp2130_.close();  // Ensure that the device is freed, even if the previous device reset is not effective (device_.reset() also frees the device interface, as an effect of re-enumeration)
                 // It is essential that device_.close() is called, since some important checks rely on device_.isOpen() to retrieve a proper status
+                QMessageBox::critical(this, tr("Error"), tr("Detected too many errors."));
             }
         }
         retval = false;  // Failed check
@@ -257,12 +257,56 @@ bool DeviceWindow::opCheck(const QString &op, int errcnt, QString errstr)
     return retval;
 }
 
-// This is the routine that reads the pin configuration from the CP2130 OTP ROM
-void DeviceWindow::readPinConfiguration()
+// This is the routine that reads the configuration from the CP2130 OTP ROM
+void DeviceWindow::readConfiguration()
 {
     int errcnt = 0;
     QString errstr;
     pinconfig_ = cp2130_.getPinConfig(errcnt, errstr);
+    if (pinconfig_.gpio0 == CP2130::PCCS) {
+        spimodes_["0"] = cp2130_.getSPIMode(0, errcnt, errstr);
+        spidelays_["0"] = cp2130_.getSPIDelays(0, errcnt, errstr);
+    }
+    if (pinconfig_.gpio1 == CP2130::PCCS) {
+        spimodes_["1"] = cp2130_.getSPIMode(1, errcnt, errstr);
+        spidelays_["1"] = cp2130_.getSPIDelays(1, errcnt, errstr);
+    }
+    if (pinconfig_.gpio2 == CP2130::PCCS) {
+        spimodes_["2"] = cp2130_.getSPIMode(2, errcnt, errstr);
+        spidelays_["2"] = cp2130_.getSPIDelays(2, errcnt, errstr);
+    }
+    if (pinconfig_.gpio3 == CP2130::PCCS) {
+        spimodes_["3"] = cp2130_.getSPIMode(3, errcnt, errstr);
+        spidelays_["3"] = cp2130_.getSPIDelays(3, errcnt, errstr);
+    }
+    if (pinconfig_.gpio4 == CP2130::PCCS) {
+        spimodes_["4"] = cp2130_.getSPIMode(4, errcnt, errstr);
+        spidelays_["4"] = cp2130_.getSPIDelays(4, errcnt, errstr);
+    }
+    if (pinconfig_.gpio5 == CP2130::PCCS) {
+        spimodes_["5"] = cp2130_.getSPIMode(5, errcnt, errstr);
+        spidelays_["5"] = cp2130_.getSPIDelays(5, errcnt, errstr);
+    }
+    if (pinconfig_.gpio6 == CP2130::PCCS) {
+        spimodes_["6"] = cp2130_.getSPIMode(6, errcnt, errstr);
+        spidelays_["6"] = cp2130_.getSPIDelays(6, errcnt, errstr);
+    }
+    if (pinconfig_.gpio7 == CP2130::PCCS) {
+        spimodes_["7"] = cp2130_.getSPIMode(7, errcnt, errstr);
+        spidelays_["7"] = cp2130_.getSPIDelays(7, errcnt, errstr);
+    }
+    if (pinconfig_.gpio8 == CP2130::PCCS) {
+        spimodes_["8"] = cp2130_.getSPIMode(8, errcnt, errstr);
+        spidelays_["8"] = cp2130_.getSPIDelays(8, errcnt, errstr);
+    }
+    if (pinconfig_.gpio9 == CP2130::PCCS) {
+        spimodes_["9"] = cp2130_.getSPIMode(9, errcnt, errstr);
+        spidelays_["9"] = cp2130_.getSPIDelays(9, errcnt, errstr);
+    }
+    if (pinconfig_.gpio10 == CP2130::PCCS) {
+        spimodes_["10"] = cp2130_.getSPIMode(10, errcnt, errstr);
+        spidelays_["10"] = cp2130_.getSPIDelays(10, errcnt, errstr);
+    }
     if (errcnt > 0) {
         if (cp2130_.disconnected()) {
             cp2130_.close();
@@ -271,7 +315,7 @@ void DeviceWindow::readPinConfiguration()
             cp2130_.reset(errcnt, errstr);  // Try to reset the device for sanity purposes, but don't check if it was successful
             cp2130_.close();
             errstr.chop(1);  // Remove the last character, which is always a newline
-            QMessageBox::critical(this, tr("Error"), tr("Read operation returned the following error(s):\n– %1\n\nPlease try accessing the device again.", "", errcnt).arg(errstr.replace("\n", "\n– ")));
+            QMessageBox::critical(this, tr("Error"), tr("Read configuration operation returned the following error(s):\n– %1\n\nPlease try accessing the device again.", "", errcnt).arg(errstr.replace("\n", "\n– ")));
         }
         this->deleteLater();  // In a context where the window is already visible, it has the same effect as this->close()
     }

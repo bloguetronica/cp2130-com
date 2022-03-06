@@ -23,6 +23,7 @@
 
 // Includes
 #include <QMainWindow>
+#include <QMap>
 #include <QString>
 #include <QTimer>
 #include "cp2130.h"
@@ -59,18 +60,20 @@ private slots:
 private:
     Ui::DeviceWindow *ui;
     CP2130 cp2130_;
+    CP2130::PinConfig pinconfig_;
+    QMap<QString, CP2130::SPIDelays> spidelays_;
+    QMap<QString, CP2130::SPIMode> spimodes_;
     QString serialstr_;
     quint16 pid_, vid_;
-    CP2130::PinConfig pinconfig_;
     QTimer *timer_;
     int erracc_ = 0;
 
-    void applyPinConfiguration();
     void disableView();
-    void enableChipSelectBoxes();
-    void enableGPIOControlBoxes();
+    void initializeGPIOControlBoxes();
+    void initializeSPIConfigurationControls();
+    void initializeView();
     bool opCheck(const QString &op, int errcnt, QString errstr);
-    void readPinConfiguration();
+    void readConfiguration();
     void updateView(bool gpio0, bool gpio1, bool gpio2, bool gpio3, bool gpio4, bool gpio5, bool gpio6, bool gpio7, bool gpio8, bool gpio9, bool gpio10);
 };
 
