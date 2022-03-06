@@ -164,17 +164,18 @@ void DeviceWindow::update()
 {
     int errcnt = 0;
     QString errstr;
-    bool gpio0 = cp2130_.getGPIO0(errcnt, errstr);
-    bool gpio1 = cp2130_.getGPIO1(errcnt, errstr);
-    bool gpio2 = cp2130_.getGPIO2(errcnt, errstr);
-    bool gpio3 = cp2130_.getGPIO3(errcnt, errstr);
-    bool gpio4 = cp2130_.getGPIO4(errcnt, errstr);
-    bool gpio5 = cp2130_.getGPIO5(errcnt, errstr);
-    bool gpio6 = cp2130_.getGPIO6(errcnt, errstr);
-    bool gpio7 = cp2130_.getGPIO7(errcnt, errstr);
-    bool gpio8 = cp2130_.getGPIO8(errcnt, errstr);
-    bool gpio9 = cp2130_.getGPIO9(errcnt, errstr);
-    bool gpio10 = cp2130_.getGPIO10(errcnt, errstr);
+    quint16 gpios = cp2130_.getGPIOs(errcnt, errstr);
+    bool gpio0 = (CP2130::BMGPIO0 & gpios) != 0x0000;
+    bool gpio1 = (CP2130::BMGPIO1 & gpios) != 0x0000;
+    bool gpio2 = (CP2130::BMGPIO2 & gpios) != 0x0000;
+    bool gpio3 = (CP2130::BMGPIO3 & gpios) != 0x0000;
+    bool gpio4 = (CP2130::BMGPIO4 & gpios) != 0x0000;
+    bool gpio5 = (CP2130::BMGPIO5 & gpios) != 0x0000;
+    bool gpio6 = (CP2130::BMGPIO6 & gpios) != 0x0000;
+    bool gpio7 = (CP2130::BMGPIO7 & gpios) != 0x0000;
+    bool gpio8 = (CP2130::BMGPIO8 & gpios) != 0x0000;
+    bool gpio9 = (CP2130::BMGPIO9 & gpios) != 0x0000;
+    bool gpio10 = (CP2130::BMGPIO10 & gpios) != 0x0000;
     if (opCheck(tr("update-op"), errcnt, errstr)) {  // Update values if no errors occur (the string "update-op" should be translated to "Update")
         updateView(gpio0, gpio1, gpio2, gpio3, gpio4, gpio5, gpio6, gpio7, gpio8, gpio9, gpio10);
     }
