@@ -215,6 +215,7 @@ void DeviceWindow::initializeGPIOControlBoxes()
 void DeviceWindow::initializeSPIConfigurationControls()
 {
     if (spimodes_.size() != 0) {
+        ui->comboBoxChannel->clear();
         QList<QString> keys = spimodes_.keys();
         for (QString key : keys) {
             ui->comboBoxChannel->addItem(key);
