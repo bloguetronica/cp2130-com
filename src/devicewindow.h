@@ -56,6 +56,7 @@ private slots:
     void on_checkBoxGPIO8_clicked();
     void on_checkBoxGPIO9_clicked();
     void on_checkBoxGPIO10_clicked();
+    void on_pushButtonConfigureSPIDelays_clicked();
     void update();
 
 private:

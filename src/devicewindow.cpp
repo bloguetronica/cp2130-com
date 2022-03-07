@@ -166,6 +166,11 @@ void DeviceWindow::on_checkBoxGPIO10_clicked()
     opCheck(tr("gpio10-switch-op"), errcnt, errstr);  // The string "gpio10-switch-op" should be translated to "GPIO10 switch"
 }
 
+void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
+{
+    // To do
+}
+
 // This is the main update routine
 void DeviceWindow::update()
 {
