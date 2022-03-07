@@ -241,7 +241,7 @@ bool DeviceWindow::opCheck(const QString &op, int errcnt, QString errstr)
             timer_->stop();  // This prevents further errors
             disableView();  // Disable device window
             cp2130_.close();
-            QMessageBox::critical(this, tr("Error"), tr("Device disconnected."));
+            QMessageBox::critical(this, tr("Error"), tr("Device disconnected.\n\nPlease reconnect it and try again."));
         } else {
             errstr.chop(1);  // Remove the last character, which is always a newline
             QMessageBox::critical(this, tr("Error"), tr("%1 operation returned the following error(s):\n– %2", "", errcnt).arg(op, errstr.replace("\n", "\n– ")));
@@ -315,7 +315,7 @@ void DeviceWindow::readConfiguration()
     if (errcnt > 0) {
         if (cp2130_.disconnected()) {
             cp2130_.close();
-            QMessageBox::critical(this, tr("Error"), tr("Device disconnected."));
+            QMessageBox::critical(this, tr("Error"), tr("Device disconnected.\n\nPlease reconnect it and try again."));
         } else {
             cp2130_.reset(errcnt, errstr);  // Try to reset the device for sanity purposes, but don't check if it was successful
             cp2130_.close();
