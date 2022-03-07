@@ -229,7 +229,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox">
+   <widget class="QGroupBox" name="groupBoxSPIConfiguration">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -442,6 +442,22 @@
       <number>1</number>
      </property>
     </widget>
+    <widget class="QPushButton" name="pushButtonConfigureSPIDelays">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>30</y>
+       <width>211</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Configure SPI Delays</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -457,6 +473,8 @@
     <property name="title">
      <string>&amp;Device</string>
     </property>
+    <addaction name="actionReset"/>
+    <addaction name="separator"/>
     <addaction name="actionClose"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -480,6 +498,11 @@
   <action name="actionAbout">
    <property name="text">
     <string>&amp;About CP2130 Commander</string>
+   </property>
+  </action>
+  <action name="actionReset">
+   <property name="text">
+    <string>&amp;Reset</string>
    </property>
   </action>
  </widget>

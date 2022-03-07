@@ -20,11 +20,13 @@
 
 // Includes
 #include <QMessageBox>
+#include <QThread>
 #include "aboutdialog.h"
 #include "devicewindow.h"
 #include "ui_devicewindow.h"
 
 // Definitions
+const int ENUM_RETRIES = 10;  // Number of enumeration retries
 const int ERR_LIMIT = 10;     // Error limit
 
 DeviceWindow::DeviceWindow(QWidget *parent) :
@@ -56,12 +58,12 @@ void DeviceWindow::openDevice(quint16 vid, quint16 pid, const QString &serialstr
         vid_ = vid;  // Pass VID
         pid_ = pid;  // and PID
         serialstr_ = serialstr;  // and the serial number as well
-        readConfiguration();
+        readConfiguration();  // Read device configuration
         this->setWindowTitle(tr("CP2130 Device (S/N: %1)").arg(serialstr_));
-        initializeView();
+        initializeView();  // Initialize device window
         timer_ = new QTimer(this);  // Create a timer
         QObject::connect(timer_, SIGNAL(timeout()), this, SLOT(update()));
-        timer_->start(200);
+        timer_->start(100);  // Start the timer
     }
 }
 
@@ -69,6 +71,11 @@ void DeviceWindow::on_actionAbout_triggered()
 {
     AboutDialog about;
     about.exec();
+}
+
+void DeviceWindow::on_actionReset_triggered()
+{
+    resetDevice();
 }
 
 void DeviceWindow::on_checkBoxGPIO0_clicked()
@@ -218,6 +225,7 @@ void DeviceWindow::initializeSPIConfigurationControls()
         ui->spinBoxCPol->setValue(spimode.cpol);
         ui->spinBoxCPha->setValue(spimode.cpha);
         ui->comboBoxChannel->setEnabled(true);
+        ui->pushButtonConfigureSPIDelays->setEnabled(true);
         ui->comboBoxCSPinMode->setEnabled(true);
         ui->comboBoxFrequency->setEnabled(true);
         ui->spinBoxCPol->setEnabled(true);
@@ -323,6 +331,43 @@ void DeviceWindow::readConfiguration()
             QMessageBox::critical(this, tr("Error"), tr("Read configuration operation returned the following error(s):\n– %1\n\nPlease try accessing the device again.", "", errcnt).arg(errstr.replace("\n", "\n– ")));
         }
         this->deleteLater();  // In a context where the window is already visible, it has the same effect as this->close()
+    }
+}
+
+// Resets the device
+void DeviceWindow::resetDevice()
+{
+    timer_->stop();  // Stop the update timer momentarily, in order to avoid recurrent errors if the device gets disconnected during a reset, or other unexpected behavior
+    int errcnt = 0;
+    QString errstr;
+    cp2130_.reset(errcnt, errstr);
+    opCheck(tr("reset-op"), errcnt, errstr);  // The string "reset-op" should be translated to "Reset"
+    if (cp2130_.isOpen()) {  // If opCheck() passes, thus, not closing the device
+        cp2130_.close();  // Important! - This should be done always, even if the previous reset operation shows an error, because an error doesn't mean that a device reset was not effected
+        int err;
+        for (int i = 0; i < ENUM_RETRIES; ++i) {  // Verify enumeration according to the number of times set by "ENUM_RETRIES" [10]
+            QThread::msleep(500);  // Wait 500ms each time
+            err = cp2130_.open(vid_, pid_, serialstr_);
+            if (err != CP2130::ERROR_NOT_FOUND) {  // Retry only if the device was not found yet (as it may take some time to enumerate)
+                break;
+            }
+        }
+        if (err == CP2130::SUCCESS) {  // Device was successfully reopened
+            readConfiguration();  // Re-read device configuration
+            erracc_ = 0;  // Zero the error count accumulator, since a new session gets started once the reset is done
+            initializeView();  // Re-initialize device window
+            timer_->start();  // Restart the timer
+        } else {  // Failed to reopen device
+            this->close();  // Close window
+            if (err == CP2130::ERROR_INIT) {  // Failed to initialize libusb
+                QMessageBox::critical(this, tr("Critical Error"), tr("Could not reinitialize libusb.\n\nThis is a critical error and execution will be aborted."));
+                exit(EXIT_FAILURE);  // This error is critical because libusb failed to initialize
+            } else if (err == CP2130::ERROR_NOT_FOUND) {  // Failed to find device
+                QMessageBox::critical(this, tr("Error"), tr("Device disconnected.\n\nPlease reconnect it and try again."));
+            } else if (err == CP2130::ERROR_BUSY) {  // Failed to claim interface
+                QMessageBox::critical(this, tr("Error"), tr("Device ceased to be available.\n\nPlease verify that the device is not in use by another application."));
+            }
+        }
     }
 }
 

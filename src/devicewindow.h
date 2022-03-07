@@ -44,6 +44,7 @@ public:
 
 private slots:
     void on_actionAbout_triggered();
+    void on_actionReset_triggered();
     void on_checkBoxGPIO0_clicked();
     void on_checkBoxGPIO1_clicked();
     void on_checkBoxGPIO2_clicked();
@@ -74,6 +75,7 @@ private:
     void initializeView();
     bool opCheck(const QString &op, int errcnt, QString errstr);
     void readConfiguration();
+    void resetDevice();
     void updateView(bool gpio0, bool gpio1, bool gpio2, bool gpio3, bool gpio4, bool gpio5, bool gpio6, bool gpio7, bool gpio8, bool gpio9, bool gpio10);
 };
 
