@@ -212,6 +212,11 @@ void DeviceWindow::initializeSPIConfigurationControls()
         for (QString key : keys) {
             ui->comboBoxChannel->addItem(key);
         }
+        CP2130::SPIMode spimode = spimodes_[ui->comboBoxChannel->currentText()];
+        ui->comboBoxCSPinMode->setCurrentIndex(spimode.csmode);
+        ui->comboBoxFrequency->setCurrentIndex(spimode.cfrq);
+        ui->spinBoxCPol->setValue(spimode.cpol);
+        ui->spinBoxCPha->setValue(spimode.cpha);
         ui->comboBoxChannel->setEnabled(true);
         ui->comboBoxCSPinMode->setEnabled(true);
         ui->comboBoxFrequency->setEnabled(true);
