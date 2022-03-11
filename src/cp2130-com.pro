@@ -27,6 +27,7 @@ SOURCES += \
     aboutdialog.cpp \
     devicewindow.cpp \
     cp2130.cpp \
+    informationdialog.cpp \
     libusb-extra.c \
     main.cpp \
     mainwindow.cpp
@@ -35,12 +36,14 @@ HEADERS += \
     aboutdialog.h \
     devicewindow.h \
     cp2130.h \
+    informationdialog.h \
     libusb-extra.h \
     mainwindow.h
 
 FORMS += \
     aboutdialog.ui \
     devicewindow.ui \
+    informationdialog.ui \
     mainwindow.ui
 
 LIBS += -lusb-1.0
