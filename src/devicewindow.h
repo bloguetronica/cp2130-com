@@ -57,6 +57,8 @@ private slots:
     void on_checkBoxGPIO8_clicked();
     void on_checkBoxGPIO9_clicked();
     void on_checkBoxGPIO10_clicked();
+    void on_comboBoxCSPinMode_activated(int index);
+    void on_comboBoxFrequency_activated(int index);
     void on_pushButtonConfigureSPIDelays_clicked();
     void update();
 

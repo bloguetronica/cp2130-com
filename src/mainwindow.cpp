@@ -51,7 +51,7 @@ void MainWindow::on_actionAbout_triggered()
     about.exec();
 }
 
-void MainWindow::on_comboBoxDevices_currentIndexChanged(int index)
+void MainWindow::on_comboBoxDevices_activated(int index)
 {
     if (index == 0) {
         ui->pushButtonOpen->setEnabled(false);

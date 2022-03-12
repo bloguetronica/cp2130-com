@@ -188,6 +188,16 @@ void DeviceWindow::on_checkBoxGPIO10_clicked()
     opCheck(tr("gpio10-switch-op"), errcnt, errstr);  // The string "gpio10-switch-op" should be translated to "GPIO10 switch"
 }
 
+void DeviceWindow::on_comboBoxCSPinMode_activated(int index)
+{
+    printf("CS Pin Mode Changed\n");
+}
+
+void DeviceWindow::on_comboBoxFrequency_activated(int index)
+{
+    printf("Frequency Changed\n");
+}
+
 void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
 {
     // To do
