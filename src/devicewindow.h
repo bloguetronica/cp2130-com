@@ -44,6 +44,7 @@ public:
 
 private slots:
     void on_actionAbout_triggered();
+    void on_actionInformation_triggered();
     void on_actionReset_triggered();
     void on_checkBoxGPIO0_clicked();
     void on_checkBoxGPIO1_clicked();

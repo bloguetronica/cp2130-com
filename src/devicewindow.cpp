@@ -22,6 +22,7 @@
 #include <QMessageBox>
 #include <QThread>
 #include "aboutdialog.h"
+#include "informationdialog.h"
 #include "devicewindow.h"
 #include "ui_devicewindow.h"
 
@@ -71,6 +72,24 @@ void DeviceWindow::on_actionAbout_triggered()
 {
     AboutDialog about;
     about.exec();
+}
+
+void DeviceWindow::on_actionInformation_triggered()
+{
+    int errcnt = 0;
+    QString errstr;
+    InformationDialog info;
+    info.setManufacturerLabelText(cp2130_.getManufacturerDesc(errcnt, errstr));
+    info.setProductLabelText(cp2130_.getProductDesc(errcnt, errstr));
+    info.setSerialLabelText(cp2130_.getSerialDesc(errcnt, errstr));  // It is important to read the serial number from the OTP ROM, instead of just passing the value of serialstr_
+    CP2130::USBConfig config = cp2130_.getUSBConfig(errcnt, errstr);
+    info.setReleaseVersionLabelText(config.majrel, config.minrel);
+    info.setMaxPowerLabelText(config.maxpow);
+    CP2130::SiliconVersion siversion = cp2130_.getSiliconVersion(errcnt, errstr);
+    info.setSiliconVersionLabelText(siversion.maj, siversion.min);
+    if (opCheck(tr("device-information-retrieval-op"), errcnt, errstr)) {  // If error check passes (the string "device-information-retrieval-op" should be translated to "Device information retrieval")
+        info.exec();
+    }
 }
 
 void DeviceWindow::on_actionReset_triggered()
