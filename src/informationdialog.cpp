@@ -19,6 +19,7 @@
 
 
 // Includes
+#include "cp2130.h"
 #include "informationdialog.h"
 #include "ui_informationdialog.h"
 
@@ -55,6 +56,22 @@ void InformationDialog::setMaxPowerLabelText(quint8 maxpower)
 void InformationDialog::setPIDLabelText(quint16 pid)
 {
     ui->labelPID->setText(QString("0x%1").arg(pid, 2, 16, QChar('0')));
+}
+
+// Sets the labelPowerMode text
+void InformationDialog::setPowerModeLabelText(quint8 powmode)
+{
+    QString powerMode;
+    if (powmode == CP2130::PMBUSREGEN) {
+        powerMode = "Bus-powered (regulator enabled)";
+    } else if (powmode == CP2130::PMBUSREGEN) {
+        powerMode = "Bus-powered (regulator disabled)";
+    } else if (powmode == CP2130::PMBUSREGEN) {
+        powerMode = "Self-powered";
+    } else {
+        powerMode = "Unknown";
+    }
+    ui->labelPowerMode->setText(powerMode);
 }
 
 // Sets the labelProduct text

@@ -86,6 +86,7 @@ void DeviceWindow::on_actionInformation_triggered()
     info.setVIDLabelText(config.vid);
     info.setPIDLabelText(config.pid);
     info.setReleaseVersionLabelText(config.majrel, config.minrel);
+    info.setPowerModeLabelText(config.powmode);
     info.setMaxPowerLabelText(config.maxpow);
     CP2130::SiliconVersion siversion = cp2130_.getSiliconVersion(errcnt, errstr);
     info.setSiliconVersionLabelText(siversion.maj, siversion.min);
