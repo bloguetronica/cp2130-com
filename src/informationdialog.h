@@ -38,8 +38,10 @@ public:
 
     void setManufacturerLabelText(const QString &manufacturerstr);
     void setMaxPowerLabelText(quint8 maxpower);
+    void setPIDLabelText(quint16 pid);
     void setProductLabelText(const QString &productstr);
     void setReleaseVersionLabelText(quint8 majrelease, quint8 minrelease);
+    void setVIDLabelText(quint16 vid);
     void setSerialLabelText(const QString &serialstr);
     void setSiliconVersionLabelText(quint8 majver, quint8 minver);
 

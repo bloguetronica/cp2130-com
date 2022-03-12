@@ -83,6 +83,8 @@ void DeviceWindow::on_actionInformation_triggered()
     info.setProductLabelText(cp2130_.getProductDesc(errcnt, errstr));
     info.setSerialLabelText(cp2130_.getSerialDesc(errcnt, errstr));  // It is important to read the serial number from the OTP ROM, instead of just passing the value of serialstr_
     CP2130::USBConfig config = cp2130_.getUSBConfig(errcnt, errstr);
+    info.setVIDLabelText(config.vid);
+    info.setPIDLabelText(config.pid);
     info.setReleaseVersionLabelText(config.majrel, config.minrel);
     info.setMaxPowerLabelText(config.maxpow);
     CP2130::SiliconVersion siversion = cp2130_.getSiliconVersion(errcnt, errstr);

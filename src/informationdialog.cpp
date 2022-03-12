@@ -51,6 +51,12 @@ void InformationDialog::setMaxPowerLabelText(quint8 maxpower)
     ui->labelMaxPower->setText(QString("%1 [0x%2]").arg(2 * maxpower).arg(maxpower, 2, 16, QChar('0')));
 }
 
+// Sets the labelPID text
+void InformationDialog::setPIDLabelText(quint16 pid)
+{
+    ui->labelPID->setText(QString("0x%1").arg(pid, 2, 16, QChar('0')));
+}
+
 // Sets the labelProduct text
 void InformationDialog::setProductLabelText(const QString &productstr)
 {
@@ -83,4 +89,10 @@ void InformationDialog::setSerialLabelText(const QString &serialstr)
 void InformationDialog::setSiliconVersionLabelText(quint8 majver, quint8 minver)
 {
     ui->labelSiliconVersion->setText(QString("%1.%2 [0x%3]").arg(majver).arg(minver).arg(majver << 8 | minver, 4, 16, QChar('0')));
+}
+
+// Sets the labelVID text
+void InformationDialog::setVIDLabelText(quint16 vid)
+{
+    ui->labelVID->setText(QString("0x%1").arg(vid, 2, 16, QChar('0')));
 }
