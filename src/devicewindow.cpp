@@ -235,8 +235,8 @@ void DeviceWindow::update()
     bool gpio8 = (CP2130::BMGPIO8 & gpios) != 0x0000;
     bool gpio9 = (CP2130::BMGPIO9 & gpios) != 0x0000;
     bool gpio10 = (CP2130::BMGPIO10 & gpios) != 0x0000;
-    if (opCheck(tr("update-op"), errcnt, errstr)) {  // Update values if no errors occur (the string "update-op" should be translated to "Update")
-        updateView(gpio0, gpio1, gpio2, gpio3, gpio4, gpio5, gpio6, gpio7, gpio8, gpio9, gpio10);
+    if (opCheck(tr("update-op"), errcnt, errstr)) {  // If no errors occur (the string "update-op" should be translated to "Update")
+        updateView(gpio0, gpio1, gpio2, gpio3, gpio4, gpio5, gpio6, gpio7, gpio8, gpio9, gpio10);  // Update values
     }
 }
 
@@ -252,8 +252,8 @@ void DeviceWindow::configureSPIMode()
     int errcnt = 0;
     QString errstr;
     cp2130_.configureSPIMode(static_cast<quint8>(channel.toInt()), spimode, errcnt, errstr);
-    if (opCheck(tr("spi-mode-configuration-op"), errcnt, errstr)) {  // Update "spimodes_" regarding the current channel if no errors occur (the string "spi-mode-configuration-op" should be translated to "SPI mode configuration")
-        spimodes_[channel] = spimode;
+    if (opCheck(tr("spi-mode-configuration-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-mode-configuration-op" should be translated to "SPI mode configuration")
+        spimodes_[channel] = spimode;  // Update "spimodes_" regarding the current channel
     }
 }
 
