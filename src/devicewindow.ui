@@ -251,7 +251,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Channel</string>
+      <string>Channel:</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -280,7 +280,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>CS pin mode</string>
+      <string>CS pin mode:</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -319,7 +319,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Frequency</string>
+      <string>Frequency:</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -378,7 +378,7 @@
       </property>
      </item>
     </widget>
-    <widget class="QLabel" name="labelCPol">
+    <widget class="QLabel" name="labelCPOL">
      <property name="geometry">
       <rect>
        <x>450</x>
@@ -388,13 +388,13 @@
       </rect>
      </property>
      <property name="text">
-      <string>CPOL</string>
+      <string>CPOL:</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QSpinBox" name="spinBoxCPol">
+    <widget class="QSpinBox" name="spinBoxCPOL">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -410,7 +410,7 @@
       <number>1</number>
      </property>
     </widget>
-    <widget class="QLabel" name="labelCPha">
+    <widget class="QLabel" name="labelCPHA">
      <property name="geometry">
       <rect>
        <x>560</x>
@@ -420,13 +420,13 @@
       </rect>
      </property>
      <property name="text">
-      <string>CPHA</string>
+      <string>CPHA:</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QSpinBox" name="spinBoxCPha">
+    <widget class="QSpinBox" name="spinBoxCPHA">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -524,8 +524,8 @@
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>345</x>
-     <y>299</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
      <x>345</x>

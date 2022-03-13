@@ -22,6 +22,7 @@
 #include <QMessageBox>
 #include <QThread>
 #include "aboutdialog.h"
+#include "delaysdialog.h"
 #include "informationdialog.h"
 #include "devicewindow.h"
 #include "ui_devicewindow.h"
@@ -188,32 +189,35 @@ void DeviceWindow::on_checkBoxGPIO10_clicked()
     opCheck(tr("gpio10-switch-op"), errcnt, errstr);  // The string "gpio10-switch-op" should be translated to "GPIO10 switch"
 }
 
-void DeviceWindow::on_comboBoxChannel_activated(int index)
+void DeviceWindow::on_comboBoxChannel_activated()
 {
     displaySPIMode();
 }
 
-void DeviceWindow::on_comboBoxCSPinMode_activated(int index)
+void DeviceWindow::on_comboBoxCSPinMode_activated()
 {
     configureSPIMode();
 }
 
-void DeviceWindow::on_comboBoxFrequency_activated(int index)
+void DeviceWindow::on_comboBoxFrequency_activated()
 {
     configureSPIMode();
 }
 
 void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
 {
-    // To do
+    int errcnt = 0;
+    QString errstr;
+    DelaysDialog delays;
+    delays.exec();
 }
 
-void DeviceWindow::on_spinBoxCPha_valueChanged(int i)
+void DeviceWindow::on_spinBoxCPHA_valueChanged()
 {
     configureSPIMode();
 }
 
-void DeviceWindow::on_spinBoxCPol_valueChanged(int i)
+void DeviceWindow::on_spinBoxCPOL_valueChanged()
 {
     configureSPIMode();
 }
@@ -243,14 +247,14 @@ void DeviceWindow::update()
 // Configures the SPI mode for the currently selected channel
 void DeviceWindow::configureSPIMode()
 {
+    int errcnt = 0;
+    QString errstr;
     QString channel = ui->comboBoxChannel->currentText();
     CP2130::SPIMode spimode;
     spimode.csmode = ui->comboBoxCSPinMode->currentIndex() != 0;
     spimode.cfrq = ui->comboBoxFrequency->currentIndex();
-    spimode.cpol = ui->spinBoxCPol->value() != 0;
-    spimode.cpha = ui->spinBoxCPha->value() != 0;
-    int errcnt = 0;
-    QString errstr;
+    spimode.cpol = ui->spinBoxCPOL->value() != 0;
+    spimode.cpha = ui->spinBoxCPHA->value() != 0;
     cp2130_.configureSPIMode(static_cast<quint8>(channel.toInt()), spimode, errcnt, errstr);
     if (opCheck(tr("spi-mode-configuration-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-mode-configuration-op" should be translated to "SPI mode configuration")
         spimodes_[channel] = spimode;  // Update "spimodes_" regarding the current channel
@@ -270,8 +274,8 @@ void DeviceWindow::displaySPIMode()
     CP2130::SPIMode spimode = spimodes_[ui->comboBoxChannel->currentText()];
     ui->comboBoxCSPinMode->setCurrentIndex(spimode.csmode);
     ui->comboBoxFrequency->setCurrentIndex(spimode.cfrq);
-    ui->spinBoxCPol->setValue(spimode.cpol);
-    ui->spinBoxCPha->setValue(spimode.cpha);
+    ui->spinBoxCPOL->setValue(spimode.cpol);
+    ui->spinBoxCPHA->setValue(spimode.cpha);
 }
 
 // Initializes the GPIO check boxes
@@ -304,8 +308,8 @@ void DeviceWindow::initializeSPIConfigurationControls()
         ui->pushButtonConfigureSPIDelays->setEnabled(true);
         ui->comboBoxCSPinMode->setEnabled(true);
         ui->comboBoxFrequency->setEnabled(true);
-        ui->spinBoxCPol->setEnabled(true);
-        ui->spinBoxCPha->setEnabled(true);
+        ui->spinBoxCPOL->setEnabled(true);
+        ui->spinBoxCPHA->setEnabled(true);
     }
 }
 

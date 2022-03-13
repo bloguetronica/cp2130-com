@@ -57,12 +57,12 @@ private slots:
     void on_checkBoxGPIO8_clicked();
     void on_checkBoxGPIO9_clicked();
     void on_checkBoxGPIO10_clicked();
-    void on_comboBoxChannel_activated(int index);
-    void on_comboBoxCSPinMode_activated(int index);
-    void on_comboBoxFrequency_activated(int index);
+    void on_comboBoxChannel_activated();
+    void on_comboBoxCSPinMode_activated();
+    void on_comboBoxFrequency_activated();
     void on_pushButtonConfigureSPIDelays_clicked();
-    void on_spinBoxCPha_valueChanged(int i);
-    void on_spinBoxCPol_valueChanged(int i);
+    void on_spinBoxCPHA_valueChanged();
+    void on_spinBoxCPOL_valueChanged();
     void update();
 
 private:
