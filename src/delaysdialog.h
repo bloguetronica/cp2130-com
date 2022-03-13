@@ -36,6 +36,13 @@ public:
     explicit DelaysDialog(QWidget *parent = nullptr);
     ~DelaysDialog();
 
+    quint16 interByteDelaySpinBoxValue() const;
+    quint16 postAssertDelaySpinBoxValue() const;
+    quint16 preDeassertDelaySpinBoxValue() const;
+    void setInterByteDelaySpinBoxValue(quint16 itbytdly);
+    void setPostAssertDelaySpinBoxValue(quint16 itbytdly);
+    void setPreDeassertDelaySpinBoxValue(quint16 itbytdly);
+
 private:
     Ui::DelaysDialog *ui;
 };

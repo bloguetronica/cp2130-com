@@ -68,9 +68,9 @@ private slots:
 private:
     Ui::DeviceWindow *ui;
     CP2130 cp2130_;
-    CP2130::PinConfig pinconfig_;
-    QMap<QString, CP2130::SPIDelays> spidelays_;
-    QMap<QString, CP2130::SPIMode> spimodes_;
+    CP2130::PinConfig pinConfig_;
+    QMap<QString, CP2130::SPIDelays> spiDelaysMap_;
+    QMap<QString, CP2130::SPIMode> spiModeMap_;
     QString serialstr_;
     quint16 pid_, vid_;
     QTimer *timer_;

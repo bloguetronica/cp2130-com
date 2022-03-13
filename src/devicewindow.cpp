@@ -208,8 +208,21 @@ void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
 {
     int errcnt = 0;
     QString errstr;
+    QString channel = ui->comboBoxChannel->currentText();
     DelaysDialog delays;
-    delays.exec();
+    delays.setPreDeassertDelaySpinBoxValue(spiDelaysMap_[channel].prdastdly);
+    delays.setPostAssertDelaySpinBoxValue(spiDelaysMap_[channel].pstastdly);
+    delays.setInterByteDelaySpinBoxValue(spiDelaysMap_[channel].itbytdly);
+    if (delays.exec() == QDialog::Accepted) {
+        CP2130::SPIDelays spiDelays;
+        spiDelays.prdastdly = delays.preDeassertDelaySpinBoxValue();
+        spiDelays.pstastdly = delays.postAssertDelaySpinBoxValue();
+        spiDelays.itbytdly = delays.interByteDelaySpinBoxValue();
+        cp2130_.configureSPIDelays(static_cast<quint8>(channel.toInt()), spiDelays, errcnt, errstr);
+        if (opCheck(tr("spi-delays-configuration-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-delays-configuration-op" should be translated to "SPI delays configuration")
+            spiDelaysMap_[channel] = spiDelays;  // Update "spiDelaysMap_" regarding the current channel
+        }
+    }
 }
 
 void DeviceWindow::on_spinBoxCPHA_valueChanged()
@@ -250,14 +263,14 @@ void DeviceWindow::configureSPIMode()
     int errcnt = 0;
     QString errstr;
     QString channel = ui->comboBoxChannel->currentText();
-    CP2130::SPIMode spimode;
-    spimode.csmode = ui->comboBoxCSPinMode->currentIndex() != 0;
-    spimode.cfrq = ui->comboBoxFrequency->currentIndex();
-    spimode.cpol = ui->spinBoxCPOL->value() != 0;
-    spimode.cpha = ui->spinBoxCPHA->value() != 0;
-    cp2130_.configureSPIMode(static_cast<quint8>(channel.toInt()), spimode, errcnt, errstr);
+    CP2130::SPIMode spiMode;
+    spiMode.csmode = ui->comboBoxCSPinMode->currentIndex() != 0;
+    spiMode.cfrq = ui->comboBoxFrequency->currentIndex();
+    spiMode.cpol = ui->spinBoxCPOL->value() != 0;
+    spiMode.cpha = ui->spinBoxCPHA->value() != 0;
+    cp2130_.configureSPIMode(static_cast<quint8>(channel.toInt()), spiMode, errcnt, errstr);
     if (opCheck(tr("spi-mode-configuration-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-mode-configuration-op" should be translated to "SPI mode configuration")
-        spimodes_[channel] = spimode;  // Update "spimodes_" regarding the current channel
+        spiModeMap_[channel] = spiMode;  // Update "spiModeMap_" regarding the current channel
     }
 }
 
@@ -271,35 +284,35 @@ void DeviceWindow::disableView()
 // Displays the SPI mode for the currently selected channel
 void DeviceWindow::displaySPIMode()
 {
-    CP2130::SPIMode spimode = spimodes_[ui->comboBoxChannel->currentText()];
-    ui->comboBoxCSPinMode->setCurrentIndex(spimode.csmode);
-    ui->comboBoxFrequency->setCurrentIndex(spimode.cfrq);
-    ui->spinBoxCPOL->setValue(spimode.cpol);
-    ui->spinBoxCPHA->setValue(spimode.cpha);
+    CP2130::SPIMode spiMode = spiModeMap_[ui->comboBoxChannel->currentText()];
+    ui->comboBoxCSPinMode->setCurrentIndex(spiMode.csmode);
+    ui->comboBoxFrequency->setCurrentIndex(spiMode.cfrq);
+    ui->spinBoxCPOL->setValue(spiMode.cpol);
+    ui->spinBoxCPHA->setValue(spiMode.cpha);
 }
 
 // Initializes the GPIO check boxes
 void DeviceWindow::initializeGPIOControlBoxes()
 {
-    ui->checkBoxGPIO0->setEnabled(pinconfig_.gpio0 == CP2130::PCOUTOD || pinconfig_.gpio0 == CP2130::PCOUTPP);
-    ui->checkBoxGPIO1->setEnabled(pinconfig_.gpio1 == CP2130::PCOUTOD || pinconfig_.gpio1 == CP2130::PCOUTPP);
-    ui->checkBoxGPIO2->setEnabled(pinconfig_.gpio2 == CP2130::PCOUTOD || pinconfig_.gpio2 == CP2130::PCOUTPP);
-    ui->checkBoxGPIO3->setEnabled(pinconfig_.gpio3 == CP2130::PCOUTOD || pinconfig_.gpio3 == CP2130::PCOUTPP);
-    ui->checkBoxGPIO4->setEnabled(pinconfig_.gpio4 == CP2130::PCOUTOD || pinconfig_.gpio4 == CP2130::PCOUTPP);
-    ui->checkBoxGPIO5->setEnabled(pinconfig_.gpio5 == CP2130::PCOUTOD || pinconfig_.gpio5 == CP2130::PCOUTPP);
-    ui->checkBoxGPIO6->setEnabled(pinconfig_.gpio6 == CP2130::PCOUTOD || pinconfig_.gpio6 == CP2130::PCOUTPP);
-    ui->checkBoxGPIO7->setEnabled(pinconfig_.gpio7 == CP2130::PCOUTOD || pinconfig_.gpio7 == CP2130::PCOUTPP);
-    ui->checkBoxGPIO8->setEnabled(pinconfig_.gpio8 == CP2130::PCOUTOD || pinconfig_.gpio8 == CP2130::PCOUTPP);
-    ui->checkBoxGPIO9->setEnabled(pinconfig_.gpio9 == CP2130::PCOUTOD || pinconfig_.gpio9 == CP2130::PCOUTPP);
-    ui->checkBoxGPIO10->setEnabled(pinconfig_.gpio10 == CP2130::PCOUTOD || pinconfig_.gpio10 == CP2130::PCOUTPP);
+    ui->checkBoxGPIO0->setEnabled(pinConfig_.gpio0 == CP2130::PCOUTOD || pinConfig_.gpio0 == CP2130::PCOUTPP);
+    ui->checkBoxGPIO1->setEnabled(pinConfig_.gpio1 == CP2130::PCOUTOD || pinConfig_.gpio1 == CP2130::PCOUTPP);
+    ui->checkBoxGPIO2->setEnabled(pinConfig_.gpio2 == CP2130::PCOUTOD || pinConfig_.gpio2 == CP2130::PCOUTPP);
+    ui->checkBoxGPIO3->setEnabled(pinConfig_.gpio3 == CP2130::PCOUTOD || pinConfig_.gpio3 == CP2130::PCOUTPP);
+    ui->checkBoxGPIO4->setEnabled(pinConfig_.gpio4 == CP2130::PCOUTOD || pinConfig_.gpio4 == CP2130::PCOUTPP);
+    ui->checkBoxGPIO5->setEnabled(pinConfig_.gpio5 == CP2130::PCOUTOD || pinConfig_.gpio5 == CP2130::PCOUTPP);
+    ui->checkBoxGPIO6->setEnabled(pinConfig_.gpio6 == CP2130::PCOUTOD || pinConfig_.gpio6 == CP2130::PCOUTPP);
+    ui->checkBoxGPIO7->setEnabled(pinConfig_.gpio7 == CP2130::PCOUTOD || pinConfig_.gpio7 == CP2130::PCOUTPP);
+    ui->checkBoxGPIO8->setEnabled(pinConfig_.gpio8 == CP2130::PCOUTOD || pinConfig_.gpio8 == CP2130::PCOUTPP);
+    ui->checkBoxGPIO9->setEnabled(pinConfig_.gpio9 == CP2130::PCOUTOD || pinConfig_.gpio9 == CP2130::PCOUTPP);
+    ui->checkBoxGPIO10->setEnabled(pinConfig_.gpio10 == CP2130::PCOUTOD || pinConfig_.gpio10 == CP2130::PCOUTPP);
 }
 
 // Initializes the SPI configuration controls
 void DeviceWindow::initializeSPIConfigurationControls()
 {
-    if (spimodes_.size() != 0) {
+    if (spiModeMap_.size() != 0) {
         ui->comboBoxChannel->clear();
-        QList<QString> keys = spimodes_.keys();
+        QList<QString> keys = spiModeMap_.keys();
         for (QString key : keys) {
             ui->comboBoxChannel->addItem(key);
         }
@@ -355,50 +368,50 @@ void DeviceWindow::readConfiguration()
 {
     int errcnt = 0;
     QString errstr;
-    pinconfig_ = cp2130_.getPinConfig(errcnt, errstr);
-    if (pinconfig_.gpio0 == CP2130::PCCS) {
-        spimodes_["0"] = cp2130_.getSPIMode(0, errcnt, errstr);
-        spidelays_["0"] = cp2130_.getSPIDelays(0, errcnt, errstr);
+    pinConfig_ = cp2130_.getPinConfig(errcnt, errstr);
+    if (pinConfig_.gpio0 == CP2130::PCCS) {
+        spiModeMap_["0"] = cp2130_.getSPIMode(0, errcnt, errstr);
+        spiDelaysMap_["0"] = cp2130_.getSPIDelays(0, errcnt, errstr);
     }
-    if (pinconfig_.gpio1 == CP2130::PCCS) {
-        spimodes_["1"] = cp2130_.getSPIMode(1, errcnt, errstr);
-        spidelays_["1"] = cp2130_.getSPIDelays(1, errcnt, errstr);
+    if (pinConfig_.gpio1 == CP2130::PCCS) {
+        spiModeMap_["1"] = cp2130_.getSPIMode(1, errcnt, errstr);
+        spiDelaysMap_["1"] = cp2130_.getSPIDelays(1, errcnt, errstr);
     }
-    if (pinconfig_.gpio2 == CP2130::PCCS) {
-        spimodes_["2"] = cp2130_.getSPIMode(2, errcnt, errstr);
-        spidelays_["2"] = cp2130_.getSPIDelays(2, errcnt, errstr);
+    if (pinConfig_.gpio2 == CP2130::PCCS) {
+        spiModeMap_["2"] = cp2130_.getSPIMode(2, errcnt, errstr);
+        spiDelaysMap_["2"] = cp2130_.getSPIDelays(2, errcnt, errstr);
     }
-    if (pinconfig_.gpio3 == CP2130::PCCS) {
-        spimodes_["3"] = cp2130_.getSPIMode(3, errcnt, errstr);
-        spidelays_["3"] = cp2130_.getSPIDelays(3, errcnt, errstr);
+    if (pinConfig_.gpio3 == CP2130::PCCS) {
+        spiModeMap_["3"] = cp2130_.getSPIMode(3, errcnt, errstr);
+        spiDelaysMap_["3"] = cp2130_.getSPIDelays(3, errcnt, errstr);
     }
-    if (pinconfig_.gpio4 == CP2130::PCCS) {
-        spimodes_["4"] = cp2130_.getSPIMode(4, errcnt, errstr);
-        spidelays_["4"] = cp2130_.getSPIDelays(4, errcnt, errstr);
+    if (pinConfig_.gpio4 == CP2130::PCCS) {
+        spiModeMap_["4"] = cp2130_.getSPIMode(4, errcnt, errstr);
+        spiDelaysMap_["4"] = cp2130_.getSPIDelays(4, errcnt, errstr);
     }
-    if (pinconfig_.gpio5 == CP2130::PCCS) {
-        spimodes_["5"] = cp2130_.getSPIMode(5, errcnt, errstr);
-        spidelays_["5"] = cp2130_.getSPIDelays(5, errcnt, errstr);
+    if (pinConfig_.gpio5 == CP2130::PCCS) {
+        spiModeMap_["5"] = cp2130_.getSPIMode(5, errcnt, errstr);
+        spiDelaysMap_["5"] = cp2130_.getSPIDelays(5, errcnt, errstr);
     }
-    if (pinconfig_.gpio6 == CP2130::PCCS) {
-        spimodes_["6"] = cp2130_.getSPIMode(6, errcnt, errstr);
-        spidelays_["6"] = cp2130_.getSPIDelays(6, errcnt, errstr);
+    if (pinConfig_.gpio6 == CP2130::PCCS) {
+        spiModeMap_["6"] = cp2130_.getSPIMode(6, errcnt, errstr);
+        spiDelaysMap_["6"] = cp2130_.getSPIDelays(6, errcnt, errstr);
     }
-    if (pinconfig_.gpio7 == CP2130::PCCS) {
-        spimodes_["7"] = cp2130_.getSPIMode(7, errcnt, errstr);
-        spidelays_["7"] = cp2130_.getSPIDelays(7, errcnt, errstr);
+    if (pinConfig_.gpio7 == CP2130::PCCS) {
+        spiModeMap_["7"] = cp2130_.getSPIMode(7, errcnt, errstr);
+        spiDelaysMap_["7"] = cp2130_.getSPIDelays(7, errcnt, errstr);
     }
-    if (pinconfig_.gpio8 == CP2130::PCCS) {
-        spimodes_["8"] = cp2130_.getSPIMode(8, errcnt, errstr);
-        spidelays_["8"] = cp2130_.getSPIDelays(8, errcnt, errstr);
+    if (pinConfig_.gpio8 == CP2130::PCCS) {
+        spiModeMap_["8"] = cp2130_.getSPIMode(8, errcnt, errstr);
+        spiDelaysMap_["8"] = cp2130_.getSPIDelays(8, errcnt, errstr);
     }
-    if (pinconfig_.gpio9 == CP2130::PCCS) {
-        spimodes_["9"] = cp2130_.getSPIMode(9, errcnt, errstr);
-        spidelays_["9"] = cp2130_.getSPIDelays(9, errcnt, errstr);
+    if (pinConfig_.gpio9 == CP2130::PCCS) {
+        spiModeMap_["9"] = cp2130_.getSPIMode(9, errcnt, errstr);
+        spiDelaysMap_["9"] = cp2130_.getSPIDelays(9, errcnt, errstr);
     }
-    if (pinconfig_.gpio10 == CP2130::PCCS) {
-        spimodes_["10"] = cp2130_.getSPIMode(10, errcnt, errstr);
-        spidelays_["10"] = cp2130_.getSPIDelays(10, errcnt, errstr);
+    if (pinConfig_.gpio10 == CP2130::PCCS) {
+        spiModeMap_["10"] = cp2130_.getSPIMode(10, errcnt, errstr);
+        spiDelaysMap_["10"] = cp2130_.getSPIDelays(10, errcnt, errstr);
     }
     if (errcnt > 0) {
         if (cp2130_.disconnected()) {

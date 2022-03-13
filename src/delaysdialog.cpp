@@ -33,3 +33,33 @@ DelaysDialog::~DelaysDialog()
 {
     delete ui;
 }
+
+quint16 DelaysDialog::interByteDelaySpinBoxValue() const
+{
+    return static_cast<quint16>(ui->spinBoxInterByteDelay->value());
+}
+
+quint16 DelaysDialog::postAssertDelaySpinBoxValue() const
+{
+    return static_cast<quint16>(ui->spinBoxPostAssertDelay->value());
+}
+
+quint16 DelaysDialog::preDeassertDelaySpinBoxValue() const
+{
+    return static_cast<quint16>(ui->spinBoxPreDeassertDelay->value());
+}
+
+void DelaysDialog::setInterByteDelaySpinBoxValue(quint16 itbytdly)
+{
+    ui->spinBoxInterByteDelay->setValue(itbytdly);
+}
+
+void DelaysDialog::setPostAssertDelaySpinBoxValue(quint16 pstastdly)
+{
+    ui->spinBoxPostAssertDelay->setValue(pstastdly);
+}
+
+void DelaysDialog::setPreDeassertDelaySpinBoxValue(quint16 prdastdly)
+{
+    ui->spinBoxPreDeassertDelay->setValue(prdastdly);
+}
