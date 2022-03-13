@@ -206,18 +206,26 @@ void DeviceWindow::on_comboBoxFrequency_activated()
 
 void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
 {
-    int errcnt = 0;
-    QString errstr;
     QString channel = ui->comboBoxChannel->currentText();
     DelaysDialog delays;
+    delays.setCSToggleCheckBox(spiDelaysMap_[channel].cstglen);
     delays.setPreDeassertDelaySpinBoxValue(spiDelaysMap_[channel].prdastdly);
+    delays.setPreDeassertDelayCheckBox(spiDelaysMap_[channel].prdasten);
     delays.setPostAssertDelaySpinBoxValue(spiDelaysMap_[channel].pstastdly);
+    delays.setPostAssertDelayCheckBox(spiDelaysMap_[channel].pstasten);
     delays.setInterByteDelaySpinBoxValue(spiDelaysMap_[channel].itbytdly);
+    delays.setInterByteDelayCheckBox(spiDelaysMap_[channel].itbyten);
     if (delays.exec() == QDialog::Accepted) {
         CP2130::SPIDelays spiDelays;
+        spiDelays.cstglen = delays.csToggleCheckBoxIsChecked();
+        spiDelays.prdasten = delays.preDeassertDelayCheckBoxIsChecked();
+        spiDelays.pstasten = delays.postAssertDelayCheckBoxIsChecked();
+        spiDelays.itbyten = delays.interByteDelayCheckBoxIsChecked();
         spiDelays.prdastdly = delays.preDeassertDelaySpinBoxValue();
         spiDelays.pstastdly = delays.postAssertDelaySpinBoxValue();
         spiDelays.itbytdly = delays.interByteDelaySpinBoxValue();
+        int errcnt = 0;
+        QString errstr;
         cp2130_.configureSPIDelays(static_cast<quint8>(channel.toInt()), spiDelays, errcnt, errstr);
         if (opCheck(tr("spi-delays-configuration-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-delays-configuration-op" should be translated to "SPI delays configuration")
             spiDelaysMap_[channel] = spiDelays;  // Update "spiDelaysMap_" regarding the current channel
@@ -260,14 +268,14 @@ void DeviceWindow::update()
 // Configures the SPI mode for the currently selected channel
 void DeviceWindow::configureSPIMode()
 {
-    int errcnt = 0;
-    QString errstr;
     QString channel = ui->comboBoxChannel->currentText();
     CP2130::SPIMode spiMode;
     spiMode.csmode = ui->comboBoxCSPinMode->currentIndex() != 0;
     spiMode.cfrq = ui->comboBoxFrequency->currentIndex();
     spiMode.cpol = ui->spinBoxCPOL->value() != 0;
     spiMode.cpha = ui->spinBoxCPHA->value() != 0;
+    int errcnt = 0;
+    QString errstr;
     cp2130_.configureSPIMode(static_cast<quint8>(channel.toInt()), spiMode, errcnt, errstr);
     if (opCheck(tr("spi-mode-configuration-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-mode-configuration-op" should be translated to "SPI mode configuration")
         spiModeMap_[channel] = spiMode;  // Update "spiModeMap_" regarding the current channel

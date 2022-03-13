@@ -36,11 +36,19 @@ public:
     explicit DelaysDialog(QWidget *parent = nullptr);
     ~DelaysDialog();
 
-    quint16 interByteDelaySpinBoxValue() const;
-    quint16 postAssertDelaySpinBoxValue() const;
-    quint16 preDeassertDelaySpinBoxValue() const;
+    bool csToggleCheckBoxIsChecked();
+    bool interByteDelayCheckBoxIsChecked();
+    quint16 interByteDelaySpinBoxValue();
+    bool postAssertDelayCheckBoxIsChecked();
+    quint16 postAssertDelaySpinBoxValue();
+    bool preDeassertDelayCheckBoxIsChecked();
+    quint16 preDeassertDelaySpinBoxValue();
+    void setCSToggleCheckBox(bool cstglen);
+    void setInterByteDelayCheckBox(bool itbyten);
     void setInterByteDelaySpinBoxValue(quint16 itbytdly);
+    void setPostAssertDelayCheckBox(bool pstasten);
     void setPostAssertDelaySpinBoxValue(quint16 itbytdly);
+    void setPreDeassertDelayCheckBox(bool prdasten);
     void setPreDeassertDelaySpinBoxValue(quint16 itbytdly);
 
 private:

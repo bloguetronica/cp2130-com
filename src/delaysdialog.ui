@@ -55,7 +55,7 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBoxCSToggleEnable">
+  <widget class="QCheckBox" name="checkBoxCSToggle">
    <property name="geometry">
     <rect>
      <x>200</x>
@@ -65,10 +65,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>CS toggle enable</string>
+    <string>Enable CS toggle</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBoxPreDeassertDelayEnable">
+  <widget class="QCheckBox" name="checkBoxPreDeassertDelay">
    <property name="geometry">
     <rect>
      <x>310</x>
@@ -81,7 +81,7 @@
     <string>Enable</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBoxPostAssertDelayEnable">
+  <widget class="QCheckBox" name="checkBoxPostAssertDelay">
    <property name="geometry">
     <rect>
      <x>310</x>
@@ -94,7 +94,7 @@
     <string>Enable</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="checkBoxInterByteDelayEnable">
+  <widget class="QCheckBox" name="checkBoxInterByteDelay">
    <property name="geometry">
     <rect>
      <x>310</x>
