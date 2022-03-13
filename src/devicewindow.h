@@ -57,9 +57,12 @@ private slots:
     void on_checkBoxGPIO8_clicked();
     void on_checkBoxGPIO9_clicked();
     void on_checkBoxGPIO10_clicked();
+    void on_comboBoxChannel_activated(int index);
     void on_comboBoxCSPinMode_activated(int index);
     void on_comboBoxFrequency_activated(int index);
     void on_pushButtonConfigureSPIDelays_clicked();
+    void on_spinBoxCPha_valueChanged(int i);
+    void on_spinBoxCPol_valueChanged(int i);
     void update();
 
 private:
@@ -73,7 +76,9 @@ private:
     QTimer *timer_;
     int erracc_ = 0;
 
+    void configureSPIMode();
     void disableView();
+    void displaySPIMode();
     void initializeGPIOControlBoxes();
     void initializeSPIConfigurationControls();
     void initializeView();
