@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>691</width>
-    <height>484</height>
+    <height>400</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>691</width>
-    <height>0</height>
+    <height>400</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>691</width>
-    <height>16777215</height>
+    <height>400</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -465,61 +465,22 @@
       <x>10</x>
       <y>210</y>
       <width>671</width>
-      <height>211</height>
+      <height>151</height>
      </rect>
     </property>
     <property name="title">
      <string>SPI Transfers</string>
     </property>
-    <widget class="QPlainTextEdit" name="plainTextEditWrite">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>30</y>
-       <width>501</width>
-       <height>81</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Noto Mono</family>
-      </font>
-     </property>
-    </widget>
-    <widget class="QPlainTextEdit" name="plainTextEditRead">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>120</y>
-       <width>501</width>
-       <height>81</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Noto Mono</family>
-      </font>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
     <widget class="QPushButton" name="pushButtonWriteRead">
      <property name="enabled">
       <bool>false</bool>
      </property>
      <property name="geometry">
       <rect>
-       <x>520</x>
-       <y>150</y>
-       <width>141</width>
-       <height>51</height>
+       <x>540</x>
+       <y>110</y>
+       <width>121</width>
+       <height>31</height>
       </rect>
      </property>
      <property name="text">
@@ -532,10 +493,10 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>520</x>
-       <y>30</y>
-       <width>141</width>
-       <height>51</height>
+       <x>280</x>
+       <y>110</y>
+       <width>121</width>
+       <height>31</height>
       </rect>
      </property>
      <property name="text">
@@ -548,14 +509,56 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>520</x>
-       <y>90</y>
-       <width>141</width>
-       <height>51</height>
+       <x>410</x>
+       <y>110</y>
+       <width>121</width>
+       <height>31</height>
       </rect>
      </property>
      <property name="text">
       <string>Read</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEditWrite">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>651</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Noto Mono</family>
+      </font>
+     </property>
+     <property name="clearButtonEnabled">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEditRead">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>70</y>
+       <width>651</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Noto Mono</family>
+      </font>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>
@@ -588,7 +591,6 @@
    <addaction name="menuDevice"/>
    <addaction name="menuHelp"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionClose">
    <property name="text">
     <string>&amp;Close</string>

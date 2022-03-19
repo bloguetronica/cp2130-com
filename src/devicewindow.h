@@ -60,6 +60,7 @@ private slots:
     void on_comboBoxChannel_activated();
     void on_comboBoxCSPinMode_activated();
     void on_comboBoxFrequency_activated();
+    void on_lineEditWrite_textEdited();
     void on_pushButtonConfigureSPIDelays_clicked();
     void on_spinBoxCPHA_valueChanged();
     void on_spinBoxCPOL_valueChanged();

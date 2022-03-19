@@ -20,6 +20,8 @@
 
 // Includes
 #include <QMessageBox>
+#include <QRegExp>
+#include <QTextDocument>
 #include <QThread>
 #include "aboutdialog.h"
 #include "delaysdialog.h"
@@ -36,6 +38,7 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     ui(new Ui::DeviceWindow)
 {
     ui->setupUi(this);
+    ui->lineEditWrite->setValidator(new QRegExpValidator(QRegExp("[A-Fa-f\\d]+"), this));
 }
 
 DeviceWindow::~DeviceWindow()
@@ -204,6 +207,15 @@ void DeviceWindow::on_comboBoxFrequency_activated()
     configureSPIMode();
 }
 
+void DeviceWindow::on_lineEditWrite_textEdited()
+{
+    ui->lineEditWrite->setText(ui->lineEditWrite->text().toLower());
+    int size = ui->lineEditWrite->text().size();
+    bool enableWrite = size != 0 && size % 2 == 0;
+    ui->pushButtonWrite->setEnabled(enableWrite);
+    ui->pushButtonWriteRead->setEnabled(enableWrite);
+}
+
 void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
 {
     QString channel = ui->comboBoxChannel->currentText();
@@ -286,7 +298,6 @@ void DeviceWindow::configureSPIMode()
 void DeviceWindow::disableView()
 {
     ui->centralWidget->setEnabled(false);
-    ui->statusBar->setEnabled(false);
 }
 
 // Displays the SPI mode for the currently selected channel
@@ -331,11 +342,9 @@ void DeviceWindow::initializeSPIControls()
         ui->comboBoxFrequency->setEnabled(true);
         ui->spinBoxCPOL->setEnabled(true);
         ui->spinBoxCPHA->setEnabled(true);
-        ui->plainTextEditWrite->setEnabled(true);
-        ui->plainTextEditRead->setEnabled(true);
-        ui->pushButtonWrite->setEnabled(true);
+        ui->lineEditWrite->setEnabled(true);
+        ui->lineEditRead->setEnabled(true);
         ui->pushButtonRead->setEnabled(true);
-        ui->pushButtonWriteRead->setEnabled(true);
     }
 }
 
