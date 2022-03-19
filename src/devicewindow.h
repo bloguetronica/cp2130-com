@@ -80,7 +80,7 @@ private:
     void disableView();
     void displaySPIMode();
     void initializeGPIOControlBoxes();
-    void initializeSPIConfigurationControls();
+    void initializeSPIControls();
     void initializeView();
     bool opCheck(const QString &op, int errcnt, QString errstr);
     void readConfiguration();

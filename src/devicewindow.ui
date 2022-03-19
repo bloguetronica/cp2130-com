@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>691</width>
-    <height>600</height>
+    <height>484</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -456,6 +456,106 @@
      </property>
      <property name="text">
       <string>Configure SPI Delays</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBoxSPITransfers">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>210</y>
+      <width>671</width>
+      <height>211</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>SPI Transfers</string>
+    </property>
+    <widget class="QPlainTextEdit" name="plainTextEditWrite">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>501</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Noto Mono</family>
+      </font>
+     </property>
+    </widget>
+    <widget class="QPlainTextEdit" name="plainTextEditRead">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>120</y>
+       <width>501</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Noto Mono</family>
+      </font>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButtonWriteRead">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>150</y>
+       <width>141</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Write/Read</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButtonWrite">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>30</y>
+       <width>141</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Write</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButtonRead">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>520</x>
+       <y>90</y>
+       <width>141</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Read</string>
      </property>
     </widget>
    </widget>

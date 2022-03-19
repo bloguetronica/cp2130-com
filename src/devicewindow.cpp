@@ -316,7 +316,7 @@ void DeviceWindow::initializeGPIOControlBoxes()
 }
 
 // Initializes the SPI configuration controls
-void DeviceWindow::initializeSPIConfigurationControls()
+void DeviceWindow::initializeSPIControls()
 {
     if (spiModeMap_.size() != 0) {
         ui->comboBoxChannel->clear();
@@ -331,6 +331,11 @@ void DeviceWindow::initializeSPIConfigurationControls()
         ui->comboBoxFrequency->setEnabled(true);
         ui->spinBoxCPOL->setEnabled(true);
         ui->spinBoxCPHA->setEnabled(true);
+        ui->plainTextEditWrite->setEnabled(true);
+        ui->plainTextEditRead->setEnabled(true);
+        ui->pushButtonWrite->setEnabled(true);
+        ui->pushButtonRead->setEnabled(true);
+        ui->pushButtonWriteRead->setEnabled(true);
     }
 }
 
@@ -338,7 +343,7 @@ void DeviceWindow::initializeSPIConfigurationControls()
 void DeviceWindow::initializeView()
 {
     initializeGPIOControlBoxes();
-    initializeSPIConfigurationControls();
+    initializeSPIControls();
 }
 
 // Checks for errors and validates (or ultimately halts) device operations
