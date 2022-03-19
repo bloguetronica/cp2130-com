@@ -297,6 +297,8 @@ void DeviceWindow::configureSPIMode()
 // Partially disables device window
 void DeviceWindow::disableView()
 {
+    ui->actionInformation->setEnabled(false);
+    ui->actionReset->setEnabled(false);
     ui->centralWidget->setEnabled(false);
 }
 
