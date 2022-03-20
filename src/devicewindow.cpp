@@ -253,8 +253,12 @@ void DeviceWindow::on_pushButtonRead_clicked()
 {
     int errcnt = 0;
     QString errstr;
-    ui->lineEditRead->setText(DataToHexadecimal(cp2130_.spiRead(static_cast<quint32>(ui->spinBoxBytesToRead->value()), errcnt, errstr)));
-    opCheck(tr("spi-read-op"), errcnt, errstr);  // The string "spi-read-op" should be translated to "SPI read"
+    QVector<quint8> result = cp2130_.spiRead(static_cast<quint32>(ui->spinBoxBytesToRead->value()), errcnt, errstr);
+    if (opCheck(tr("spi-read-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-read-op" should be translated to "SPI read")
+        ui->lineEditRead->setText(DataToHexadecimal(result));
+    } else {
+        ui->lineEditRead->clear();
+    }
 }
 
 void DeviceWindow::on_pushButtonWrite_clicked()
@@ -263,14 +267,19 @@ void DeviceWindow::on_pushButtonWrite_clicked()
     QString errstr;
     cp2130_.spiWrite(HexadecimalToData(ui->lineEditWrite->text()), errcnt, errstr);
     opCheck(tr("spi-write-op"), errcnt, errstr);  // The string "spi-write-op" should be translated to "SPI write"
+    ui->lineEditRead->clear();
 }
 
 void DeviceWindow::on_pushButtonWriteRead_clicked()
 {
     int errcnt = 0;
     QString errstr;
-    ui->lineEditRead->setText(DataToHexadecimal(cp2130_.spiWriteRead(HexadecimalToData(ui->lineEditWrite->text()), errcnt, errstr)));
-    opCheck(tr("spi-write-read-op"), errcnt, errstr);  // The string "spi-write-read-op" should be translated to "SPI write and read"
+    QVector<quint8> result = cp2130_.spiWriteRead(HexadecimalToData(ui->lineEditWrite->text()), errcnt, errstr);
+    if (opCheck(tr("spi-write-read-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-write-read-op" should be translated to "SPI write and read")
+        ui->lineEditRead->setText(DataToHexadecimal(result));
+    } else {
+        ui->lineEditRead->clear();
+    }
 }
 
 void DeviceWindow::on_spinBoxCPHA_valueChanged()
@@ -488,6 +497,8 @@ void DeviceWindow::readConfiguration()
 void DeviceWindow::resetDevice()
 {
     timer_->stop();  // Stop the update timer momentarily, in order to avoid recurrent errors if the device gets disconnected during a reset, or other unexpected behavior
+    ui->lineEditWrite->clear();
+    ui->lineEditRead->clear();
     int errcnt = 0;
     QString errstr;
     cp2130_.reset(errcnt, errstr);
