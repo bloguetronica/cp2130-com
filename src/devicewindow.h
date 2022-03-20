@@ -64,6 +64,7 @@ private slots:
     void on_pushButtonConfigureSPIDelays_clicked();
     void on_spinBoxCPHA_valueChanged();
     void on_spinBoxCPOL_valueChanged();
+    void on_spinBoxBytesToRead_valueChanged();
     void update();
 
 private:

@@ -536,6 +536,9 @@
        <family>Noto Mono</family>
       </font>
      </property>
+     <property name="maxLength">
+      <number>2048</number>
+     </property>
      <property name="placeholderText">
       <string>0x</string>
      </property>
@@ -560,8 +563,40 @@
        <family>Noto Mono</family>
       </font>
      </property>
+     <property name="maxLength">
+      <number>2048</number>
+     </property>
      <property name="readOnly">
       <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelBytesToRead">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>117</y>
+       <width>105</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Bytes to read:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="spinBoxBytesToRead">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>110</y>
+       <width>81</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <number>1024</number>
      </property>
     </widget>
    </widget>

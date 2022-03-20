@@ -257,6 +257,11 @@ void DeviceWindow::on_spinBoxCPOL_valueChanged()
     configureSPIMode();
 }
 
+void DeviceWindow::on_spinBoxBytesToRead_valueChanged()
+{
+    ui->pushButtonRead->setEnabled(ui->spinBoxBytesToRead->value() > 0);
+}
+
 // This is the main update routine
 void DeviceWindow::update()
 {
@@ -348,7 +353,7 @@ void DeviceWindow::initializeSPIControls()
         ui->spinBoxCPHA->setEnabled(true);
         ui->lineEditWrite->setEnabled(true);
         ui->lineEditRead->setEnabled(true);
-        ui->pushButtonRead->setEnabled(true);
+        ui->spinBoxBytesToRead->setEnabled(true);
     }
 }
 
