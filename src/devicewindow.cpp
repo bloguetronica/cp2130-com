@@ -256,8 +256,6 @@ void DeviceWindow::on_pushButtonRead_clicked()
     QVector<quint8> result = cp2130_.spiRead(static_cast<quint32>(ui->spinBoxBytesToRead->value()), errcnt, errstr);
     if (opCheck(tr("spi-read-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-read-op" should be translated to "SPI read")
         ui->lineEditRead->setText(DataToHexadecimal(result));
-    } else {
-        ui->lineEditRead->clear();
     }
 }
 
@@ -277,8 +275,6 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
     QVector<quint8> result = cp2130_.spiWriteRead(HexadecimalToData(ui->lineEditWrite->text()), errcnt, errstr);
     if (opCheck(tr("spi-write-read-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-write-read-op" should be translated to "SPI write and read")
         ui->lineEditRead->setText(DataToHexadecimal(result));
-    } else {
-        ui->lineEditRead->clear();
     }
 }
 
