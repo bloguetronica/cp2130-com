@@ -23,7 +23,9 @@
 #include <QRegExp>
 #include <QTextDocument>
 #include <QThread>
+#include <QVector>
 #include "aboutdialog.h"
+#include "convert.h"
 #include "delaysdialog.h"
 #include "informationdialog.h"
 #include "devicewindow.h"
@@ -245,6 +247,30 @@ void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
             spiDelaysMap_[channel] = spiDelays;  // Update "spiDelaysMap_" regarding the current channel
         }
     }
+}
+
+void DeviceWindow::on_pushButtonRead_clicked()
+{
+    int errcnt = 0;
+    QString errstr;
+    ui->lineEditRead->setText(DataToHexadecimal(cp2130_.spiRead(static_cast<quint32>(ui->spinBoxBytesToRead->value()), errcnt, errstr)));
+    opCheck(tr("spi-read-op"), errcnt, errstr);  // The string "spi-read-op" should be translated to "SPI read"
+}
+
+void DeviceWindow::on_pushButtonWrite_clicked()
+{
+    int errcnt = 0;
+    QString errstr;
+    cp2130_.spiWrite(HexadecimalToData(ui->lineEditWrite->text()), errcnt, errstr);
+    opCheck(tr("spi-write-op"), errcnt, errstr);  // The string "spi-write-op" should be translated to "SPI write"
+}
+
+void DeviceWindow::on_pushButtonWriteRead_clicked()
+{
+    int errcnt = 0;
+    QString errstr;
+    ui->lineEditRead->setText(DataToHexadecimal(cp2130_.spiWriteRead(HexadecimalToData(ui->lineEditWrite->text()), errcnt, errstr)));
+    opCheck(tr("spi-write-read-op"), errcnt, errstr);  // The string "spi-write-read-op" should be translated to "SPI write and read"
 }
 
 void DeviceWindow::on_spinBoxCPHA_valueChanged()
