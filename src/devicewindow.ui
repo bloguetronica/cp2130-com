@@ -536,6 +536,9 @@
        <family>Noto Mono</family>
       </font>
      </property>
+     <property name="placeholderText">
+      <string>0x</string>
+     </property>
      <property name="clearButtonEnabled">
       <bool>true</bool>
      </property>

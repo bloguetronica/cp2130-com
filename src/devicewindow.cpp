@@ -209,7 +209,9 @@ void DeviceWindow::on_comboBoxFrequency_activated()
 
 void DeviceWindow::on_lineEditWrite_textEdited()
 {
+    int curPosition = ui->lineEditWrite->cursorPosition();
     ui->lineEditWrite->setText(ui->lineEditWrite->text().toLower());
+    ui->lineEditWrite->setCursorPosition(curPosition);
     int size = ui->lineEditWrite->text().size();
     bool enableWrite = size != 0 && size % 2 == 0;
     ui->pushButtonWrite->setEnabled(enableWrite);
