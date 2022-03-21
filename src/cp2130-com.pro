@@ -51,6 +51,12 @@ FORMS += \
     informationdialog.ui \
     mainwindow.ui
 
+TRANSLATIONS += \
+    translations/cp2130-com_en.ts \
+    translations/cp2130-com_en_US.ts \
+    translations/cp2130-com_pt.ts \
+    translations/cp2130-com_pt_PT.ts
+
 LIBS += -lusb-1.0
 
 RESOURCES += \
