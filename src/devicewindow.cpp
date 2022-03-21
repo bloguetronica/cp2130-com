@@ -210,15 +210,19 @@ void DeviceWindow::on_comboBoxFrequency_activated()
     configureSPIMode();
 }
 
+void DeviceWindow::on_lineEditWrite_textChanged()
+{
+    int size = ui->lineEditWrite->text().size();
+    bool enableWrite = size != 0 && size % 2 == 0;  // The buttons "Write" and "Write/Read" should only be enabled when the above referenced line edit contains a valid byte string
+    ui->pushButtonWrite->setEnabled(enableWrite);
+    ui->pushButtonWriteRead->setEnabled(enableWrite);
+}
+
 void DeviceWindow::on_lineEditWrite_textEdited()
 {
     int curPosition = ui->lineEditWrite->cursorPosition();
     ui->lineEditWrite->setText(ui->lineEditWrite->text().toLower());
     ui->lineEditWrite->setCursorPosition(curPosition);
-    int size = ui->lineEditWrite->text().size();
-    bool enableWrite = size != 0 && size % 2 == 0;  // The buttons "Write" and "Write/Read" should only be enabled when the above referenced line edit contains a valid byte string
-    ui->pushButtonWrite->setEnabled(enableWrite);
-    ui->pushButtonWriteRead->setEnabled(enableWrite);
 }
 
 void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
@@ -499,6 +503,7 @@ void DeviceWindow::resetDevice()
     timer_->stop();  // Stop the update timer momentarily, in order to avoid recurrent errors if the device gets disconnected during a reset, or other unexpected behavior
     ui->lineEditWrite->clear();
     ui->lineEditRead->clear();
+    ui->spinBoxBytesToRead->setValue(0);
     int errcnt = 0;
     QString errstr;
     cp2130_.reset(errcnt, errstr);
