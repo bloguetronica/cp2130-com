@@ -234,19 +234,19 @@ void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
     if (opCheck(tr("spi-delays-retrieval-op"), errcnt, errstr)) {  // If error check passes (the string "spi-delays-retrieval-op" should be translated to "SPI delays retrieval")
         DelaysDialog delaysDialog;
         delaysDialog.setCSToggleCheckBox(spiDelays.cstglen);
-        delaysDialog.setPreDeassertDelaySpinBoxValue(spiDelays.prdastdly);
-        delaysDialog.setPreDeassertDelayCheckBox(spiDelays.prdasten);
         delaysDialog.setPostAssertDelaySpinBoxValue(spiDelays.pstastdly);
         delaysDialog.setPostAssertDelayCheckBox(spiDelays.pstasten);
+        delaysDialog.setPreDeassertDelaySpinBoxValue(spiDelays.prdastdly);
+        delaysDialog.setPreDeassertDelayCheckBox(spiDelays.prdasten);
         delaysDialog.setInterByteDelaySpinBoxValue(spiDelays.itbytdly);
         delaysDialog.setInterByteDelayCheckBox(spiDelays.itbyten);
         if (delaysDialog.exec() == QDialog::Accepted) {  // If the user clicks "OK", the new delay settings are applied to the current channel (only the first channel will be configured correctly, due to a design issue with the CP2130)
             spiDelays.cstglen = delaysDialog.csToggleCheckBoxIsChecked();
-            spiDelays.prdasten = delaysDialog.preDeassertDelayCheckBoxIsChecked();
             spiDelays.pstasten = delaysDialog.postAssertDelayCheckBoxIsChecked();
+            spiDelays.prdasten = delaysDialog.preDeassertDelayCheckBoxIsChecked();
             spiDelays.itbyten = delaysDialog.interByteDelayCheckBoxIsChecked();
-            spiDelays.prdastdly = delaysDialog.preDeassertDelaySpinBoxValue();
             spiDelays.pstastdly = delaysDialog.postAssertDelaySpinBoxValue();
+            spiDelays.prdastdly = delaysDialog.preDeassertDelaySpinBoxValue();
             spiDelays.itbytdly = delaysDialog.interByteDelaySpinBoxValue();
             cp2130_.configureSPIDelays(channel, spiDelays, errcnt, errstr);
             opCheck(tr("spi-delays-configuration-op"), errcnt, errstr);  // The string "spi-delays-configuration-op" should be translated to "SPI delays configuration"
