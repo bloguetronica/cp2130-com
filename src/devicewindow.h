@@ -74,7 +74,6 @@ private:
     Ui::DeviceWindow *ui;
     CP2130 cp2130_;
     CP2130::PinConfig pinConfig_;
-    QMap<QString, CP2130::SPIDelays> spiDelaysMap_;
     QMap<QString, CP2130::SPIMode> spiModeMap_;
     QString serialstr_;
     quint16 pid_, vid_;
@@ -84,7 +83,7 @@ private:
     void configureSPIMode();
     void disableView();
     void displaySPIMode();
-    void initializeGPIOControlBoxes();
+    void initializeGPIOControls();
     void initializeSPIControls();
     void initializeView();
     bool opCheck(const QString &op, int errcnt, QString errstr);

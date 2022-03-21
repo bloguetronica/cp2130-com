@@ -47,8 +47,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    AboutDialog about;
-    about.exec();
+    AboutDialog aboutDialog;
+    aboutDialog.exec();
 }
 
 void MainWindow::on_comboBoxDevices_activated(int index)
@@ -112,8 +112,8 @@ void MainWindow::validateInput()
     QString vidstr = ui->lineEditVID->text();
     QString pidstr = ui->lineEditPID->text();
     if (vidstr.size() == 4 && pidstr.size() == 4) {
-        vid_ = static_cast<quint16>(vidstr.toInt(nullptr, 16));
-        pid_ = static_cast<quint16>(pidstr.toInt(nullptr, 16));
+        vid_ = static_cast<quint16>(vidstr.toUInt(nullptr, 16));
+        pid_ = static_cast<quint16>(pidstr.toUInt(nullptr, 16));
         ui->comboBoxDevices->setEnabled(true);
         ui->pushButtonRefresh->setEnabled(true);
     } else {

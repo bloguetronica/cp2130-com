@@ -24,6 +24,7 @@
 #include <QTextDocument>
 #include <QThread>
 #include <QVector>
+#include <unistd.h>
 #include "aboutdialog.h"
 #include "convert.h"
 #include "delaysdialog.h"
@@ -76,28 +77,28 @@ void DeviceWindow::openDevice(quint16 vid, quint16 pid, const QString &serialstr
 
 void DeviceWindow::on_actionAbout_triggered()
 {
-    AboutDialog about;
-    about.exec();
+    AboutDialog aboutDialog;
+    aboutDialog.exec();
 }
 
 void DeviceWindow::on_actionInformation_triggered()
 {
     int errcnt = 0;
     QString errstr;
-    InformationDialog info;
-    info.setManufacturerLabelText(cp2130_.getManufacturerDesc(errcnt, errstr));
-    info.setProductLabelText(cp2130_.getProductDesc(errcnt, errstr));
-    info.setSerialLabelText(cp2130_.getSerialDesc(errcnt, errstr));  // It is important to read the serial number from the OTP ROM, instead of just passing the value of serialstr_
+    InformationDialog infoDialog;
+    infoDialog.setManufacturerLabelText(cp2130_.getManufacturerDesc(errcnt, errstr));
+    infoDialog.setProductLabelText(cp2130_.getProductDesc(errcnt, errstr));
+    infoDialog.setSerialLabelText(cp2130_.getSerialDesc(errcnt, errstr));  // It is important to read the serial number from the OTP ROM, instead of just passing the value of serialstr_
     CP2130::USBConfig config = cp2130_.getUSBConfig(errcnt, errstr);
-    info.setVIDLabelText(config.vid);
-    info.setPIDLabelText(config.pid);
-    info.setReleaseVersionLabelText(config.majrel, config.minrel);
-    info.setPowerModeLabelText(config.powmode);
-    info.setMaxPowerLabelText(config.maxpow);
+    infoDialog.setVIDLabelText(config.vid);
+    infoDialog.setPIDLabelText(config.pid);
+    infoDialog.setReleaseVersionLabelText(config.majrel, config.minrel);
+    infoDialog.setPowerModeLabelText(config.powmode);
+    infoDialog.setMaxPowerLabelText(config.maxpow);
     CP2130::SiliconVersion siversion = cp2130_.getSiliconVersion(errcnt, errstr);
-    info.setSiliconVersionLabelText(siversion.maj, siversion.min);
+    infoDialog.setSiliconVersionLabelText(siversion.maj, siversion.min);
     if (opCheck(tr("device-information-retrieval-op"), errcnt, errstr)) {  // If error check passes (the string "device-information-retrieval-op" should be translated to "Device information retrieval")
-        info.exec();
+        infoDialog.exec();
     }
 }
 
@@ -110,7 +111,7 @@ void DeviceWindow::on_checkBoxGPIO0_clicked()
 {
     int errcnt = 0;
     QString errstr;
-    cp2130_.setGPIO0(ui->checkBoxGPIO0->isChecked(), errcnt, errstr);
+    cp2130_.setGPIO0(ui->checkBoxGPIO0->isChecked(), errcnt, errstr);  // Set GPIO.0 according to the user choice
     opCheck(tr("gpio0-switch-op"), errcnt, errstr);  // The string "gpio0-switch-op" should be translated to "GPIO0 switch"
 }
 
@@ -118,7 +119,7 @@ void DeviceWindow::on_checkBoxGPIO1_clicked()
 {
     int errcnt = 0;
     QString errstr;
-    cp2130_.setGPIO1(ui->checkBoxGPIO1->isChecked(), errcnt, errstr);
+    cp2130_.setGPIO1(ui->checkBoxGPIO1->isChecked(), errcnt, errstr);  // Set GPIO.1 according to the user choice
     opCheck(tr("gpio1-switch-op"), errcnt, errstr);  // The string "gpio1-switch-op" should be translated to "GPIO1 switch"
 }
 
@@ -126,7 +127,7 @@ void DeviceWindow::on_checkBoxGPIO2_clicked()
 {
     int errcnt = 0;
     QString errstr;
-    cp2130_.setGPIO2(ui->checkBoxGPIO2->isChecked(), errcnt, errstr);
+    cp2130_.setGPIO2(ui->checkBoxGPIO2->isChecked(), errcnt, errstr);  // Set GPIO.2 according to the user choice
     opCheck(tr("gpio2-switch-op"), errcnt, errstr);  // The string "gpio2-switch-op" should be translated to "GPIO2 switch"
 }
 
@@ -134,7 +135,7 @@ void DeviceWindow::on_checkBoxGPIO3_clicked()
 {
     int errcnt = 0;
     QString errstr;
-    cp2130_.setGPIO3(ui->checkBoxGPIO3->isChecked(), errcnt, errstr);
+    cp2130_.setGPIO3(ui->checkBoxGPIO3->isChecked(), errcnt, errstr);  // Set GPIO.3 according to the user choice
     opCheck(tr("gpio3-switch-op"), errcnt, errstr);  // The string "gpio3-switch-op" should be translated to "GPIO3 switch"
 }
 
@@ -142,7 +143,7 @@ void DeviceWindow::on_checkBoxGPIO4_clicked()
 {
     int errcnt = 0;
     QString errstr;
-    cp2130_.setGPIO4(ui->checkBoxGPIO4->isChecked(), errcnt, errstr);
+    cp2130_.setGPIO4(ui->checkBoxGPIO4->isChecked(), errcnt, errstr);  // Set GPIO.4 according to the user choice
     opCheck(tr("gpio4-switch-op"), errcnt, errstr);  // The string "gpio4-switch-op" should be translated to "GPIO4 switch"
 }
 
@@ -150,7 +151,7 @@ void DeviceWindow::on_checkBoxGPIO5_clicked()
 {
     int errcnt = 0;
     QString errstr;
-    cp2130_.setGPIO5(ui->checkBoxGPIO5->isChecked(), errcnt, errstr);
+    cp2130_.setGPIO5(ui->checkBoxGPIO5->isChecked(), errcnt, errstr);  // Set GPIO.5 according to the user choice
     opCheck(tr("gpio5-switch-op"), errcnt, errstr);  // The string "gpio5-switch-op" should be translated to "GPIO5 switch"
 }
 
@@ -158,7 +159,7 @@ void DeviceWindow::on_checkBoxGPIO6_clicked()
 {
     int errcnt = 0;
     QString errstr;
-    cp2130_.setGPIO6(ui->checkBoxGPIO6->isChecked(), errcnt, errstr);
+    cp2130_.setGPIO6(ui->checkBoxGPIO6->isChecked(), errcnt, errstr);  // Set GPIO.6 according to the user choice
     opCheck(tr("gpio6-switch-op"), errcnt, errstr);  // The string "gpio6-switch-op" should be translated to "GPIO6 switch"
 }
 
@@ -166,7 +167,7 @@ void DeviceWindow::on_checkBoxGPIO7_clicked()
 {
     int errcnt = 0;
     QString errstr;
-    cp2130_.setGPIO7(ui->checkBoxGPIO7->isChecked(), errcnt, errstr);
+    cp2130_.setGPIO7(ui->checkBoxGPIO7->isChecked(), errcnt, errstr);  // Set GPIO.7 according to the user choice
     opCheck(tr("gpio7-switch-op"), errcnt, errstr);  // The string "gpio7-switch-op" should be translated to "GPIO7 switch"
 }
 
@@ -174,7 +175,7 @@ void DeviceWindow::on_checkBoxGPIO8_clicked()
 {
     int errcnt = 0;
     QString errstr;
-    cp2130_.setGPIO8(ui->checkBoxGPIO8->isChecked(), errcnt, errstr);
+    cp2130_.setGPIO8(ui->checkBoxGPIO8->isChecked(), errcnt, errstr);  // Set GPIO.8 according to the user choice
     opCheck(tr("gpio8-switch-op"), errcnt, errstr);  // The string "gpio8-switch-op" should be translated to "GPIO8 switch"
 }
 
@@ -182,7 +183,7 @@ void DeviceWindow::on_checkBoxGPIO9_clicked()
 {
     int errcnt = 0;
     QString errstr;
-    cp2130_.setGPIO9(ui->checkBoxGPIO9->isChecked(), errcnt, errstr);
+    cp2130_.setGPIO9(ui->checkBoxGPIO9->isChecked(), errcnt, errstr);  // Set GPIO.9 according to the user choice
     opCheck(tr("gpio9-switch-op"), errcnt, errstr);  // The string "gpio9-switch-op" should be translated to "GPIO9 switch"
 }
 
@@ -190,13 +191,13 @@ void DeviceWindow::on_checkBoxGPIO10_clicked()
 {
     int errcnt = 0;
     QString errstr;
-    cp2130_.setGPIO10(ui->checkBoxGPIO10->isChecked(), errcnt, errstr);
+    cp2130_.setGPIO10(ui->checkBoxGPIO10->isChecked(), errcnt, errstr);  // Set GPIO.10 according to the user choice
     opCheck(tr("gpio10-switch-op"), errcnt, errstr);  // The string "gpio10-switch-op" should be translated to "GPIO10 switch"
 }
 
 void DeviceWindow::on_comboBoxChannel_activated()
 {
-    displaySPIMode();
+    displaySPIMode();  // It is important to note that the chip select corresponding to the selected channel is only enabled during an SPI transfer
 }
 
 void DeviceWindow::on_comboBoxCSPinMode_activated()
@@ -215,45 +216,49 @@ void DeviceWindow::on_lineEditWrite_textEdited()
     ui->lineEditWrite->setText(ui->lineEditWrite->text().toLower());
     ui->lineEditWrite->setCursorPosition(curPosition);
     int size = ui->lineEditWrite->text().size();
-    bool enableWrite = size != 0 && size % 2 == 0;
+    bool enableWrite = size != 0 && size % 2 == 0;  // The buttons "Write" and "Write/Read" should only be enabled when the above referenced line edit contains a valid byte string
     ui->pushButtonWrite->setEnabled(enableWrite);
     ui->pushButtonWriteRead->setEnabled(enableWrite);
 }
 
 void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
 {
-    QString channel = ui->comboBoxChannel->currentText();
-    DelaysDialog delays;
-    delays.setCSToggleCheckBox(spiDelaysMap_[channel].cstglen);
-    delays.setPreDeassertDelaySpinBoxValue(spiDelaysMap_[channel].prdastdly);
-    delays.setPreDeassertDelayCheckBox(spiDelaysMap_[channel].prdasten);
-    delays.setPostAssertDelaySpinBoxValue(spiDelaysMap_[channel].pstastdly);
-    delays.setPostAssertDelayCheckBox(spiDelaysMap_[channel].pstasten);
-    delays.setInterByteDelaySpinBoxValue(spiDelaysMap_[channel].itbytdly);
-    delays.setInterByteDelayCheckBox(spiDelaysMap_[channel].itbyten);
-    if (delays.exec() == QDialog::Accepted) {
-        CP2130::SPIDelays spiDelays;
-        spiDelays.cstglen = delays.csToggleCheckBoxIsChecked();
-        spiDelays.prdasten = delays.preDeassertDelayCheckBoxIsChecked();
-        spiDelays.pstasten = delays.postAssertDelayCheckBoxIsChecked();
-        spiDelays.itbyten = delays.interByteDelayCheckBoxIsChecked();
-        spiDelays.prdastdly = delays.preDeassertDelaySpinBoxValue();
-        spiDelays.pstastdly = delays.postAssertDelaySpinBoxValue();
-        spiDelays.itbytdly = delays.interByteDelaySpinBoxValue();
-        int errcnt = 0;
-        QString errstr;
-        cp2130_.configureSPIDelays(static_cast<quint8>(channel.toInt()), spiDelays, errcnt, errstr);
-        if (opCheck(tr("spi-delays-configuration-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-delays-configuration-op" should be translated to "SPI delays configuration")
-            spiDelaysMap_[channel] = spiDelays;  // Update "spiDelaysMap_" regarding the current channel
+    quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
+    int errcnt = 0;
+    QString errstr;
+    CP2130::SPIDelays spiDelays = cp2130_.getSPIDelays(channel, errcnt, errstr);
+    if (opCheck(tr("spi-delays-retrieval-op"), errcnt, errstr)) {  // If error check passes (the string "spi-delays-retrieval-op" should be translated to "SPI delays retrieval")
+        DelaysDialog delaysDialog;
+        delaysDialog.setCSToggleCheckBox(spiDelays.cstglen);
+        delaysDialog.setPreDeassertDelaySpinBoxValue(spiDelays.prdastdly);
+        delaysDialog.setPreDeassertDelayCheckBox(spiDelays.prdasten);
+        delaysDialog.setPostAssertDelaySpinBoxValue(spiDelays.pstastdly);
+        delaysDialog.setPostAssertDelayCheckBox(spiDelays.pstasten);
+        delaysDialog.setInterByteDelaySpinBoxValue(spiDelays.itbytdly);
+        delaysDialog.setInterByteDelayCheckBox(spiDelays.itbyten);
+        if (delaysDialog.exec() == QDialog::Accepted) {  // If the user clicks "OK", the new delay settings are applied to the current channel (only the first channel will be configured correctly, due to a design issue with the CP2130)
+            spiDelays.cstglen = delaysDialog.csToggleCheckBoxIsChecked();
+            spiDelays.prdasten = delaysDialog.preDeassertDelayCheckBoxIsChecked();
+            spiDelays.pstasten = delaysDialog.postAssertDelayCheckBoxIsChecked();
+            spiDelays.itbyten = delaysDialog.interByteDelayCheckBoxIsChecked();
+            spiDelays.prdastdly = delaysDialog.preDeassertDelaySpinBoxValue();
+            spiDelays.pstastdly = delaysDialog.postAssertDelaySpinBoxValue();
+            spiDelays.itbytdly = delaysDialog.interByteDelaySpinBoxValue();
+            cp2130_.configureSPIDelays(channel, spiDelays, errcnt, errstr);
+            opCheck(tr("spi-delays-configuration-op"), errcnt, errstr);  // The string "spi-delays-configuration-op" should be translated to "SPI delays configuration"
         }
     }
 }
 
 void DeviceWindow::on_pushButtonRead_clicked()
 {
+    quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
     int errcnt = 0;
     QString errstr;
-    QVector<quint8> result = cp2130_.spiRead(static_cast<quint32>(ui->spinBoxBytesToRead->value()), errcnt, errstr);
+    cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
+    QVector<quint8> result = cp2130_.spiRead(static_cast<quint32>(ui->spinBoxBytesToRead->value()), errcnt, errstr);  // Read from the SPI bus
+    usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
+    cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     if (opCheck(tr("spi-read-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-read-op" should be translated to "SPI read")
         ui->lineEditRead->setText(DataToHexadecimal(result));
     }
@@ -261,18 +266,26 @@ void DeviceWindow::on_pushButtonRead_clicked()
 
 void DeviceWindow::on_pushButtonWrite_clicked()
 {
+    quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
     int errcnt = 0;
     QString errstr;
-    cp2130_.spiWrite(HexadecimalToData(ui->lineEditWrite->text()), errcnt, errstr);
+    cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
+    cp2130_.spiWrite(HexadecimalToData(ui->lineEditWrite->text()), errcnt, errstr);  // Write to the SPI bus
+    usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
+    cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     opCheck(tr("spi-write-op"), errcnt, errstr);  // The string "spi-write-op" should be translated to "SPI write"
     ui->lineEditRead->clear();
 }
 
 void DeviceWindow::on_pushButtonWriteRead_clicked()
 {
+    quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
     int errcnt = 0;
     QString errstr;
-    QVector<quint8> result = cp2130_.spiWriteRead(HexadecimalToData(ui->lineEditWrite->text()), errcnt, errstr);
+    cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
+    QVector<quint8> result = cp2130_.spiWriteRead(HexadecimalToData(ui->lineEditWrite->text()), errcnt, errstr);  // Write to and read from the SPI bus, simultaneously
+    usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
+    cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     if (opCheck(tr("spi-write-read-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-write-read-op" should be translated to "SPI write and read")
         ui->lineEditRead->setText(DataToHexadecimal(result));
     }
@@ -290,7 +303,7 @@ void DeviceWindow::on_spinBoxCPOL_valueChanged()
 
 void DeviceWindow::on_spinBoxBytesToRead_valueChanged()
 {
-    ui->pushButtonRead->setEnabled(ui->spinBoxBytesToRead->value() > 0);
+    ui->pushButtonRead->setEnabled(ui->spinBoxBytesToRead->value() > 0);  // The button "Read" should only be enabled when the user specifies a number of bytes to read greater than zero
 }
 
 // This is the main update routine
@@ -326,7 +339,7 @@ void DeviceWindow::configureSPIMode()
     spiMode.cpha = ui->spinBoxCPHA->value() != 0;
     int errcnt = 0;
     QString errstr;
-    cp2130_.configureSPIMode(static_cast<quint8>(channel.toInt()), spiMode, errcnt, errstr);
+    cp2130_.configureSPIMode(static_cast<quint8>(channel.toUInt()), spiMode, errcnt, errstr);
     if (opCheck(tr("spi-mode-configuration-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-mode-configuration-op" should be translated to "SPI mode configuration")
         spiModeMap_[channel] = spiMode;  // Update "spiModeMap_" regarding the current channel
     }
@@ -350,8 +363,8 @@ void DeviceWindow::displaySPIMode()
     ui->spinBoxCPHA->setValue(spiMode.cpha);
 }
 
-// Initializes the GPIO check boxes
-void DeviceWindow::initializeGPIOControlBoxes()
+// Initializes the GPIO controls
+void DeviceWindow::initializeGPIOControls()
 {
     ui->checkBoxGPIO0->setEnabled(pinConfig_.gpio0 == CP2130::PCOUTOD || pinConfig_.gpio0 == CP2130::PCOUTPP);
     ui->checkBoxGPIO1->setEnabled(pinConfig_.gpio1 == CP2130::PCOUTOD || pinConfig_.gpio1 == CP2130::PCOUTPP);
@@ -364,12 +377,13 @@ void DeviceWindow::initializeGPIOControlBoxes()
     ui->checkBoxGPIO8->setEnabled(pinConfig_.gpio8 == CP2130::PCOUTOD || pinConfig_.gpio8 == CP2130::PCOUTPP);
     ui->checkBoxGPIO9->setEnabled(pinConfig_.gpio9 == CP2130::PCOUTOD || pinConfig_.gpio9 == CP2130::PCOUTPP);
     ui->checkBoxGPIO10->setEnabled(pinConfig_.gpio10 == CP2130::PCOUTOD || pinConfig_.gpio10 == CP2130::PCOUTPP);
+    // Note that the enabled boxes correspond to pins that are configured as outputs
 }
 
-// Initializes the SPI configuration controls
+// Initializes the SPI controls
 void DeviceWindow::initializeSPIControls()
 {
-    if (spiModeMap_.size() != 0) {
+    if (spiModeMap_.size() != 0) {  // In order for the SPI controls (including transfers) to be enabled, at least one pin should be configured to work as a chip select
         ui->comboBoxChannel->clear();
         QList<QString> keys = spiModeMap_.keys();
         for (QString key : keys) {
@@ -391,7 +405,7 @@ void DeviceWindow::initializeSPIControls()
 // This is the routine that is used to initialize the device window
 void DeviceWindow::initializeView()
 {
-    initializeGPIOControlBoxes();
+    initializeGPIOControls();
     initializeSPIControls();
 }
 
@@ -433,48 +447,38 @@ void DeviceWindow::readConfiguration()
     pinConfig_ = cp2130_.getPinConfig(errcnt, errstr);
     if (pinConfig_.gpio0 == CP2130::PCCS) {
         spiModeMap_["0"] = cp2130_.getSPIMode(0, errcnt, errstr);
-        spiDelaysMap_["0"] = cp2130_.getSPIDelays(0, errcnt, errstr);
     }
     if (pinConfig_.gpio1 == CP2130::PCCS) {
         spiModeMap_["1"] = cp2130_.getSPIMode(1, errcnt, errstr);
-        spiDelaysMap_["1"] = cp2130_.getSPIDelays(1, errcnt, errstr);
     }
     if (pinConfig_.gpio2 == CP2130::PCCS) {
         spiModeMap_["2"] = cp2130_.getSPIMode(2, errcnt, errstr);
-        spiDelaysMap_["2"] = cp2130_.getSPIDelays(2, errcnt, errstr);
     }
     if (pinConfig_.gpio3 == CP2130::PCCS) {
         spiModeMap_["3"] = cp2130_.getSPIMode(3, errcnt, errstr);
-        spiDelaysMap_["3"] = cp2130_.getSPIDelays(3, errcnt, errstr);
     }
     if (pinConfig_.gpio4 == CP2130::PCCS) {
         spiModeMap_["4"] = cp2130_.getSPIMode(4, errcnt, errstr);
-        spiDelaysMap_["4"] = cp2130_.getSPIDelays(4, errcnt, errstr);
     }
     if (pinConfig_.gpio5 == CP2130::PCCS) {
         spiModeMap_["5"] = cp2130_.getSPIMode(5, errcnt, errstr);
-        spiDelaysMap_["5"] = cp2130_.getSPIDelays(5, errcnt, errstr);
     }
     if (pinConfig_.gpio6 == CP2130::PCCS) {
         spiModeMap_["6"] = cp2130_.getSPIMode(6, errcnt, errstr);
-        spiDelaysMap_["6"] = cp2130_.getSPIDelays(6, errcnt, errstr);
     }
     if (pinConfig_.gpio7 == CP2130::PCCS) {
         spiModeMap_["7"] = cp2130_.getSPIMode(7, errcnt, errstr);
-        spiDelaysMap_["7"] = cp2130_.getSPIDelays(7, errcnt, errstr);
     }
     if (pinConfig_.gpio8 == CP2130::PCCS) {
         spiModeMap_["8"] = cp2130_.getSPIMode(8, errcnt, errstr);
-        spiDelaysMap_["8"] = cp2130_.getSPIDelays(8, errcnt, errstr);
     }
     if (pinConfig_.gpio9 == CP2130::PCCS) {
         spiModeMap_["9"] = cp2130_.getSPIMode(9, errcnt, errstr);
-        spiDelaysMap_["9"] = cp2130_.getSPIDelays(9, errcnt, errstr);
     }
     if (pinConfig_.gpio10 == CP2130::PCCS) {
         spiModeMap_["10"] = cp2130_.getSPIMode(10, errcnt, errstr);
-        spiDelaysMap_["10"] = cp2130_.getSPIDelays(10, errcnt, errstr);
     }
+    // Note that "spiModeMap_" is populated in relation to pins that are configured as chip select pins
     if (errcnt > 0) {
         if (cp2130_.disconnected()) {
             cp2130_.close();
