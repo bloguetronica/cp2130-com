@@ -112,7 +112,7 @@ void DeviceWindow::on_checkBoxGPIO0_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO0(ui->checkBoxGPIO0->isChecked(), errcnt, errstr);  // Set GPIO.0 according to the user choice
-    opCheck(tr("gpio0-switch-op"), errcnt, errstr);  // The string "gpio0-switch-op" should be translated to "GPIO0 switch"
+    opCheck(tr("gpio0-switch-op"), errcnt, errstr);  // The string "gpio0-switch-op" should be translated to "GPIO.0 switch"
 }
 
 void DeviceWindow::on_checkBoxGPIO1_clicked()
@@ -120,7 +120,7 @@ void DeviceWindow::on_checkBoxGPIO1_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO1(ui->checkBoxGPIO1->isChecked(), errcnt, errstr);  // Set GPIO.1 according to the user choice
-    opCheck(tr("gpio1-switch-op"), errcnt, errstr);  // The string "gpio1-switch-op" should be translated to "GPIO1 switch"
+    opCheck(tr("gpio1-switch-op"), errcnt, errstr);  // The string "gpio1-switch-op" should be translated to "GPIO.1 switch"
 }
 
 void DeviceWindow::on_checkBoxGPIO2_clicked()
@@ -128,7 +128,7 @@ void DeviceWindow::on_checkBoxGPIO2_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO2(ui->checkBoxGPIO2->isChecked(), errcnt, errstr);  // Set GPIO.2 according to the user choice
-    opCheck(tr("gpio2-switch-op"), errcnt, errstr);  // The string "gpio2-switch-op" should be translated to "GPIO2 switch"
+    opCheck(tr("gpio2-switch-op"), errcnt, errstr);  // The string "gpio2-switch-op" should be translated to "GPIO.2 switch"
 }
 
 void DeviceWindow::on_checkBoxGPIO3_clicked()
@@ -136,7 +136,7 @@ void DeviceWindow::on_checkBoxGPIO3_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO3(ui->checkBoxGPIO3->isChecked(), errcnt, errstr);  // Set GPIO.3 according to the user choice
-    opCheck(tr("gpio3-switch-op"), errcnt, errstr);  // The string "gpio3-switch-op" should be translated to "GPIO3 switch"
+    opCheck(tr("gpio3-switch-op"), errcnt, errstr);  // The string "gpio3-switch-op" should be translated to "GPIO.3 switch"
 }
 
 void DeviceWindow::on_checkBoxGPIO4_clicked()
@@ -144,7 +144,7 @@ void DeviceWindow::on_checkBoxGPIO4_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO4(ui->checkBoxGPIO4->isChecked(), errcnt, errstr);  // Set GPIO.4 according to the user choice
-    opCheck(tr("gpio4-switch-op"), errcnt, errstr);  // The string "gpio4-switch-op" should be translated to "GPIO4 switch"
+    opCheck(tr("gpio4-switch-op"), errcnt, errstr);  // The string "gpio4-switch-op" should be translated to "GPIO.4 switch"
 }
 
 void DeviceWindow::on_checkBoxGPIO5_clicked()
@@ -152,7 +152,7 @@ void DeviceWindow::on_checkBoxGPIO5_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO5(ui->checkBoxGPIO5->isChecked(), errcnt, errstr);  // Set GPIO.5 according to the user choice
-    opCheck(tr("gpio5-switch-op"), errcnt, errstr);  // The string "gpio5-switch-op" should be translated to "GPIO5 switch"
+    opCheck(tr("gpio5-switch-op"), errcnt, errstr);  // The string "gpio5-switch-op" should be translated to "GPIO.5 switch"
 }
 
 void DeviceWindow::on_checkBoxGPIO6_clicked()
@@ -160,7 +160,7 @@ void DeviceWindow::on_checkBoxGPIO6_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO6(ui->checkBoxGPIO6->isChecked(), errcnt, errstr);  // Set GPIO.6 according to the user choice
-    opCheck(tr("gpio6-switch-op"), errcnt, errstr);  // The string "gpio6-switch-op" should be translated to "GPIO6 switch"
+    opCheck(tr("gpio6-switch-op"), errcnt, errstr);  // The string "gpio6-switch-op" should be translated to "GPIO.6 switch"
 }
 
 void DeviceWindow::on_checkBoxGPIO7_clicked()
@@ -168,7 +168,7 @@ void DeviceWindow::on_checkBoxGPIO7_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO7(ui->checkBoxGPIO7->isChecked(), errcnt, errstr);  // Set GPIO.7 according to the user choice
-    opCheck(tr("gpio7-switch-op"), errcnt, errstr);  // The string "gpio7-switch-op" should be translated to "GPIO7 switch"
+    opCheck(tr("gpio7-switch-op"), errcnt, errstr);  // The string "gpio7-switch-op" should be translated to "GPIO.7 switch"
 }
 
 void DeviceWindow::on_checkBoxGPIO8_clicked()
@@ -176,7 +176,7 @@ void DeviceWindow::on_checkBoxGPIO8_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO8(ui->checkBoxGPIO8->isChecked(), errcnt, errstr);  // Set GPIO.8 according to the user choice
-    opCheck(tr("gpio8-switch-op"), errcnt, errstr);  // The string "gpio8-switch-op" should be translated to "GPIO8 switch"
+    opCheck(tr("gpio8-switch-op"), errcnt, errstr);  // The string "gpio8-switch-op" should be translated to "GPIO.8 switch"
 }
 
 void DeviceWindow::on_checkBoxGPIO9_clicked()
@@ -184,7 +184,7 @@ void DeviceWindow::on_checkBoxGPIO9_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO9(ui->checkBoxGPIO9->isChecked(), errcnt, errstr);  // Set GPIO.9 according to the user choice
-    opCheck(tr("gpio9-switch-op"), errcnt, errstr);  // The string "gpio9-switch-op" should be translated to "GPIO9 switch"
+    opCheck(tr("gpio9-switch-op"), errcnt, errstr);  // The string "gpio9-switch-op" should be translated to "GPIO.9 switch"
 }
 
 void DeviceWindow::on_checkBoxGPIO10_clicked()
@@ -192,7 +192,7 @@ void DeviceWindow::on_checkBoxGPIO10_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO10(ui->checkBoxGPIO10->isChecked(), errcnt, errstr);  // Set GPIO.10 according to the user choice
-    opCheck(tr("gpio10-switch-op"), errcnt, errstr);  // The string "gpio10-switch-op" should be translated to "GPIO10 switch"
+    opCheck(tr("gpio10-switch-op"), errcnt, errstr);  // The string "gpio10-switch-op" should be translated to "GPIO.10 switch"
 }
 
 void DeviceWindow::on_comboBoxChannel_activated()
