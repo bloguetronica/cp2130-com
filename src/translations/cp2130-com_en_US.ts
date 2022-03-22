@@ -565,7 +565,7 @@ Please verify that the device is not in use by another application.</source>
     <message>
         <location filename="../mainwindow.ui" line="126"/>
         <location filename="../mainwindow.ui" line="130"/>
-        <location filename="../mainwindow.cpp" line="98"/>
+        <location filename="../mainwindow.cpp" line="90"/>
         <source>Select device...</source>
         <translation></translation>
     </message>
@@ -605,12 +605,12 @@ Please verify that the device is not in use by another application.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="101"/>
+        <location filename="../mainwindow.cpp" line="93"/>
         <source>Critical Error</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="101"/>
+        <location filename="../mainwindow.cpp" line="93"/>
         <source>%1
 This is a critical error and execution will be aborted.</source>
         <translation></translation>
