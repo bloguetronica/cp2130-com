@@ -36,12 +36,12 @@
     <message>
         <location filename="../delaysdialog.ui" line="168"/>
         <source>Pre-deassert delay (10μs):</source>
-        <translation>Atraso pré-término (10μs):</translation>
+        <translation>Latência pré-final (10μs):</translation>
     </message>
     <message>
         <location filename="../delaysdialog.ui" line="184"/>
         <source>Post-assert delay (10μs):</source>
-        <translation>Atraso pós-começo (10μs):</translation>
+        <translation>Latência pós-inicial (10μs):</translation>
     </message>
     <message>
         <location filename="../delaysdialog.ui" line="200"/>
