@@ -20,11 +20,19 @@
 
 // Includes
 #include <QApplication>
+#include <QCoreApplication>
+#include <QLocale>
+#include <QTranslator>
 #include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    QTranslator translator;
+    if (!translator.load("cp2130-com_" + QLocale::system().name(), ":/translations/translations")) {  // It the locale translation does not exist or cannot be loaded
+        translator.load("cp2130-com_en_US", ":/translations/translations");  // Fall back to the en-US translation
+    }
+    QCoreApplication::installTranslator(&translator);
     MainWindow w;
     w.show();
     return a.exec();

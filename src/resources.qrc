@@ -4,4 +4,10 @@
         <file>icons/greyed64.png</file>
         <file>icons/selected64.png</file>
     </qresource>
+    <qresource prefix="/translations">
+        <file>translations/cp2130-com_en_US.qm</file>
+        <file>translations/cp2130-com_pt_PT.qm</file>
+        <file>translations/cp2130-com_en.qm</file>
+        <file>translations/cp2130-com_pt.qm</file>
+    </qresource>
 </RCC>
