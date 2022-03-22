@@ -63,13 +63,13 @@ void InformationDialog::setPowerModeLabelText(quint8 powmode)
 {
     QString powerMode;
     if (powmode == CP2130::PMBUSREGEN) {
-        powerMode = "Bus-powered (regulator enabled)";
+        powerMode = tr("Bus-powered (regulator enabled)");
     } else if (powmode == CP2130::PMBUSREGEN) {
-        powerMode = "Bus-powered (regulator disabled)";
+        powerMode = tr("Bus-powered (regulator disabled)");
     } else if (powmode == CP2130::PMBUSREGEN) {
-        powerMode = "Self-powered";
+        powerMode = tr("Self-powered");
     } else {
-        powerMode = "Unknown";
+        powerMode = tr("Unknown");
     }
     ui->labelPowerMode->setText(powerMode);
 }
