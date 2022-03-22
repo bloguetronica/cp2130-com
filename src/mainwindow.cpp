@@ -51,28 +51,20 @@ void MainWindow::on_actionAbout_triggered()
     aboutDialog.exec();
 }
 
-void MainWindow::on_comboBoxDevices_activated(int index)
+void MainWindow::on_comboBoxDevices_currentIndexChanged(int index)
 {
-    if (index == 0) {
-        ui->pushButtonOpen->setEnabled(false);
-    } else {
-        ui->pushButtonOpen->setEnabled(true);
-    }
+    ui->pushButtonOpen->setEnabled(index != 0);
 }
 
 void MainWindow::on_lineEditPID_textEdited()
 {
-    int curPosition = ui->lineEditPID->cursorPosition();
     ui->lineEditPID->setText(ui->lineEditPID->text().toLower());
-    ui->lineEditPID->setCursorPosition(curPosition);
     validateInput();
 }
 
 void MainWindow::on_lineEditVID_textEdited()
 {
-    int curPosition = ui->lineEditVID->cursorPosition();
     ui->lineEditVID->setText(ui->lineEditVID->text().toLower());
-    ui->lineEditVID->setCursorPosition(curPosition);
     validateInput();
 }
 
@@ -114,11 +106,12 @@ void MainWindow::validateInput()
     if (vidstr.size() == 4 && pidstr.size() == 4) {
         vid_ = static_cast<quint16>(vidstr.toUInt(nullptr, 16));
         pid_ = static_cast<quint16>(pidstr.toUInt(nullptr, 16));
+        refresh();  // This has the "side effect" of disabling the "Open" button - Note that this is the intended behavior!
         ui->comboBoxDevices->setEnabled(true);
         ui->pushButtonRefresh->setEnabled(true);
     } else {
+        ui->comboBoxDevices->setCurrentIndex(0);  // This also disables the "Open" button
         ui->comboBoxDevices->setEnabled(false);
         ui->pushButtonRefresh->setEnabled(false);
     }
-    refresh();  // This also disables the "Open" button - Note that this is the intended behavior!
 }
