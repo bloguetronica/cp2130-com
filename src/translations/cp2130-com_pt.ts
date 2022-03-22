@@ -528,6 +528,26 @@ Por favor, verifique se o mesmo não está a ser utilizado por outra aplicação
         <source>Power mode:</source>
         <translation>Modo de alimentação:</translation>
     </message>
+    <message>
+        <location filename="../informationdialog.cpp" line="66"/>
+        <source>Bus-powered (regulator enabled)</source>
+        <translation>Via USB (regulador habilitado)</translation>
+    </message>
+    <message>
+        <location filename="../informationdialog.cpp" line="68"/>
+        <source>Bus-powered (regulator disabled)</source>
+        <translation>Via USB (regulador desabilitado)</translation>
+    </message>
+    <message>
+        <location filename="../informationdialog.cpp" line="70"/>
+        <source>Self-powered</source>
+        <translation>Alimentação própria</translation>
+    </message>
+    <message>
+        <location filename="../informationdialog.cpp" line="72"/>
+        <source>Unknown</source>
+        <translation>Desconhecido</translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>

@@ -518,6 +518,26 @@ Please verify that the device is not in use by another application.</source>
         <source>Power mode:</source>
         <translation></translation>
     </message>
+    <message>
+        <location filename="../informationdialog.cpp" line="66"/>
+        <source>Bus-powered (regulator enabled)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../informationdialog.cpp" line="68"/>
+        <source>Bus-powered (regulator disabled)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../informationdialog.cpp" line="70"/>
+        <source>Self-powered</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../informationdialog.cpp" line="72"/>
+        <source>Unknown</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>
