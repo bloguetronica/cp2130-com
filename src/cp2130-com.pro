@@ -61,3 +61,23 @@ LIBS += -lusb-1.0
 
 RESOURCES += \
     resources.qrc
+
+# Added installation option
+unix {
+    isEmpty(PREFIX) {
+        PREFIX = /usr/local
+    }
+    target.path = $$PREFIX/bin
+    icon.files += icons/cp2130-com.png
+    icon.path = $$PREFIX/share/icons/hicolor/128x128/apps
+    shortcut.files = misc/cp2130-com.desktop
+    shortcut.path = $$PREFIX/share/applications
+    INSTALLS += icon
+    INSTALLS += shortcut
+}
+
+!isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    icons/cp2130-com.png \
+    misc/cp2130-com.desktop
