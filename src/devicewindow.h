@@ -68,7 +68,7 @@ private slots:
     void on_pushButtonWriteRead_clicked();
     void on_spinBoxCPHA_valueChanged();
     void on_spinBoxCPOL_valueChanged();
-    void on_spinBoxBytesToRead_valueChanged();
+    void on_spinBoxBytesToRead_valueChanged(int i);
     void update();
 
 private:

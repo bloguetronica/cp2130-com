@@ -305,9 +305,9 @@ void DeviceWindow::on_spinBoxCPOL_valueChanged()
     configureSPIMode();
 }
 
-void DeviceWindow::on_spinBoxBytesToRead_valueChanged()
+void DeviceWindow::on_spinBoxBytesToRead_valueChanged(int i)
 {
-    ui->pushButtonRead->setEnabled(ui->spinBoxBytesToRead->value() > 0);  // The button "Read" should only be enabled when the user specifies a number of bytes to read greater than zero
+    ui->pushButtonRead->setEnabled(i > 0);  // The button "Read" should only be enabled when the user specifies a number of bytes to read greater than zero
 }
 
 // This is the main update routine
