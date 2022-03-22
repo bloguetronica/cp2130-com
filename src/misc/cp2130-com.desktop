@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=CP2130 Commander
+Icon=cp2130-com
+Exec=cp2130-com
+Terminal=false
+Categories=Development;Electronics;
