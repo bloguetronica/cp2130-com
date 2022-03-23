@@ -575,7 +575,7 @@ Por favor, verifique se o mesmo não está a ser utilizado por outra aplicação
     <message>
         <location filename="../mainwindow.ui" line="126"/>
         <location filename="../mainwindow.ui" line="130"/>
-        <location filename="../mainwindow.cpp" line="90"/>
+        <location filename="../mainwindow.cpp" line="94"/>
         <source>Select device...</source>
         <translation>Seleccione o dispositivo...</translation>
     </message>
@@ -615,12 +615,12 @@ Por favor, verifique se o mesmo não está a ser utilizado por outra aplicação
         <translation>&amp;Acerca do CP2130 Commander</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="93"/>
+        <location filename="../mainwindow.cpp" line="97"/>
         <source>Critical Error</source>
         <translation>Erro Crítico</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="93"/>
+        <location filename="../mainwindow.cpp" line="97"/>
         <source>%1
 This is a critical error and execution will be aborted.</source>
         <translation>%1
