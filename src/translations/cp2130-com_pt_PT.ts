@@ -232,48 +232,48 @@
         <translation>Bytes a ler:</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="615"/>
+        <location filename="../devicewindow.ui" line="618"/>
         <source>&amp;Device</source>
         <translation>&amp;Dispositivo</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="625"/>
+        <location filename="../devicewindow.ui" line="628"/>
         <source>&amp;Help</source>
         <translation>&amp;Ajuda</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="634"/>
+        <location filename="../devicewindow.ui" line="637"/>
         <source>&amp;Close</source>
         <translation>&amp;Fechar</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="637"/>
+        <location filename="../devicewindow.ui" line="640"/>
         <source>Ctrl+W</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="642"/>
+        <location filename="../devicewindow.ui" line="645"/>
         <source>&amp;About CP2130 Commander</source>
         <translation>&amp;Acerca do CP2130 Commander</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="647"/>
+        <location filename="../devicewindow.ui" line="650"/>
         <source>&amp;Reset</source>
         <translation>&amp;Reiniciar</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="652"/>
+        <location filename="../devicewindow.ui" line="655"/>
         <source>&amp;Information</source>
         <translation>&amp;Informações</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="57"/>
-        <location filename="../devicewindow.cpp" line="529"/>
+        <location filename="../devicewindow.cpp" line="67"/>
+        <location filename="../devicewindow.cpp" line="530"/>
         <source>Critical Error</source>
         <translation>Erro Crítico</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="57"/>
+        <location filename="../devicewindow.cpp" line="67"/>
         <source>Could not initialize libusb.
 
 This is a critical error and execution will be aborted.</source>
@@ -282,25 +282,25 @@ This is a critical error and execution will be aborted.</source>
 Este é um erro crítico e a execução será abortada.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="60"/>
-        <location filename="../devicewindow.cpp" line="63"/>
-        <location filename="../devicewindow.cpp" line="425"/>
-        <location filename="../devicewindow.cpp" line="428"/>
-        <location filename="../devicewindow.cpp" line="436"/>
-        <location filename="../devicewindow.cpp" line="489"/>
-        <location filename="../devicewindow.cpp" line="494"/>
-        <location filename="../devicewindow.cpp" line="532"/>
-        <location filename="../devicewindow.cpp" line="535"/>
+        <location filename="../devicewindow.cpp" line="71"/>
+        <location filename="../devicewindow.cpp" line="73"/>
+        <location filename="../devicewindow.cpp" line="426"/>
+        <location filename="../devicewindow.cpp" line="429"/>
+        <location filename="../devicewindow.cpp" line="437"/>
+        <location filename="../devicewindow.cpp" line="490"/>
+        <location filename="../devicewindow.cpp" line="495"/>
+        <location filename="../devicewindow.cpp" line="533"/>
+        <location filename="../devicewindow.cpp" line="536"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="60"/>
+        <location filename="../devicewindow.cpp" line="71"/>
         <source>Could not find device.</source>
         <translation>Dispositivo não encontrado.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="63"/>
+        <location filename="../devicewindow.cpp" line="73"/>
         <source>Device is currently unavailable.
 
 Please confirm that the device is not in use.</source>
@@ -309,109 +309,109 @@ Please confirm that the device is not in use.</source>
 Por favor, confirme que o mesmo não está a ser utilizado.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="70"/>
+        <location filename="../devicewindow.cpp" line="61"/>
         <source>CP2130 Device (S/N: %1)</source>
         <translation>Dispositivo CP2130 (NS: %1)</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="100"/>
+        <location filename="../devicewindow.cpp" line="101"/>
         <source>device-information-retrieval-op</source>
         <translation>recolha de informações do dispositivo</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="115"/>
+        <location filename="../devicewindow.cpp" line="116"/>
         <source>gpio0-switch-op</source>
         <translation>comutação do pino GPIO.0</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="123"/>
+        <location filename="../devicewindow.cpp" line="124"/>
         <source>gpio1-switch-op</source>
         <translation>comutação do pino GPIO.1</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="131"/>
+        <location filename="../devicewindow.cpp" line="132"/>
         <source>gpio2-switch-op</source>
         <translation>comutação do pino GPIO.2</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="139"/>
+        <location filename="../devicewindow.cpp" line="140"/>
         <source>gpio3-switch-op</source>
         <translation>comutação do pino GPIO.3</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="147"/>
+        <location filename="../devicewindow.cpp" line="148"/>
         <source>gpio4-switch-op</source>
         <translation>comutação do pino GPIO.4</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="155"/>
+        <location filename="../devicewindow.cpp" line="156"/>
         <source>gpio5-switch-op</source>
         <translation>comutação do pino GPIO.5</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="163"/>
+        <location filename="../devicewindow.cpp" line="164"/>
         <source>gpio6-switch-op</source>
         <translation>comutação do pino GPIO.6</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="171"/>
+        <location filename="../devicewindow.cpp" line="172"/>
         <source>gpio7-switch-op</source>
         <translation>comutação do pino GPIO.7</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="179"/>
+        <location filename="../devicewindow.cpp" line="180"/>
         <source>gpio8-switch-op</source>
         <translation>comutação do pino GPIO.8</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="187"/>
+        <location filename="../devicewindow.cpp" line="188"/>
         <source>gpio9-switch-op</source>
         <translation>comutação do pino GPIO.9</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="195"/>
+        <location filename="../devicewindow.cpp" line="196"/>
         <source>gpio10-switch-op</source>
         <translation>comutação do pino GPIO.10</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="234"/>
+        <location filename="../devicewindow.cpp" line="235"/>
         <source>spi-delays-retrieval-op</source>
         <translation>retorno de latências SPI</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="252"/>
+        <location filename="../devicewindow.cpp" line="253"/>
         <source>spi-delays-configuration-op</source>
         <translation>configuração de latências SPI</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="266"/>
+        <location filename="../devicewindow.cpp" line="267"/>
         <source>spi-read-op</source>
         <translation>leitura SPI</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="280"/>
+        <location filename="../devicewindow.cpp" line="281"/>
         <source>spi-write-op</source>
         <translation>escrita SPI</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="293"/>
+        <location filename="../devicewindow.cpp" line="294"/>
         <source>spi-write-read-op</source>
         <translation>escrita e leitura SPI</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="330"/>
+        <location filename="../devicewindow.cpp" line="331"/>
         <source>update-op</source>
         <translation>actualização</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="347"/>
+        <location filename="../devicewindow.cpp" line="348"/>
         <source>spi-mode-configuration-op</source>
         <translation>configuração do modo SPI</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="425"/>
-        <location filename="../devicewindow.cpp" line="489"/>
-        <location filename="../devicewindow.cpp" line="532"/>
+        <location filename="../devicewindow.cpp" line="426"/>
+        <location filename="../devicewindow.cpp" line="490"/>
+        <location filename="../devicewindow.cpp" line="533"/>
         <source>Device disconnected.
 
 Please reconnect it and try again.</source>
@@ -420,7 +420,7 @@ Please reconnect it and try again.</source>
 Por favor, ligue-o e tente novamente.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../devicewindow.cpp" line="428"/>
+        <location filename="../devicewindow.cpp" line="429"/>
         <source>%1 operation returned the following error(s):
 – %2</source>
         <translation>
@@ -431,12 +431,12 @@ Por favor, ligue-o e tente novamente.</translation>
         </translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="436"/>
+        <location filename="../devicewindow.cpp" line="437"/>
         <source>Detected too many errors.</source>
         <translation>Demasiados erros detectados.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../devicewindow.cpp" line="494"/>
+        <location filename="../devicewindow.cpp" line="495"/>
         <source>Read configuration operation returned the following error(s):
 – %1
 
@@ -453,12 +453,12 @@ Por favor, tente aceder novamente ao dispositivo.</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="510"/>
+        <location filename="../devicewindow.cpp" line="511"/>
         <source>reset-op</source>
         <translation>reinício</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="529"/>
+        <location filename="../devicewindow.cpp" line="530"/>
         <source>Could not reinitialize libusb.
 
 This is a critical error and execution will be aborted.</source>
@@ -467,7 +467,7 @@ This is a critical error and execution will be aborted.</source>
 Este é um erro crítico e a execução será abortada.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="535"/>
+        <location filename="../devicewindow.cpp" line="536"/>
         <source>Device ceased to be available.
 
 Please verify that the device is not in use by another application.</source>
