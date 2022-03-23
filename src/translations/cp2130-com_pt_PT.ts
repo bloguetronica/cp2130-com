@@ -290,7 +290,7 @@ Este é um erro crítico e a execução será abortada.</translation>
         <location filename="../devicewindow.cpp" line="489"/>
         <location filename="../devicewindow.cpp" line="494"/>
         <location filename="../devicewindow.cpp" line="532"/>
-        <location filename="../devicewindow.cpp" line="534"/>
+        <location filename="../devicewindow.cpp" line="535"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
@@ -467,7 +467,7 @@ This is a critical error and execution will be aborted.</source>
 Este é um erro crítico e a execução será abortada.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="534"/>
+        <location filename="../devicewindow.cpp" line="535"/>
         <source>Device ceased to be available.
 
 Please verify that the device is not in use by another application.</source>
