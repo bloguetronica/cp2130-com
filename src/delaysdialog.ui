@@ -204,6 +204,15 @@
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>checkBoxCSToggle</tabstop>
+  <tabstop>spinBoxPostAssertDelay</tabstop>
+  <tabstop>checkBoxPostAssertDelay</tabstop>
+  <tabstop>spinBoxPreDeassertDelay</tabstop>
+  <tabstop>checkBoxPreDeassertDelay</tabstop>
+  <tabstop>spinBoxInterByteDelay</tabstop>
+  <tabstop>checkBoxInterByteDelay</tabstop>
+ </tabstops>
  <resources>
   <include location="resources.qrc"/>
  </resources>

@@ -656,6 +656,31 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>checkBoxGPIO0</tabstop>
+  <tabstop>checkBoxGPIO1</tabstop>
+  <tabstop>checkBoxGPIO2</tabstop>
+  <tabstop>checkBoxGPIO3</tabstop>
+  <tabstop>checkBoxGPIO4</tabstop>
+  <tabstop>checkBoxGPIO5</tabstop>
+  <tabstop>checkBoxGPIO6</tabstop>
+  <tabstop>checkBoxGPIO7</tabstop>
+  <tabstop>checkBoxGPIO8</tabstop>
+  <tabstop>checkBoxGPIO9</tabstop>
+  <tabstop>checkBoxGPIO10</tabstop>
+  <tabstop>comboBoxChannel</tabstop>
+  <tabstop>pushButtonConfigureSPIDelays</tabstop>
+  <tabstop>comboBoxCSPinMode</tabstop>
+  <tabstop>comboBoxFrequency</tabstop>
+  <tabstop>spinBoxCPOL</tabstop>
+  <tabstop>spinBoxCPHA</tabstop>
+  <tabstop>lineEditWrite</tabstop>
+  <tabstop>lineEditRead</tabstop>
+  <tabstop>spinBoxBytesToRead</tabstop>
+  <tabstop>pushButtonWrite</tabstop>
+  <tabstop>pushButtonRead</tabstop>
+  <tabstop>pushButtonWriteRead</tabstop>
+ </tabstops>
  <resources>
   <include location="resources.qrc"/>
  </resources>

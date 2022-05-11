@@ -202,6 +202,13 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>lineEditVID</tabstop>
+  <tabstop>lineEditPID</tabstop>
+  <tabstop>comboBoxDevices</tabstop>
+  <tabstop>pushButtonRefresh</tabstop>
+  <tabstop>pushButtonOpen</tabstop>
+ </tabstops>
  <resources>
   <include location="resources.qrc"/>
  </resources>
