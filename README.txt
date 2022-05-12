@@ -21,8 +21,8 @@ installed yet). Then it will compile the application and move it to
 
 The above mentioned installation script won't create any rules to access
 Silicon Labs devices. If you don't have equivalent rules for accessing such
-devices (with VID 0x10C4), you must run this script too, which should be done
-by invoking "sudo ./install-rules.sh".
+devices (with VID 0x10C4), you must run "install-rules.sh" too, which should
+be done by invoking "sudo ./install-rules.sh".
 
 To uninstall, you should run "uninstall.sh" by invoking "sudo ./uninstall.sh",
 again on a terminal window after making sure that your working directory is
