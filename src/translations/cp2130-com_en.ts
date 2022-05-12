@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="../aboutdialog.ui" line="68"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;CP2130 Commander - Version 1.0&lt;br/&gt;© 2022 Samuel Lourenço&lt;/p&gt;&lt;p&gt;This program is distributed under the terms of the &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0-standalone.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;GNU GPL v3&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;CP2130 Commander - Version 1.1&lt;br/&gt;© 2022 Samuel Lourenço&lt;/p&gt;&lt;p&gt;This program is distributed under the terms of the &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0-standalone.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;GNU GPL v3&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
 </context>
@@ -703,13 +703,13 @@ This is a critical error and execution will be aborted.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../cp2130.cpp" line="721"/>
+        <location filename="../cp2130.cpp" line="722"/>
         <source>In selectCS(): SPI channel value must be between 0 and 10.
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../cp2130.cpp" line="975"/>
+        <location filename="../cp2130.cpp" line="976"/>
         <source>In writeManufacturerDesc(): manufacturer descriptor string cannot be longer than 62 characters.
 </source>
         <translation></translation>
@@ -721,19 +721,19 @@ This is a critical error and execution will be aborted.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../cp2130.cpp" line="1035"/>
+        <location filename="../cp2130.cpp" line="1034"/>
         <source>In writeSerialDesc(): serial descriptor string cannot be longer than 30 characters.
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../cp2130.cpp" line="1063"/>
+        <location filename="../cp2130.cpp" line="1062"/>
         <source>Could not initialize libusb.
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../cp2130.cpp" line="1069"/>
+        <location filename="../cp2130.cpp" line="1068"/>
         <source>Failed to retrieve a list of devices.
 </source>
         <translation></translation>
