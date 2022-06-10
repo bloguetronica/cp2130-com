@@ -1,4 +1,4 @@
-/* CP2130 Commander - Version 1.1 for Debian Linux
+/* CP2130 Commander - Version 2.0 for Debian Linux
    Copyright (c) 2022 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
@@ -93,4 +93,4 @@ private:
     void updateView(bool gpio0, bool gpio1, bool gpio2, bool gpio3, bool gpio4, bool gpio5, bool gpio6, bool gpio7, bool gpio8, bool gpio9, bool gpio10);
 };
 
-#endif // DEVICEWINDOW_H
+#endif  // DEVICEWINDOW_H
