@@ -537,7 +537,7 @@
       </font>
      </property>
      <property name="maxLength">
-      <number>2048</number>
+      <number>12287</number>
      </property>
      <property name="placeholderText">
       <string>0x</string>
@@ -564,7 +564,7 @@
       </font>
      </property>
      <property name="maxLength">
-      <number>2048</number>
+      <number>12287</number>
      </property>
      <property name="readOnly">
       <bool>true</bool>
@@ -599,7 +599,7 @@
       </rect>
      </property>
      <property name="maximum">
-      <number>1024</number>
+      <number>4096</number>
      </property>
     </widget>
    </widget>

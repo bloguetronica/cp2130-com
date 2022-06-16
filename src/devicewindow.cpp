@@ -356,6 +356,17 @@ void DeviceWindow::disableView()
     ui->actionInformation->setEnabled(false);
     ui->actionReset->setEnabled(false);
     ui->centralWidget->setEnabled(false);
+    ui->checkBoxGPIO0->setStyleSheet("");
+    ui->checkBoxGPIO1->setStyleSheet("");
+    ui->checkBoxGPIO2->setStyleSheet("");
+    ui->checkBoxGPIO3->setStyleSheet("");
+    ui->checkBoxGPIO4->setStyleSheet("");
+    ui->checkBoxGPIO5->setStyleSheet("");
+    ui->checkBoxGPIO6->setStyleSheet("");
+    ui->checkBoxGPIO7->setStyleSheet("");
+    ui->checkBoxGPIO8->setStyleSheet("");
+    ui->checkBoxGPIO9->setStyleSheet("");
+    ui->checkBoxGPIO10->setStyleSheet("");
 }
 
 // Displays the SPI mode for the currently selected channel
