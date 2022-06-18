@@ -619,6 +619,7 @@
     </property>
     <addaction name="actionInformation"/>
     <addaction name="separator"/>
+    <addaction name="actionReconfigure"/>
     <addaction name="actionReset"/>
     <addaction name="separator"/>
     <addaction name="actionClose"/>
@@ -653,6 +654,11 @@
   <action name="actionInformation">
    <property name="text">
     <string>&amp;Information</string>
+   </property>
+  </action>
+  <action name="actionReconfigure">
+   <property name="text">
+    <string>Re&amp;configure GPIO Pins</string>
    </property>
   </action>
  </widget>

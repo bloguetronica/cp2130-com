@@ -32,7 +32,8 @@ SOURCES += \
     informationdialog.cpp \
     libusb-extra.c \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    reconfiguredialog.cpp
 
 HEADERS += \
     aboutdialog.h \
@@ -42,14 +43,16 @@ HEADERS += \
     cp2130.h \
     informationdialog.h \
     libusb-extra.h \
-    mainwindow.h
+    mainwindow.h \
+    reconfiguredialog.h
 
 FORMS += \
     aboutdialog.ui \
     delaysdialog.ui \
     devicewindow.ui \
     informationdialog.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    reconfiguredialog.ui
 
 TRANSLATIONS += \
     translations/cp2130-com_en.ts \
