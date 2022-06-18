@@ -25,7 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     aboutdialog.cpp \
-    convert.cpp \
+    data.cpp \
     delaysdialog.cpp \
     devicewindow.cpp \
     cp2130.cpp \
@@ -36,7 +36,7 @@ SOURCES += \
 
 HEADERS += \
     aboutdialog.h \
-    convert.h \
+    data.h \
     delaysdialog.h \
     devicewindow.h \
     cp2130.h \

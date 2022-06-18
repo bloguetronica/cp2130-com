@@ -27,6 +27,7 @@
 #include <QString>
 #include <QTimer>
 #include "cp2130.h"
+#include "data.h"
 
 namespace Ui {
 class DeviceWindow;
@@ -60,6 +61,7 @@ private slots:
     void on_comboBoxChannel_activated();
     void on_comboBoxCSPinMode_activated();
     void on_comboBoxFrequency_activated();
+    void on_lineEditWrite_editingFinished();
     void on_lineEditWrite_textChanged();
     void on_lineEditWrite_textEdited();
     void on_pushButtonConfigureSPIDelays_clicked();
@@ -75,6 +77,7 @@ private:
     Ui::DeviceWindow *ui;
     CP2130 cp2130_;
     CP2130::PinConfig pinConfig_;
+    Data write_;
     QMap<QString, CP2130::SPIMode> spiModeMap_;
     QString serialstr_;
     quint16 pid_, vid_;
