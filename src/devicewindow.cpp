@@ -40,7 +40,7 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     ui(new Ui::DeviceWindow)
 {
     ui->setupUi(this);
-    ui->lineEditWrite->setValidator(new QRegExpValidator(QRegExp("[A-Fa-f\\d\\s]+"), this));
+    ui->lineEditWrite->setValidator(new QRegExpValidator(QRegExp("[A-Fa-f\\d\\s]+"), this));  // Spaces are allowed since version 2.0
 }
 
 DeviceWindow::~DeviceWindow()
@@ -212,13 +212,13 @@ void DeviceWindow::on_comboBoxFrequency_activated()
 
 void DeviceWindow::on_lineEditWrite_editingFinished()
 {
-    ui->lineEditWrite->setText(toWrite_.toHexadecimal());  // Required to reformat the hexadecimal string
+    ui->lineEditWrite->setText(write_.toHexadecimal());  // Required to reformat the hexadecimal string
 }
 
 void DeviceWindow::on_lineEditWrite_textChanged()
 {
-    toWrite_.fromHexadecimal(ui->lineEditWrite->text());  //This also forces a retrim whenever on_lineEditWrite_editingFinished() is triggered, which is useful case the reformatted hexadecimal string does not fit the line edit box (required in order to follow the WYSIWYG principle)
-    int size = toWrite_.vector.size();
+    write_.fromHexadecimal(ui->lineEditWrite->text());  //This also forces a retrim whenever on_lineEditWrite_editingFinished() is triggered, which is useful case the reformatted hexadecimal string does not fit the line edit box (required in order to follow the WYSIWYG principle)
+    int size = write_.vector.size();
     bool enableWrite = size != 0;  // The buttons "Write" and "Write/Read" are enabled if the string is valid, that is, its conversion leads to a non-empty QVector (method changed in version 2.0)
     ui->pushButtonWrite->setEnabled(enableWrite);
     ui->pushButtonWriteRead->setEnabled(enableWrite);
@@ -266,12 +266,12 @@ void DeviceWindow::on_pushButtonRead_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
-    Data result;
-    result.vector = cp2130_.spiRead(static_cast<quint32>(ui->spinBoxBytesToRead->value()), errcnt, errstr);  // Read from the SPI bus
+    Data read;
+    read.vector = cp2130_.spiRead(static_cast<quint32>(ui->spinBoxBytesToRead->value()), errcnt, errstr);  // Read from the SPI bus
     usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     if (opCheck(tr("spi-read-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-read-op" should be translated to "SPI read")
-        ui->lineEditRead->setText(result.toHexadecimal());
+        ui->lineEditRead->setText(read.toHexadecimal());
     }
 }
 
@@ -281,7 +281,7 @@ void DeviceWindow::on_pushButtonWrite_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
-    cp2130_.spiWrite(toWrite_.vector, errcnt, errstr);  // Write to the SPI bus
+    cp2130_.spiWrite(write_.vector, errcnt, errstr);  // Write to the SPI bus
     usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     opCheck(tr("spi-write-op"), errcnt, errstr);  // The string "spi-write-op" should be translated to "SPI write"
@@ -294,12 +294,12 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
-    Data result;
-    result.vector = cp2130_.spiWriteRead(toWrite_.vector, errcnt, errstr);  // Write to and read from the SPI bus, simultaneously
+    Data read;
+    read.vector = cp2130_.spiWriteRead(write_.vector, errcnt, errstr);  // Write to and read from the SPI bus, simultaneously
     usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     if (opCheck(tr("spi-write-read-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-write-read-op" should be translated to "SPI write and read")
-        ui->lineEditRead->setText(result.toHexadecimal());
+        ui->lineEditRead->setText(read.toHexadecimal());
     }
 }
 

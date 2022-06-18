@@ -77,7 +77,7 @@ private:
     Ui::DeviceWindow *ui;
     CP2130 cp2130_;
     CP2130::PinConfig pinConfig_;
-    Data toWrite_;
+    Data write_;
     QMap<QString, CP2130::SPIMode> spiModeMap_;
     QString serialstr_;
     quint16 pid_, vid_;
