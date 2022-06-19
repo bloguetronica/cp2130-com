@@ -655,11 +655,6 @@
     <string>&amp;Information</string>
    </property>
   </action>
-  <action name="actionReconfigure">
-   <property name="text">
-    <string>Re&amp;configure GPIO Pins</string>
-   </property>
-  </action>
  </widget>
  <tabstops>
   <tabstop>checkBoxGPIO0</tabstop>
