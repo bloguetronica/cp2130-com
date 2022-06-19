@@ -28,7 +28,6 @@
 #include "aboutdialog.h"
 #include "delaysdialog.h"
 #include "informationdialog.h"
-#include "reconfiguredialog.h"
 #include "devicewindow.h"
 #include "ui_devicewindow.h"
 
@@ -106,59 +105,6 @@ void DeviceWindow::on_actionInformation_triggered()
 void DeviceWindow::on_actionReset_triggered()
 {
     resetDevice();
-}
-
-void DeviceWindow::on_actionReconfigure_triggered()
-{
-    ReconfigureDialog reconfigureDialog;
-    if (pinConfig_.gpio0 == CP2130::PCIN || pinConfig_.gpio0 == CP2130::PCOUTOD || pinConfig_.gpio0 == CP2130::PCOUTPP) {
-        reconfigureDialog.setupGPIO0ComboBox(pinConfig_.gpio0);
-    }
-    if (pinConfig_.gpio1 == CP2130::PCIN || pinConfig_.gpio1 == CP2130::PCOUTOD || pinConfig_.gpio1 == CP2130::PCOUTPP) {
-        reconfigureDialog.setupGPIO1ComboBox(pinConfig_.gpio1);
-    }
-    if (pinConfig_.gpio2 == CP2130::PCIN || pinConfig_.gpio2 == CP2130::PCOUTOD || pinConfig_.gpio2 == CP2130::PCOUTPP) {
-        reconfigureDialog.setupGPIO2ComboBox(pinConfig_.gpio2);
-    }
-    if (pinConfig_.gpio3 == CP2130::PCIN || pinConfig_.gpio3 == CP2130::PCOUTOD || pinConfig_.gpio3 == CP2130::PCOUTPP) {
-        reconfigureDialog.setupGPIO3ComboBox(pinConfig_.gpio3);
-    }
-    if (pinConfig_.gpio4 == CP2130::PCIN || pinConfig_.gpio4 == CP2130::PCOUTOD || pinConfig_.gpio4 == CP2130::PCOUTPP) {
-        reconfigureDialog.setupGPIO4ComboBox(pinConfig_.gpio4);
-    }
-    if (pinConfig_.gpio5 == CP2130::PCIN || pinConfig_.gpio5 == CP2130::PCOUTOD || pinConfig_.gpio5 == CP2130::PCOUTPP) {
-        reconfigureDialog.setupGPIO5ComboBox(pinConfig_.gpio5);
-    }
-    if (pinConfig_.gpio6 == CP2130::PCIN || pinConfig_.gpio6 == CP2130::PCOUTOD || pinConfig_.gpio6 == CP2130::PCOUTPP) {
-        reconfigureDialog.setupGPIO6ComboBox(pinConfig_.gpio6);
-    }
-    if (pinConfig_.gpio7 == CP2130::PCIN || pinConfig_.gpio7 == CP2130::PCOUTOD || pinConfig_.gpio7 == CP2130::PCOUTPP) {
-        reconfigureDialog.setupGPIO7ComboBox(pinConfig_.gpio7);
-    }
-    if (pinConfig_.gpio8 == CP2130::PCIN || pinConfig_.gpio8 == CP2130::PCOUTOD || pinConfig_.gpio8 == CP2130::PCOUTPP) {
-        reconfigureDialog.setupGPIO8ComboBox(pinConfig_.gpio8);
-    }
-    if (pinConfig_.gpio9 == CP2130::PCIN || pinConfig_.gpio9 == CP2130::PCOUTOD || pinConfig_.gpio9 == CP2130::PCOUTPP) {
-        reconfigureDialog.setupGPIO9ComboBox(pinConfig_.gpio9);
-    }
-    if (pinConfig_.gpio10 == CP2130::PCIN || pinConfig_.gpio10 == CP2130::PCOUTOD || pinConfig_.gpio10 == CP2130::PCOUTPP) {
-        reconfigureDialog.setupGPIO10ComboBox(pinConfig_.gpio10);
-    }
-    if (reconfigureDialog.exec() == QDialog::Accepted) {  // If the user clicks "OK", the new GPIO pin configurations are applied until the device is disconnected or reset
-        int errcnt = 0;
-        QString errstr;
-        /*spiDelays.cstglen = delaysDialog.csToggleCheckBoxIsChecked();
-        spiDelays.pstasten = delaysDialog.postAssertDelayCheckBoxIsChecked();
-        spiDelays.prdasten = delaysDialog.preDeassertDelayCheckBoxIsChecked();
-        spiDelays.itbyten = delaysDialog.interByteDelayCheckBoxIsChecked();
-        spiDelays.pstastdly = delaysDialog.postAssertDelaySpinBoxValue();
-        spiDelays.prdastdly = delaysDialog.preDeassertDelaySpinBoxValue();
-        spiDelays.itbytdly = delaysDialog.interByteDelaySpinBoxValue();
-        cp2130_.configureSPIDelays(channel, spiDelays, errcnt, errstr);  */
-        pinConfig_ = cp2130_.getPinConfig(errcnt, errstr);
-        opCheck(tr("gpio-reconfiguration-op"), errcnt, errstr);  // The string "gpio-reconfiguration-op" should be translated to "GPIO reconfiguration"
-        initializeGPIOControls();  // Reinitialize GPIO controls
-    }
 }
 
 void DeviceWindow::on_checkBoxGPIO0_clicked()

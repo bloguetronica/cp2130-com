@@ -619,7 +619,6 @@
     </property>
     <addaction name="actionInformation"/>
     <addaction name="separator"/>
-    <addaction name="actionReconfigure"/>
     <addaction name="actionReset"/>
     <addaction name="separator"/>
     <addaction name="actionClose"/>
