@@ -33,4 +33,4 @@ struct Data
     void fromHexadecimal(const QString &hexadecimal);
 };
 
-#endif // DATA_H
+#endif  // DATA_H
