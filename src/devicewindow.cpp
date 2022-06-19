@@ -155,8 +155,8 @@ void DeviceWindow::on_actionReconfigure_triggered()
         spiDelays.prdastdly = delaysDialog.preDeassertDelaySpinBoxValue();
         spiDelays.itbytdly = delaysDialog.interByteDelaySpinBoxValue();
         cp2130_.configureSPIDelays(channel, spiDelays, errcnt, errstr);  */
+        pinConfig_ = cp2130_.getPinConfig(errcnt, errstr);
         opCheck(tr("gpio-reconfiguration-op"), errcnt, errstr);  // The string "gpio-reconfiguration-op" should be translated to "GPIO reconfiguration"
-        readConfiguration();  // Reread device configuration
         initializeGPIOControls();  // Reinitialize GPIO controls
     }
 }
