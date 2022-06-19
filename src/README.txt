@@ -3,11 +3,11 @@ Commander. A list of relevant files follows:
 – aboutdialog.cpp;
 – aboutdialog.h;
 – aboutdialog.ui;
-– convert.cpp;
-– convert.h;
 – cp2130-com.pro;
 – cp2130.cpp;
 – cp2130.h;
+– data.cpp;
+– data.h;
 – delaysdialog.cpp;
 – delaysdialog.h;
 – delaysdialog.ui;

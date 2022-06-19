@@ -19,17 +19,30 @@
 
 
 // Includes
-#include "aboutdialog.h"
-#include "ui_aboutdialog.h"
+#include <QStringRef>
+#include "data.h"
 
-AboutDialog::AboutDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::AboutDialog)
+// Converts to a string of hexadecimal numbers
+QString Data::toHexadecimal() const
 {
-    ui->setupUi(this);
+    QString hexadecimal;
+    for (int i = 0; i < vector.size(); ++i) {
+        if (i > 0) {
+            hexadecimal += " ";
+        }
+        hexadecimal += QString("%1").arg(vector[i], 2, 16, QChar('0'));
+    }
+    return hexadecimal;
 }
 
-AboutDialog::~AboutDialog()
+// Obtains the data from a string of hexadecimal numbers
+void Data::fromHexadecimal(const QString &hexadecimal)
 {
-    delete ui;
+    QString strippedHexadecimal(hexadecimal);
+    strippedHexadecimal.remove(QChar(' '));
+    int vecSize = strippedHexadecimal.size() / 2;
+    vector.resize(vecSize);
+    for (int i = 0; i < vecSize; ++i) {
+        vector[i] = static_cast<quint8>(QStringRef(&strippedHexadecimal, 2 * i, 2).toUInt(nullptr, 16));
+    }
 }

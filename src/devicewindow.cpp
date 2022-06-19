@@ -1,4 +1,4 @@
-/* CP2130 Commander - Version 1.1 for Debian Linux
+/* CP2130 Commander - Version 2.0 for Debian Linux
    Copyright (c) 2022 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
@@ -26,7 +26,6 @@
 #include <QVector>
 #include <unistd.h>
 #include "aboutdialog.h"
-#include "convert.h"
 #include "delaysdialog.h"
 #include "informationdialog.h"
 #include "devicewindow.h"
@@ -41,7 +40,7 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     ui(new Ui::DeviceWindow)
 {
     ui->setupUi(this);
-    ui->lineEditWrite->setValidator(new QRegExpValidator(QRegExp("[A-Fa-f\\d]+"), this));
+    ui->lineEditWrite->setValidator(new QRegExpValidator(QRegExp("[A-Fa-f\\d\\s]+"), this));  // Spaces are allowed since version 2.0
 }
 
 DeviceWindow::~DeviceWindow()
@@ -84,9 +83,9 @@ void DeviceWindow::on_actionAbout_triggered()
 
 void DeviceWindow::on_actionInformation_triggered()
 {
+    InformationDialog infoDialog;
     int errcnt = 0;
     QString errstr;
-    InformationDialog infoDialog;
     infoDialog.setManufacturerLabelText(cp2130_.getManufacturerDesc(errcnt, errstr));
     infoDialog.setProductLabelText(cp2130_.getProductDesc(errcnt, errstr));
     infoDialog.setSerialLabelText(cp2130_.getSerialDesc(errcnt, errstr));  // It is important to read the serial number from the OTP ROM, instead of just passing the value of serialstr_
@@ -211,10 +210,16 @@ void DeviceWindow::on_comboBoxFrequency_activated()
     configureSPIMode();
 }
 
+void DeviceWindow::on_lineEditWrite_editingFinished()
+{
+    ui->lineEditWrite->setText(write_.toHexadecimal());  // Required to reformat the hexadecimal string
+}
+
 void DeviceWindow::on_lineEditWrite_textChanged()
 {
-    int size = ui->lineEditWrite->text().size();
-    bool enableWrite = size != 0 && size % 2 == 0;  // The buttons "Write" and "Write/Read" should only be enabled when the above referenced line edit contains a valid byte string
+    write_.fromHexadecimal(ui->lineEditWrite->text());  //This also forces a retrim whenever on_lineEditWrite_editingFinished() is triggered, which is useful case the reformatted hexadecimal string does not fit the line edit box (required in order to follow the WYSIWYG principle)
+    int size = write_.vector.size();
+    bool enableWrite = size != 0;  // The buttons "Write" and "Write/Read" are enabled if the string is valid, that is, its conversion leads to a non-empty QVector (method changed in version 2.0)
     ui->pushButtonWrite->setEnabled(enableWrite);
     ui->pushButtonWriteRead->setEnabled(enableWrite);
 }
@@ -261,11 +266,12 @@ void DeviceWindow::on_pushButtonRead_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
-    QVector<quint8> result = cp2130_.spiRead(static_cast<quint32>(ui->spinBoxBytesToRead->value()), errcnt, errstr);  // Read from the SPI bus
+    Data read;
+    read.vector = cp2130_.spiRead(static_cast<quint32>(ui->spinBoxBytesToRead->value()), errcnt, errstr);  // Read from the SPI bus
     usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     if (opCheck(tr("spi-read-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-read-op" should be translated to "SPI read")
-        ui->lineEditRead->setText(DataToHexadecimal(result));
+        ui->lineEditRead->setText(read.toHexadecimal());
     }
 }
 
@@ -275,7 +281,7 @@ void DeviceWindow::on_pushButtonWrite_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
-    cp2130_.spiWrite(HexadecimalToData(ui->lineEditWrite->text()), errcnt, errstr);  // Write to the SPI bus
+    cp2130_.spiWrite(write_.vector, errcnt, errstr);  // Write to the SPI bus
     usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     opCheck(tr("spi-write-op"), errcnt, errstr);  // The string "spi-write-op" should be translated to "SPI write"
@@ -288,11 +294,12 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
-    QVector<quint8> result = cp2130_.spiWriteRead(HexadecimalToData(ui->lineEditWrite->text()), errcnt, errstr);  // Write to and read from the SPI bus, simultaneously
+    Data read;
+    read.vector = cp2130_.spiWriteRead(write_.vector, errcnt, errstr);  // Write to and read from the SPI bus, simultaneously
     usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     if (opCheck(tr("spi-write-read-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-write-read-op" should be translated to "SPI write and read")
-        ui->lineEditRead->setText(DataToHexadecimal(result));
+        ui->lineEditRead->setText(read.toHexadecimal());
     }
 }
 
@@ -356,6 +363,17 @@ void DeviceWindow::disableView()
     ui->actionInformation->setEnabled(false);
     ui->actionReset->setEnabled(false);
     ui->centralWidget->setEnabled(false);
+    ui->checkBoxGPIO0->setStyleSheet("");
+    ui->checkBoxGPIO1->setStyleSheet("");
+    ui->checkBoxGPIO2->setStyleSheet("");
+    ui->checkBoxGPIO3->setStyleSheet("");
+    ui->checkBoxGPIO4->setStyleSheet("");
+    ui->checkBoxGPIO5->setStyleSheet("");
+    ui->checkBoxGPIO6->setStyleSheet("");
+    ui->checkBoxGPIO7->setStyleSheet("");
+    ui->checkBoxGPIO8->setStyleSheet("");
+    ui->checkBoxGPIO9->setStyleSheet("");
+    ui->checkBoxGPIO10->setStyleSheet("");
 }
 
 // Displays the SPI mode for the currently selected channel
@@ -371,18 +389,29 @@ void DeviceWindow::displaySPIMode()
 // Initializes the GPIO controls
 void DeviceWindow::initializeGPIOControls()
 {
-    ui->checkBoxGPIO0->setEnabled(pinConfig_.gpio0 == CP2130::PCOUTOD || pinConfig_.gpio0 == CP2130::PCOUTPP);
-    ui->checkBoxGPIO1->setEnabled(pinConfig_.gpio1 == CP2130::PCOUTOD || pinConfig_.gpio1 == CP2130::PCOUTPP);
-    ui->checkBoxGPIO2->setEnabled(pinConfig_.gpio2 == CP2130::PCOUTOD || pinConfig_.gpio2 == CP2130::PCOUTPP);
-    ui->checkBoxGPIO3->setEnabled(pinConfig_.gpio3 == CP2130::PCOUTOD || pinConfig_.gpio3 == CP2130::PCOUTPP);
-    ui->checkBoxGPIO4->setEnabled(pinConfig_.gpio4 == CP2130::PCOUTOD || pinConfig_.gpio4 == CP2130::PCOUTPP);
-    ui->checkBoxGPIO5->setEnabled(pinConfig_.gpio5 == CP2130::PCOUTOD || pinConfig_.gpio5 == CP2130::PCOUTPP);
-    ui->checkBoxGPIO6->setEnabled(pinConfig_.gpio6 == CP2130::PCOUTOD || pinConfig_.gpio6 == CP2130::PCOUTPP);
-    ui->checkBoxGPIO7->setEnabled(pinConfig_.gpio7 == CP2130::PCOUTOD || pinConfig_.gpio7 == CP2130::PCOUTPP);
-    ui->checkBoxGPIO8->setEnabled(pinConfig_.gpio8 == CP2130::PCOUTOD || pinConfig_.gpio8 == CP2130::PCOUTPP);
-    ui->checkBoxGPIO9->setEnabled(pinConfig_.gpio9 == CP2130::PCOUTOD || pinConfig_.gpio9 == CP2130::PCOUTPP);
-    ui->checkBoxGPIO10->setEnabled(pinConfig_.gpio10 == CP2130::PCOUTOD || pinConfig_.gpio10 == CP2130::PCOUTPP);
-    // Note that the enabled boxes correspond to pins that are configured as outputs
+    ui->checkBoxGPIO0->setEnabled(pinConfig_.gpio0 == CP2130::PCOUTOD || pinConfig_.gpio0 == CP2130::PCOUTPP || pinConfig_.gpio0 == CP2130::PCCS);
+    ui->checkBoxGPIO0->setStyleSheet(pinConfig_.gpio0 == CP2130::PCCS ? "color: darkred;" : "");
+    ui->checkBoxGPIO1->setEnabled(pinConfig_.gpio1 == CP2130::PCOUTOD || pinConfig_.gpio1 == CP2130::PCOUTPP || pinConfig_.gpio1 == CP2130::PCCS);
+    ui->checkBoxGPIO1->setStyleSheet(pinConfig_.gpio1 == CP2130::PCCS ? "color: darkred;" : "");
+    ui->checkBoxGPIO2->setEnabled(pinConfig_.gpio2 == CP2130::PCOUTOD || pinConfig_.gpio2 == CP2130::PCOUTPP || pinConfig_.gpio2 == CP2130::PCCS);
+    ui->checkBoxGPIO2->setStyleSheet(pinConfig_.gpio2 == CP2130::PCCS ? "color: darkred;" : "");
+    ui->checkBoxGPIO3->setEnabled(pinConfig_.gpio3 == CP2130::PCOUTOD || pinConfig_.gpio3 == CP2130::PCOUTPP || pinConfig_.gpio3 == CP2130::PCCS);
+    ui->checkBoxGPIO3->setStyleSheet(pinConfig_.gpio3 == CP2130::PCCS ? "color: darkred;" : "");
+    ui->checkBoxGPIO4->setEnabled(pinConfig_.gpio4 == CP2130::PCOUTOD || pinConfig_.gpio4 == CP2130::PCOUTPP || pinConfig_.gpio4 == CP2130::PCCS);
+    ui->checkBoxGPIO4->setStyleSheet(pinConfig_.gpio4 == CP2130::PCCS ? "color: darkred;" : "");
+    ui->checkBoxGPIO5->setEnabled(pinConfig_.gpio5 == CP2130::PCOUTOD || pinConfig_.gpio5 == CP2130::PCOUTPP || pinConfig_.gpio5 == CP2130::PCCS);
+    ui->checkBoxGPIO5->setStyleSheet(pinConfig_.gpio5 == CP2130::PCCS ? "color: darkred;" : "");
+    ui->checkBoxGPIO6->setEnabled(pinConfig_.gpio6 == CP2130::PCOUTOD || pinConfig_.gpio6 == CP2130::PCOUTPP || pinConfig_.gpio6 == CP2130::PCCS);
+    ui->checkBoxGPIO6->setStyleSheet(pinConfig_.gpio6 == CP2130::PCCS ? "color: darkred;" : "");
+    ui->checkBoxGPIO7->setEnabled(pinConfig_.gpio7 == CP2130::PCOUTOD || pinConfig_.gpio7 == CP2130::PCOUTPP || pinConfig_.gpio7 == CP2130::PCCS);
+    ui->checkBoxGPIO7->setStyleSheet(pinConfig_.gpio7 == CP2130::PCCS ? "color: darkred;" : "");
+    ui->checkBoxGPIO8->setEnabled(pinConfig_.gpio8 == CP2130::PCOUTOD || pinConfig_.gpio8 == CP2130::PCOUTPP || pinConfig_.gpio8 == CP2130::PCCS);
+    ui->checkBoxGPIO8->setStyleSheet(pinConfig_.gpio8 == CP2130::PCCS ? "color: darkred;" : "");
+    ui->checkBoxGPIO9->setEnabled(pinConfig_.gpio9 == CP2130::PCOUTOD || pinConfig_.gpio9 == CP2130::PCOUTPP || pinConfig_.gpio9 == CP2130::PCCS);
+    ui->checkBoxGPIO9->setStyleSheet(pinConfig_.gpio9 == CP2130::PCCS ? "color: darkred;" : "");
+    ui->checkBoxGPIO10->setEnabled(pinConfig_.gpio10 == CP2130::PCOUTOD || pinConfig_.gpio10 == CP2130::PCOUTPP || pinConfig_.gpio10 == CP2130::PCCS);
+    ui->checkBoxGPIO10->setStyleSheet(pinConfig_.gpio10 == CP2130::PCCS ? "color: darkred;" : "");
+    // Since version 2.0, the enabled boxes not only correspond to GPIO pins that are configured as outputs, but to CS pins as well
 }
 
 // Initializes the SPI controls
@@ -520,9 +549,9 @@ void DeviceWindow::resetDevice()
             }
         }
         if (err == CP2130::SUCCESS) {  // Device was successfully reopened
-            readConfiguration();  // Re-read device configuration
+            readConfiguration();  // Reread device configuration
             erracc_ = 0;  // Zero the error count accumulator, since a new session gets started once the reset is done
-            initializeView();  // Re-initialize device window
+            initializeView();  // Reinitialize device window
             timer_->start();  // Restart the timer
         } else {  // Failed to reopen device
             this->setEnabled(false);

@@ -1,4 +1,4 @@
-/* CP2130 Commander - Version 1.1 for Debian Linux
+/* CP2130 Commander - Version 2.0 for Debian Linux
    Copyright (c) 2022 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
@@ -18,27 +18,19 @@
    Please feel free to contact me via e-mail: samuel.fmlourenco@gmail.com */
 
 
+#ifndef DATA_H
+#define DATA_H
+
 // Includes
-#include <QStringRef>
-#include "convert.h"
+#include <QString>
+#include <QVector>
 
-// Converts a given vector to a string of hexadecimal numbers
-QString DataToHexadecimal(const QVector<quint8> &data)
+struct Data
 {
-    QString hexadecimal;
-    for (quint8 value : data) {
-        hexadecimal += QString("%1").arg(value, 2, 16, QChar('0'));
-    }
-    return hexadecimal;
-}
+    QVector<quint8> vector;
 
-// Converts a string of hexadecimal numbers to a corresponding vector
-QVector<quint8> HexadecimalToData(const QString &hexadecimal)
-{
-    int strsize = hexadecimal.size() / 2;
-    QVector<quint8> data(strsize);
-    for (int i = 0; i < strsize; ++i) {
-        data[i] = static_cast<quint8>(QStringRef(&hexadecimal, 2 * i, 2).toUInt(nullptr, 16));
-    }
-    return data;
-}
+    QString toHexadecimal() const;
+    void fromHexadecimal(const QString &hexadecimal);
+};
+
+#endif  // DATA_H
