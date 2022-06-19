@@ -13,11 +13,11 @@ mkdir -p /usr/local/src/cp2130-com/translations
 cp -f src/aboutdialog.cpp /usr/local/src/cp2130-com/.
 cp -f src/aboutdialog.h /usr/local/src/cp2130-com/.
 cp -f src/aboutdialog.ui /usr/local/src/cp2130-com/.
-cp -f src/convert.cpp /usr/local/src/cp2130-com/.
-cp -f src/convert.h /usr/local/src/cp2130-com/.
 cp -f src/cp2130-com.pro /usr/local/src/cp2130-com/.
 cp -f src/cp2130.cpp /usr/local/src/cp2130-com/.
 cp -f src/cp2130.h /usr/local/src/cp2130-com/.
+cp -f src/data.cpp /usr/local/src/cp2130-com/.
+cp -f src/data.h /usr/local/src/cp2130-com/.
 cp -f src/delaysdialog.cpp /usr/local/src/cp2130-com/.
 cp -f src/delaysdialog.h /usr/local/src/cp2130-com/.
 cp -f src/delaysdialog.ui /usr/local/src/cp2130-com/.
