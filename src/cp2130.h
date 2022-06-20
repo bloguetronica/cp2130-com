@@ -1,4 +1,4 @@
-/* CP2130 class for Qt - Version 2.2.2
+/* CP2130 class for Qt - Version 2.2.3
    Copyright (c) 2021-2022 Samuel Lourenço
 
    This library is free software: you can redistribute it and/or modify it
@@ -39,8 +39,8 @@ private:
 
 public:
     // Class definitions
-    static const quint16 VID = 0x10C4;     // Default USB vendor ID
-    static const quint16 PID = 0x87A0;     // Default USB product ID
+    static const quint16 VID = 0x10c4;     // Default USB vendor ID
+    static const quint16 PID = 0x87a0;     // Default USB product ID
     static const int SUCCESS = 0;          // Returned by open() if successful
     static const int ERROR_INIT = 1;       // Returned by open() in case of a libusb initialization failure
     static const int ERROR_NOT_FOUND = 2;  // Returned by open() if the device was not found
@@ -55,7 +55,7 @@ public:
     static const size_t PROM_BLOCKS = 8;                            // Number of blocks of the OTP ROM
     static const size_t PROM_BLOCK_SIZE = 64;                       // Size of each block
     static const size_t PROM_SIZE = PROM_BLOCKS * PROM_BLOCK_SIZE;  // Total size of the OTP ROM
-    static const quint16 PROM_WRITE_KEY = 0xA5F1;                   // OTP ROM write key
+    static const quint16 PROM_WRITE_KEY = 0xa5f1;                   // OTP ROM write key
     static const size_t PROMIDX_VID = 0;                            // 'VID' field index
     static const size_t PROMSZE_VID = 2;                            // 'VID' field size
     static const size_t PROMIDX_PID = 2;                            // 'PID' field index
@@ -92,7 +92,7 @@ public:
     static const quint8 READWITHRTR = 0x04;  // ReadWithRTR command
 
     // The following values are applicable to controlTransfer()
-    static const quint8 GET = 0xC0;                                 // Device-to-Host vendor request
+    static const quint8 GET = 0xc0;                                 // Device-to-Host vendor request
     static const quint8 SET = 0x40;                                 // Host-to-Device vendor request
     static const quint8 RESET_DEVICE = 0x10;                        // Reset_Device command
     static const quint16 RESET_DEVICE_WLEN = 0x0000;                // Reset_Device data stage length
@@ -111,7 +111,7 @@ public:
     static const quint8 SET_GPIO_CHIP_SELECT = 0x25;                // Set_GPIO_Chip_Select command
     static const quint16 SET_GPIO_CHIP_SELECT_WLEN = 0x0002;        // Set_GPIO_Chip_Select data stage length
     static const quint8 GET_SPI_WORD = 0x30;                        // Get_SPI_Word command
-    static const quint16 GET_SPI_WORD_WLEN = 0x000B;                // Get_SPI_Word data stage length
+    static const quint16 GET_SPI_WORD_WLEN = 0x000b;                // Get_SPI_Word data stage length
     static const quint8 SET_SPI_WORD = 0x31;                        // Set_SPI_Word command
     static const quint16 SET_SPI_WORD_WLEN = 0x0002;                // Set_SPI_Word data stage length
     static const quint8 GET_SPI_DELAY = 0x32;                       // Get_SPI_Delay command
@@ -137,7 +137,7 @@ public:
     static const quint8 GET_USB_CONFIG = 0x60;                      // Get_USB_Config command
     static const quint16 GET_USB_CONFIG_WLEN = 0x0009;              // Get_USB_Config data stage length
     static const quint8 SET_USB_CONFIG = 0x61;                      // Set_USB_Config command
-    static const quint16 SET_USB_CONFIG_WLEN = 0x000A;              // Set_USB_Config data stage length
+    static const quint16 SET_USB_CONFIG_WLEN = 0x000a;              // Set_USB_Config data stage length
     static const quint8 GET_MANUFACTURING_STRING_1 = 0x62;          // Get_Manufacturing_String_1 command
     static const quint16 GET_MANUFACTURING_STRING_1_WLEN = 0x0040;  // Get_Manufacturing_String_1 data stage length
     static const quint8 SET_MANUFACTURING_STRING_1 = 0x63;          // Set_Manufacturing_String_1 command
@@ -154,17 +154,17 @@ public:
     static const quint16 GET_PRODUCT_STRING_2_WLEN = 0x0040;        // Get_Product_String_2 data stage length
     static const quint8 SET_PRODUCT_STRING_2 = 0x69;                // Set_Product_String_2 command
     static const quint16 SET_PRODUCT_STRING_2_WLEN = 0x0040;        // Set_Product_String_2 data stage length
-    static const quint8 GET_SERIAL_STRING = 0x6A;                   // Get_Serial_String command
+    static const quint8 GET_SERIAL_STRING = 0x6a;                   // Get_Serial_String command
     static const quint16 GET_SERIAL_STRING_WLEN = 0x0040;           // Get_Serial_String data stage length
-    static const quint8 SET_SERIAL_STRING = 0x6B;                   // Set_Serial_String command
+    static const quint8 SET_SERIAL_STRING = 0x6b;                   // Set_Serial_String command
     static const quint16 SET_SERIAL_STRING_WLEN = 0x0040;           // Set_Serial_String data stage length
-    static const quint8 GET_PIN_CONFIG = 0x6C;                      // Get_Pin_Config command
+    static const quint8 GET_PIN_CONFIG = 0x6c;                      // Get_Pin_Config command
     static const quint16 GET_PIN_CONFIG_WLEN = 0x0014;              // Get_Pin_Config data stage length
-    static const quint8 SET_PIN_CONFIG = 0x6D;                      // Set_Pin_Config command
+    static const quint8 SET_PIN_CONFIG = 0x6d;                      // Set_Pin_Config command
     static const quint16 SET_PIN_CONFIG_WLEN = 0x0014;              // Set_Pin_Config data stage length
-    static const quint8 GET_LOCK_BYTE = 0x6E;                       // Get_Lock_Byte command
+    static const quint8 GET_LOCK_BYTE = 0x6e;                       // Get_Lock_Byte command
     static const quint16 GET_LOCK_BYTE_WLEN = 0x0002;               // Get_Lock_Byte data stage length
-    static const quint8 SET_LOCK_BYTE = 0x6F;                       // Set_Lock_Byte command
+    static const quint8 SET_LOCK_BYTE = 0x6f;                       // Set_Lock_Byte command
     static const quint16 SET_LOCK_BYTE_WLEN = 0x0002;               // Set_Lock_Byte data stage length
     static const quint8 GET_PROM_CONFIG = 0x70;                     // Get_PROM_Config command
     static const quint16 GET_PROM_CONFIG_WLEN = 0x0040;             // Get_PROM_Config data stage length
@@ -179,11 +179,11 @@ public:
     static const quint16 LWREL = 0x0010;      // Mask for the release version lock bit
     static const quint16 LWMANUF = 0x0060;    // Mask for the manufacturer descriptor lock bits
     static const quint16 LWTRFPRIO = 0x0080;  // Mask for the transfer priority lock bit
-    static const quint16 LWUSBCFG = 0x009F;   // Mask for the USB config lock bits
+    static const quint16 LWUSBCFG = 0x009f;   // Mask for the USB config lock bits
     static const quint16 LWPROD = 0x0300;     // Mask for the product descriptor lock bits
     static const quint16 LWSER = 0x0400;      // Mask for the serial descriptor lock bit
     static const quint16 LWPINCFG = 0x0800;   // Mask for the pin config lock bit
-    static const quint16 LWALL = 0x0FFF;      // Mask for all but the reserved lock bits
+    static const quint16 LWALL = 0x0fff;      // Mask for all but the reserved lock bits
 
     // The following values are applicable to SPIMode/configureSPIMode()/getSPIMode()
     static const bool CSMODEOD = false;    // Boolean corresponding to chip select open-drain mode
@@ -231,7 +231,7 @@ public:
     static const quint16 BMGPIO8 = 0x1000;   // Bitmap for the GPIO.8 pin - Also applicable to getGPIOs()/setGPIOs()
     static const quint16 BMGPIO9 = 0x2000;   // Bitmap for the GPIO.9 pin - Also applicable to getGPIOs()/setGPIOs()
     static const quint16 BMGPIO10 = 0x4000;  // Bitmap for the GPIO.10 pin - Also applicable to getGPIOs()/setGPIOs()
-    static const quint16 BMGPIOS = 0x7DF8;   // Bitmap for all GPIO pins
+    static const quint16 BMGPIOS = 0x7df8;   // Bitmap for all GPIO pins
     static const quint16 BMENABLE = 0x8000;  // Bitmap for suspend mode and level enable, only applicable to PinConfig.sspndmode (suspend pin mode bitmap)
 
     // The following values are applicable to USBConfig/getUSBConfig()/writeUSBConfig()
