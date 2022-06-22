@@ -1,4 +1,4 @@
-/* CP2130 class for Qt - Version 2.2.2
+/* CP2130 class for Qt - Version 2.2.3
    Copyright (c) 2021-2022 Samuel Lourenço
 
    This library is free software: you can redistribute it and/or modify it
@@ -230,9 +230,9 @@ void CP2130::bulkTransfer(quint8 endpointAddr, unsigned char *data, int length, 
         if (result != 0 || (transferred != nullptr && *transferred != length)) {  // Since version 2.0.2, the number of transferred bytes is also verified, as long as a valid (non-null) pointer is passed via "transferred"
             ++errcnt;
             if (endpointAddr < 0x80) {
-                errstr += QObject::tr("Failed bulk OUT transfer to endpoint %1 (address 0x%2).\n").arg(0x0F & endpointAddr).arg(endpointAddr, 2, 16, QChar('0'));
+                errstr += QObject::tr("Failed bulk OUT transfer to endpoint %1 (address 0x%2).\n").arg(0x0f & endpointAddr).arg(endpointAddr, 2, 16, QChar('0'));
             } else {
-                errstr += QObject::tr("Failed bulk IN transfer from endpoint %1 (address 0x%2).\n").arg(0x0F & endpointAddr).arg(endpointAddr, 2, 16, QChar('0'));
+                errstr += QObject::tr("Failed bulk IN transfer from endpoint %1 (address 0x%2).\n").arg(0x0f & endpointAddr).arg(endpointAddr, 2, 16, QChar('0'));
             }
             if (result == LIBUSB_ERROR_NO_DEVICE || result == LIBUSB_ERROR_IO) {  // Note that libusb_bulk_transfer() may return "LIBUSB_ERROR_IO" [-1] on device disconnect (version 2.0.2)
                 disconnected_ = true;  // This reports that the device has been disconnected
@@ -643,7 +643,7 @@ CP2130::USBConfig CP2130::getUSBConfig(int &errcnt, QString &errstr)
 // Returns true is the OTP ROM of the CP2130 was never written
 bool CP2130::isOTPBlank(int &errcnt, QString &errstr)
 {
-    return getLockWord(errcnt, errstr) == 0xFFFF;
+    return getLockWord(errcnt, errstr) == 0xffff;
 }
 
 // Returns true is the OTP ROM of the CP2130 is locked
@@ -874,8 +874,8 @@ QVector<quint8> CP2130::spiRead(quint32 bytesToRead, int &errcnt, QString &errst
 void CP2130::spiWrite(const QVector<quint8> &data, quint8 endpointOutAddr, int &errcnt, QString &errstr)
 {
     quint32 bytesToWrite = static_cast<quint32>(data.size());  // Conversion done for sanity purposes
-    int bufsize = bytesToWrite + 8;
-    unsigned char *writeCommandBuffer = new unsigned char[bufsize] {  // Allocated dynamically since version 2.1.0
+    int bufSize = bytesToWrite + 8;
+    unsigned char *writeCommandBuffer = new unsigned char[bufSize] {  // Allocated dynamically since version 2.1.0
         0x00, 0x00,     // Reserved
         CP2130::WRITE,  // Write command
         0x00,           // Reserved
@@ -888,10 +888,10 @@ void CP2130::spiWrite(const QVector<quint8> &data, quint8 endpointOutAddr, int &
         writeCommandBuffer[i + 8] = data[i];
     }
 #if LIBUSB_API_VERSION >= 0x01000105
-    bulkTransfer(endpointOutAddr, writeCommandBuffer, bufsize, nullptr, errcnt, errstr);
+    bulkTransfer(endpointOutAddr, writeCommandBuffer, bufSize, nullptr, errcnt, errstr);
 #else
     int bytesWritten;
-    bulkTransfer(endpointOutAddr, writeCommandBuffer, bufsize, &bytesWritten, errcnt, errstr);
+    bulkTransfer(endpointOutAddr, writeCommandBuffer, bufSize, &bytesWritten, errcnt, errstr);
 #endif
     delete[] writeCommandBuffer;
 }
@@ -907,12 +907,13 @@ void CP2130::spiWrite(const QVector<quint8> &data, int &errcnt, QString &errstr)
 QVector<quint8> CP2130::spiWriteRead(const QVector<quint8> &data, quint8 endpointInAddr, quint8 endpointOutAddr, int &errcnt, QString &errstr)
 {
     size_t bytesToWriteRead = static_cast<size_t>(data.size());
-    size_t bytesLeft = bytesToWriteRead;
+    size_t bytesProcessed = 0;  // Loop control variable implemented in version 2.2.3, to replace "bytesLeft"
     QVector<quint8> retdata;
-    while (bytesLeft > 0) {
-        int payload = bytesLeft > 56 ? 56 : bytesLeft;
-        int bufsize = payload + 8;
-        unsigned char *writeReadCommandBuffer = new unsigned char[bufsize] {
+    while (bytesProcessed < bytesToWriteRead) {
+        size_t bytesRemaining = bytesToWriteRead - bytesProcessed;  // Equivalent to the variable "bytesLeft" found in version 2.2.2, except that it is no longer used for control
+        quint32 payload = static_cast<quint32>(bytesRemaining > 56 ? 56 : bytesRemaining);
+        int bufSize = payload + 8;
+        unsigned char *writeReadCommandBuffer = new unsigned char[bufSize] {
             0x00, 0x00,         // Reserved
             CP2130::WRITEREAD,  // WriteRead command
             0x00,               // Reserved
@@ -921,25 +922,26 @@ QVector<quint8> CP2130::spiWriteRead(const QVector<quint8> &data, quint8 endpoin
             static_cast<quint8>(payload >> 16),
             static_cast<quint8>(payload >> 24)
         };
-        for (int i = 0; i < payload; ++i) {
-            writeReadCommandBuffer[i + 8] = data[bytesToWriteRead - bytesLeft + i];
+        for (size_t i = 0; i < payload; ++i) {
+            writeReadCommandBuffer[i + 8] = data[bytesProcessed + i];
         }
 #if LIBUSB_API_VERSION >= 0x01000105
-        bulkTransfer(endpointOutAddr, writeReadCommandBuffer, bufsize, nullptr, errcnt, errstr);
+        bulkTransfer(endpointOutAddr, writeReadCommandBuffer, bufSize, nullptr, errcnt, errstr);
 #else
         int bytesWritten;
-        bulkTransfer(endpointOutAddr, writeReadCommandBuffer, bufsize, &bytesWritten, errcnt, errstr);
+        bulkTransfer(endpointOutAddr, writeReadCommandBuffer, bufSize, &bytesWritten, errcnt, errstr);
 #endif
         delete[] writeReadCommandBuffer;
         unsigned char *writeReadInputBuffer = new unsigned char[payload];
         int bytesRead = 0;  // Important!
         bulkTransfer(endpointInAddr, writeReadInputBuffer, payload, &bytesRead, errcnt, errstr);
-        retdata.resize(bytesRead);  // Optimization implemented in version 2.2.2
+        int prevretdataSize = retdata.size();
+        retdata.resize(prevretdataSize + bytesRead);  // Optimization implemented in version 2.2.2, and fixed in version 2.2.3
         for (int i = 0; i < bytesRead; ++i) {
-            retdata[i] = writeReadInputBuffer[i];  // Note that the values are no longer appended to the QVector since version 2.2.2, because it is more efficient to resize the QVector just once (see above), so that the values can be simply assigned
+            retdata[prevretdataSize + i] = writeReadInputBuffer[i];  // Note that the values are no longer appended to the QVector since version 2.2.2, because it is more efficient to resize the QVector only once per iteration (see above), so that the values may be simply assigned (fixed in version 2.2.3)
         }
         delete[] writeReadInputBuffer;
-        bytesLeft -= payload;
+        bytesProcessed += payload;  // Note that, since version 2.2.3, the loop control variable is added to (it is generaly a bad idea to subtract from a unsigned variable, because it can lead to a overflow that may go unchecked)
     }
     return retdata;
 }
@@ -994,10 +996,10 @@ void CP2130::writePinConfig(const PinConfig &config, int &errcnt, QString &errst
         config.gpio8,                                                                              // GPIO.8 pin config
         config.gpio9,                                                                              // GPIO.9 pin config
         config.gpio10,                                                                             // GPIO.10 pin config
-        static_cast<quint8>(0x7F & config.sspndlvl >> 8), static_cast<quint8>(config.sspndlvl),    // Suspend pin level bitmap
+        static_cast<quint8>(0x7f & config.sspndlvl >> 8), static_cast<quint8>(config.sspndlvl),    // Suspend pin level bitmap
         static_cast<quint8>(config.sspndmode >> 8), static_cast<quint8>(config.sspndmode),         // Suspend pin mode bitmap
-        static_cast<quint8>(0x7F & config.wkupmask >> 8), static_cast<quint8>(config.wkupmask),    // Wakeup pin mask bitmap
-        static_cast<quint8>(0x7F & config.wkupmatch >> 8), static_cast<quint8>(config.wkupmatch),  // Wakeup pin match bitmap
+        static_cast<quint8>(0x7f & config.wkupmask >> 8), static_cast<quint8>(config.wkupmask),    // Wakeup pin mask bitmap
+        static_cast<quint8>(0x7f & config.wkupmatch >> 8), static_cast<quint8>(config.wkupmatch),  // Wakeup pin match bitmap
         config.divider                                                                             // Clock divider
     };
     controlTransfer(SET, SET_PIN_CONFIG, PROM_WRITE_KEY, 0x0000, controlBufferOut, SET_PIN_CONFIG_WLEN, errcnt, errstr);
@@ -1047,7 +1049,7 @@ void CP2130::writeUSBConfig(const USBConfig &config, quint8 mask, int &errcnt, Q
         config.powmode,                                                         // Power mode
         config.majrel, config.minrel,                                           // Major and minor release versions
         config.trfprio,                                                         // Transfer priority
-        mask                                                                    // Write mask (can be obtained using the return value of getLockWord(), after being bitwise ANDed with "LWUSBCFG" [0x009F] and the resulting value cast to quint8)
+        mask                                                                    // Write mask (can be obtained using the return value of getLockWord(), after being bitwise ANDed with "LWUSBCFG" [0x009f] and the resulting value cast to quint8)
     };
     controlTransfer(SET, SET_USB_CONFIG, PROM_WRITE_KEY, 0x0000, controlBufferOut, SET_USB_CONFIG_WLEN, errcnt, errstr);
 }

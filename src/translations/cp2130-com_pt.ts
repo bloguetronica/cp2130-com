@@ -10,8 +10,8 @@
     </message>
     <message>
         <location filename="../aboutdialog.ui" line="68"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;CP2130 Commander - Version 2.0&lt;br/&gt;© 2022 Samuel Lourenço&lt;/p&gt;&lt;p&gt;This program is distributed under the terms of the &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0-standalone.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;GNU GPL v3&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;CP2130 Commander - Versão 2.0&lt;br/&gt;© 2022 Samuel Lourenço&lt;/p&gt;&lt;p&gt;Este programa é distribuido sob os termos da licença &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0-standalone.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;GNU GPL v3&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;CP2130 Commander - Version 2.1&lt;br/&gt;© 2022 Samuel Lourenço&lt;/p&gt;&lt;p&gt;This program is distributed under the terms of the &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0-standalone.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;GNU GPL v3&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;CP2130 Commander - Versão 2.1&lt;br/&gt;© 2022 Samuel Lourenço&lt;/p&gt;&lt;p&gt;Este programa é distribuido sob os termos da licença &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0-standalone.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;GNU GPL v3&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -735,35 +735,35 @@ Este é um erro crítico e a execução será abortada.</translation>
 </translation>
     </message>
     <message>
-        <location filename="../cp2130.cpp" line="976"/>
+        <location filename="../cp2130.cpp" line="978"/>
         <source>In writeManufacturerDesc(): manufacturer descriptor string cannot be longer than 62 characters.
 </source>
         <translation>Em &quot;writeManufacturerDesc()&quot;: o descritor do fabricante não pode ter mais do que 62 caracteres.
 </translation>
     </message>
     <message>
-        <location filename="../cp2130.cpp" line="1011"/>
+        <location filename="../cp2130.cpp" line="1013"/>
         <source>In writeProductDesc(): product descriptor string cannot be longer than 62 characters.
 </source>
         <translation>Em &quot;writeProductDesc()&quot;: o descritor do produto não pode ter mais do que 62 caracteres.
 </translation>
     </message>
     <message>
-        <location filename="../cp2130.cpp" line="1034"/>
+        <location filename="../cp2130.cpp" line="1036"/>
         <source>In writeSerialDesc(): serial descriptor string cannot be longer than 30 characters.
 </source>
         <translation>Em &quot;writeSerialDesc()&quot;: o descritor do número de série não pode ter mais do que 30 caracteres.
 </translation>
     </message>
     <message>
-        <location filename="../cp2130.cpp" line="1062"/>
+        <location filename="../cp2130.cpp" line="1064"/>
         <source>Could not initialize libusb.
 </source>
         <translation>Falhou ao inicializar o libusb.
 </translation>
     </message>
     <message>
-        <location filename="../cp2130.cpp" line="1068"/>
+        <location filename="../cp2130.cpp" line="1070"/>
         <source>Failed to retrieve a list of devices.
 </source>
         <translation>Falhou em obter uma lista de dispositivos.
