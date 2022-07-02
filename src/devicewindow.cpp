@@ -1,4 +1,4 @@
-/* CP2130 Commander - Version 2.1 for Debian Linux
+/* CP2130 Commander - Version 3.0 for Debian Linux
    Copyright (c) 2022 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
@@ -267,7 +267,7 @@ void DeviceWindow::on_pushButtonRead_clicked()
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
     Data read;
-    read.vector = cp2130_.spiRead(static_cast<quint32>(ui->spinBoxBytesToRead->value()), errcnt, errstr);  // Read from the SPI bus
+    read.vector = cp2130_.spiRead(static_cast<quint32>(ui->spinBoxBytesToRead->value()), epin_, epout_, errcnt, errstr);  // Read from the SPI bus
     usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     if (opCheck(tr("spi-read-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-read-op" should be translated to "SPI read")
@@ -281,7 +281,7 @@ void DeviceWindow::on_pushButtonWrite_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
-    cp2130_.spiWrite(write_.vector, errcnt, errstr);  // Write to the SPI bus
+    cp2130_.spiWrite(write_.vector, epout_, errcnt, errstr);  // Write to the SPI bus
     usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     opCheck(tr("spi-write-op"), errcnt, errstr);  // The string "spi-write-op" should be translated to "SPI write"
@@ -295,7 +295,7 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
     Data read;
-    read.vector = cp2130_.spiWriteRead(write_.vector, errcnt, errstr);  // Write to and read from the SPI bus, simultaneously
+    read.vector = cp2130_.spiWriteRead(write_.vector, epin_, epout_, errcnt, errstr);  // Write to and read from the SPI bus, simultaneously
     usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     if (opCheck(tr("spi-write-read-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-write-read-op" should be translated to "SPI write and read")
@@ -513,6 +513,8 @@ void DeviceWindow::readConfiguration()
         spiModeMap_["10"] = cp2130_.getSPIMode(10, errcnt, errstr);
     }
     // Note that "spiModeMap_" is populated in relation to pins that are configured as chip select pins
+    epin_ = cp2130_.getEndpointInAddr(errcnt, errstr);
+    epout_ = cp2130_.getEndpointOutAddr(errcnt, errstr);
     if (errcnt > 0) {
         if (cp2130_.disconnected()) {
             cp2130_.close();

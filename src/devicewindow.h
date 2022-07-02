@@ -1,4 +1,4 @@
-/* CP2130 Commander - Version 2.1 for Debian Linux
+/* CP2130 Commander - Version 3.0 for Debian Linux
    Copyright (c) 2022 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
@@ -80,6 +80,7 @@ private:
     Data write_;
     QMap<QString, CP2130::SPIMode> spiModeMap_;
     QString serialstr_;
+    quint8 epin_, epout_;
     quint16 pid_, vid_;
     QTimer *timer_;
     int erracc_ = 0;
