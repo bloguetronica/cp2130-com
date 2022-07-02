@@ -80,7 +80,7 @@ private:
     Data write_;
     QMap<QString, CP2130::SPIMode> spiModeMap_;
     QString serialstr_;
-    quint8 epin_, epout_;
+    quint8 epin_, epout_;  // Implemented in version 3.0
     quint16 pid_, vid_;
     QTimer *timer_;
     int erracc_ = 0;

@@ -513,8 +513,8 @@ void DeviceWindow::readConfiguration()
         spiModeMap_["10"] = cp2130_.getSPIMode(10, errcnt, errstr);
     }
     // Note that "spiModeMap_" is populated in relation to pins that are configured as chip select pins
-    epin_ = cp2130_.getEndpointInAddr(errcnt, errstr);
-    epout_ = cp2130_.getEndpointOutAddr(errcnt, errstr);
+    epin_ = cp2130_.getEndpointInAddr(errcnt, errstr);  // Implemented in version 3.0
+    epout_ = cp2130_.getEndpointOutAddr(errcnt, errstr);  // Implemented in version 3.0
     if (errcnt > 0) {
         if (cp2130_.disconnected()) {
             cp2130_.close();
