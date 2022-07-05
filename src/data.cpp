@@ -40,7 +40,6 @@ QVector<quint8> Data::fragment(size_t index, size_t size) const
     return retdata;
 }
 
-
 // Converts to a string of hexadecimal numbers
 QString Data::toHexadecimal() const
 {

@@ -31,6 +31,7 @@ struct Data
 
     QVector<quint8> fragment(size_t index, size_t size) const;
     QString toHexadecimal() const;
+
     void fromHexadecimal(const QString &hexadecimal);
 };
 
