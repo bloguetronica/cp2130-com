@@ -263,11 +263,23 @@ void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
 void DeviceWindow::on_pushButtonRead_clicked()
 {
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
+    size_t bytesToRead = static_cast<size_t>(ui->spinBoxBytesToRead->value());
+    size_t fragmentSizeLimit = 4096;  // To be dynamic (TODO)
+    size_t bytesProcessed = 0;
+    Data read;
     int errcnt = 0;
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
-    Data read;
-    read.vector = cp2130_.spiRead(static_cast<quint32>(ui->spinBoxBytesToRead->value()), epin_, epout_, errcnt, errstr);  // Read from the SPI bus
+    while (bytesProcessed < bytesToRead) {
+        size_t bytesRemaining = bytesToRead - bytesProcessed;  // This will be used to calculate the elapsed time (TODO)
+        size_t fragmentSize = bytesRemaining > fragmentSizeLimit ? fragmentSizeLimit : bytesRemaining;
+        read.vector += cp2130_.spiRead(static_cast<quint32>(fragmentSize), epin_, epout_, errcnt, errstr);  // Read from the SPI bus
+        if (errcnt > 0) {
+            // The progress dialog will be canceled here too (TODO)
+            break;
+        }
+        bytesProcessed += fragmentSize;
+    }
     usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     if (opCheck(tr("spi-read-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-read-op" should be translated to "SPI read")
@@ -278,10 +290,22 @@ void DeviceWindow::on_pushButtonRead_clicked()
 void DeviceWindow::on_pushButtonWrite_clicked()
 {
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
+    size_t bytesToWrite = write_.vector.size();
+    size_t fragmentSizeLimit = 4096;  // To be dynamic (TODO)
+    size_t bytesProcessed = 0;
     int errcnt = 0;
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
-    cp2130_.spiWrite(write_.vector, epout_, errcnt, errstr);  // Write to the SPI bus
+    while (bytesProcessed < bytesToWrite) {
+        size_t bytesRemaining = bytesToWrite - bytesProcessed;  // This will be used to calculate the elapsed time (TODO)
+        size_t fragmentSize = bytesRemaining > fragmentSizeLimit ? fragmentSizeLimit : bytesRemaining;
+        cp2130_.spiWrite(write_.fragment(bytesProcessed, fragmentSize), epout_, errcnt, errstr);  // Write to the SPI bus
+        if (errcnt > 0) {
+            // The progress dialog will be canceled here too (TODO)
+            break;
+        }
+        bytesProcessed += fragmentSize;
+    }
     usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     opCheck(tr("spi-write-op"), errcnt, errstr);  // The string "spi-write-op" should be translated to "SPI write"
@@ -291,11 +315,23 @@ void DeviceWindow::on_pushButtonWrite_clicked()
 void DeviceWindow::on_pushButtonWriteRead_clicked()
 {
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
+    size_t bytesToWriteRead = write_.vector.size();
+    size_t fragmentSizeLimit = 4096;  // To be dynamic (TODO)
+    size_t bytesProcessed = 0;
+    Data read;
     int errcnt = 0;
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
-    Data read;
-    read.vector = cp2130_.spiWriteRead(write_.vector, epin_, epout_, errcnt, errstr);  // Write to and read from the SPI bus, simultaneously
+    while (bytesProcessed < bytesToWriteRead) {
+        size_t bytesRemaining = bytesToWriteRead - bytesProcessed;  // This will be used to calculate the elapsed time (TODO)
+        size_t fragmentSize = bytesRemaining > fragmentSizeLimit ? fragmentSizeLimit : bytesRemaining;
+        read.vector += cp2130_.spiWriteRead(write_.fragment(bytesProcessed, fragmentSize), epin_, epout_, errcnt, errstr);  // Write to and read from the SPI bus, simultaneously
+        if (errcnt > 0) {
+            // The progress dialog will be canceled here too (TODO)
+            break;
+        }
+        bytesProcessed += fragmentSize;
+    }
     usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     if (opCheck(tr("spi-write-read-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-write-read-op" should be translated to "SPI write and read")
