@@ -32,8 +32,9 @@
 #include "ui_devicewindow.h"
 
 // Definitions
-const int ENUM_RETRIES = 10;  // Number of enumeration retries
-const int ERR_LIMIT = 10;     // Error limit
+const int ENUM_RETRIES = 10;                                                           // Number of enumeration retries
+const int ERR_LIMIT = 10;                                                              // Error limit
+const size_t SIZE_LIMITS[8] = {131072, 65536, 65536, 32768, 16384, 8192, 4096, 2048};  // Fragment size limits (from 12MHz to 93.8KHz)
 
 DeviceWindow::DeviceWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -264,7 +265,7 @@ void DeviceWindow::on_pushButtonRead_clicked()
 {
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
     size_t bytesToRead = static_cast<size_t>(ui->spinBoxBytesToRead->value());
-    size_t fragmentSizeLimit = 4096;  // To be dynamic (TODO)
+    size_t fragmentSizeLimit = SIZE_LIMITS[ui->comboBoxFrequency->currentIndex()];
     size_t bytesProcessed = 0;
     Data read;
     int errcnt = 0;
@@ -291,7 +292,7 @@ void DeviceWindow::on_pushButtonWrite_clicked()
 {
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
     size_t bytesToWrite = write_.vector.size();
-    size_t fragmentSizeLimit = 4096;  // To be dynamic (TODO)
+    size_t fragmentSizeLimit = SIZE_LIMITS[ui->comboBoxFrequency->currentIndex()];
     size_t bytesProcessed = 0;
     int errcnt = 0;
     QString errstr;
@@ -316,7 +317,7 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
 {
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
     size_t bytesToWriteRead = write_.vector.size();
-    size_t fragmentSizeLimit = 4096;  // To be dynamic (TODO)
+    size_t fragmentSizeLimit = SIZE_LIMITS[ui->comboBoxFrequency->currentIndex()];
     size_t bytesProcessed = 0;
     Data read;
     int errcnt = 0;
@@ -382,7 +383,7 @@ void DeviceWindow::configureSPIMode()
     QString channel = ui->comboBoxChannel->currentText();
     CP2130::SPIMode spiMode;
     spiMode.csmode = ui->comboBoxCSPinMode->currentIndex() != 0;
-    spiMode.cfrq = ui->comboBoxFrequency->currentIndex();
+    spiMode.cfrq = static_cast<quint8>(ui->comboBoxFrequency->currentIndex());  // Corrected in version 3.0
     spiMode.cpol = ui->spinBoxCPOL->value() != 0;
     spiMode.cpha = ui->spinBoxCPHA->value() != 0;
     int errcnt = 0;
