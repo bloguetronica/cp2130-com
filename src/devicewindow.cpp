@@ -283,7 +283,7 @@ void DeviceWindow::on_pushButtonRead_clicked()
         size_t fragmentSize = bytesRemaining > fragmentSizeLimit ? fragmentSizeLimit : bytesRemaining;
         read.vector += cp2130_.spiRead(static_cast<quint32>(fragmentSize), epin_, epout_, errcnt, errstr);  // Read from the SPI bus
         if (errcnt > 0) {  // In case of error
-            spiReadProgress.cancel();
+            spiReadProgress.cancel();  // Important!
             break;  // Abort the SPI read operation
         }
         bytesProcessed += fragmentSize;
@@ -317,7 +317,7 @@ void DeviceWindow::on_pushButtonWrite_clicked()
         size_t fragmentSize = bytesRemaining > fragmentSizeLimit ? fragmentSizeLimit : bytesRemaining;
         cp2130_.spiWrite(write_.fragment(bytesProcessed, fragmentSize), epout_, errcnt, errstr);  // Write to the SPI bus
         if (errcnt > 0) {  // In case of error
-            spiWriteProgress.cancel();
+            spiWriteProgress.cancel();  // Important!
             break;  // Abort the SPI write operation
         }
         bytesProcessed += fragmentSize;
@@ -351,7 +351,7 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
         size_t fragmentSize = bytesRemaining > fragmentSizeLimit ? fragmentSizeLimit : bytesRemaining;
         read.vector += cp2130_.spiWriteRead(write_.fragment(bytesProcessed, fragmentSize), epin_, epout_, errcnt, errstr);  // Write to and read from the SPI bus, simultaneously
         if (errcnt > 0) {  // In case of error
-            spiWriteReadProgress.cancel();
+            spiWriteReadProgress.cancel();  // Important!
             break;  // Abort the SPI write and read operation
         }
         bytesProcessed += fragmentSize;
