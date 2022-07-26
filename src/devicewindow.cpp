@@ -32,9 +32,9 @@
 #include "ui_devicewindow.h"
 
 // Definitions
-const int ENUM_RETRIES = 10;    // Number of enumeration retries
-const int ERR_LIMIT = 10;       // Error limit
-const size_t SIZE_LIMIT = 256;  // Fragment size limit
+const int ENUM_RETRIES = 10;                                                           // Number of enumeration retries
+const int ERR_LIMIT = 10;                                                              // Error limit
+const size_t SIZE_LIMITS[8] = {131072, 65536, 65536, 32768, 16384, 8192, 4096, 2048};  // Fragment size limits (from 12MHz to 93.8KHz)
 
 DeviceWindow::DeviceWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -264,6 +264,7 @@ void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
 void DeviceWindow::on_pushButtonRead_clicked()
 {
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
+    size_t fragmentSizeLimit = SIZE_LIMITS[ui->comboBoxFrequency->currentIndex()];
     size_t bytesToRead = static_cast<size_t>(ui->spinBoxBytesToRead->value());
     size_t bytesProcessed = 0;
     QProgressDialog spiReadProgress(tr("Performing SPI read operation..."), tr("Abort"), 0, bytesToRead, this);
@@ -278,7 +279,7 @@ void DeviceWindow::on_pushButtonRead_clicked()
             break;  // Abort the SPI read operation
         }
         size_t bytesRemaining = bytesToRead - bytesProcessed;
-        size_t fragmentSize = bytesRemaining > SIZE_LIMIT ? SIZE_LIMIT : bytesRemaining;
+        size_t fragmentSize = bytesRemaining > fragmentSizeLimit ? fragmentSizeLimit : bytesRemaining;
         read.vector += cp2130_.spiRead(static_cast<quint32>(fragmentSize), epin_, epout_, errcnt, errstr);  // Read from the SPI bus
         if (errcnt > 0) {  // In case of error
             spiReadProgress.cancel();
@@ -297,6 +298,7 @@ void DeviceWindow::on_pushButtonRead_clicked()
 void DeviceWindow::on_pushButtonWrite_clicked()
 {
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
+    size_t fragmentSizeLimit = SIZE_LIMITS[ui->comboBoxFrequency->currentIndex()];
     size_t bytesToWrite = write_.vector.size();
     size_t bytesProcessed = 0;
     QProgressDialog spiWriteProgress(tr("Performing SPI write operation..."), tr("Abort"), 0, bytesToWrite, this);
@@ -310,7 +312,7 @@ void DeviceWindow::on_pushButtonWrite_clicked()
             break;  // Abort the SPI write operation
         }
         size_t bytesRemaining = bytesToWrite - bytesProcessed;
-        size_t fragmentSize = bytesRemaining > SIZE_LIMIT ? SIZE_LIMIT : bytesRemaining;
+        size_t fragmentSize = bytesRemaining > fragmentSizeLimit ? fragmentSizeLimit : bytesRemaining;
         cp2130_.spiWrite(write_.fragment(bytesProcessed, fragmentSize), epout_, errcnt, errstr);  // Write to the SPI bus
         if (errcnt > 0) {  // In case of error
             spiWriteProgress.cancel();
@@ -328,6 +330,7 @@ void DeviceWindow::on_pushButtonWrite_clicked()
 void DeviceWindow::on_pushButtonWriteRead_clicked()
 {
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
+    size_t fragmentSizeLimit = SIZE_LIMITS[ui->comboBoxFrequency->currentIndex()];
     size_t bytesToWriteRead = write_.vector.size();
     size_t bytesProcessed = 0;
     Data read;
@@ -342,7 +345,7 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
             break;  // Abort the SPI write and read operation
         }
         size_t bytesRemaining = bytesToWriteRead - bytesProcessed;
-        size_t fragmentSize = bytesRemaining > SIZE_LIMIT ? SIZE_LIMIT : bytesRemaining;
+        size_t fragmentSize = bytesRemaining > fragmentSizeLimit ? fragmentSizeLimit : bytesRemaining;
         read.vector += cp2130_.spiWriteRead(write_.fragment(bytesProcessed, fragmentSize), epin_, epout_, errcnt, errstr);  // Write to and read from the SPI bus, simultaneously
         if (errcnt > 0) {  // In case of error
             spiWriteReadProgress.cancel();
