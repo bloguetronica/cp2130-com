@@ -263,11 +263,12 @@ void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
 
 void DeviceWindow::on_pushButtonRead_clicked()
 {
+    // This function was expanded in version 3.0, in order to support transfers greater than 4096 bytes
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
     size_t fragmentSizeLimit = SIZE_LIMITS[ui->comboBoxFrequency->currentIndex()];
     size_t bytesToRead = static_cast<size_t>(ui->spinBoxBytesToRead->value());
     size_t bytesProcessed = 0;
-    QProgressDialog spiReadProgress(tr("Performing SPI read..."), tr("Abort"), 0, bytesToRead, this);
+    QProgressDialog spiReadProgress(tr("Performing SPI read..."), tr("Abort"), 0, bytesToRead, this);  // Progress dialog implemented in version 3.0
     spiReadProgress.setWindowModality(Qt::WindowModal);
     spiReadProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500ms
     Data read;
@@ -297,11 +298,12 @@ void DeviceWindow::on_pushButtonRead_clicked()
 
 void DeviceWindow::on_pushButtonWrite_clicked()
 {
+    // This function was expanded in version 3.0, in order to support transfers greater than 4096 bytes
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
     size_t fragmentSizeLimit = SIZE_LIMITS[ui->comboBoxFrequency->currentIndex()];
     size_t bytesToWrite = write_.vector.size();
     size_t bytesProcessed = 0;
-    QProgressDialog spiWriteProgress(tr("Performing SPI write..."), tr("Abort"), 0, bytesToWrite, this);
+    QProgressDialog spiWriteProgress(tr("Performing SPI write..."), tr("Abort"), 0, bytesToWrite, this);  // Progress dialog implemented in version 3.0
     spiWriteProgress.setWindowModality(Qt::WindowModal);
     spiWriteProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500ms
     int errcnt = 0;
@@ -329,11 +331,12 @@ void DeviceWindow::on_pushButtonWrite_clicked()
 
 void DeviceWindow::on_pushButtonWriteRead_clicked()
 {
+    // This function was expanded in version 3.0, similar to what was done with on_pushButtonRead_clicked() and on_pushButtonWrite_clicked(), but only to implement a progress dialog
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
     size_t fragmentSizeLimit = SIZE_LIMITS[ui->comboBoxFrequency->currentIndex()];
     size_t bytesToWriteRead = write_.vector.size();
     size_t bytesProcessed = 0;
-    QProgressDialog spiWriteReadProgress(tr("Performing SPI write/read..."), tr("Abort"), 0, bytesToWriteRead, this);
+    QProgressDialog spiWriteReadProgress(tr("Performing SPI write/read..."), tr("Abort"), 0, bytesToWriteRead, this);  // Progress dialog implemented in version 3.0
     spiWriteReadProgress.setWindowModality(Qt::WindowModal);
     spiWriteReadProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500ms
     Data read;
