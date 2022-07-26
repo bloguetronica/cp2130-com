@@ -268,7 +268,7 @@ void DeviceWindow::on_pushButtonRead_clicked()
     size_t fragmentSizeLimit = SIZE_LIMITS[ui->comboBoxFrequency->currentIndex()];
     size_t bytesToRead = static_cast<size_t>(ui->spinBoxBytesToRead->value());
     size_t bytesProcessed = 0;
-    QProgressDialog spiReadProgress(tr("Performing SPI read..."), tr("Abort"), 0, bytesToRead, this);  // Progress dialog implemented in version 3.0
+    QProgressDialog spiReadProgress(tr("Performing SPI read..."), tr("Abort"), 0, static_cast<int>(bytesToRead), this);  // Progress dialog implemented in version 3.0
     spiReadProgress.setWindowModality(Qt::WindowModal);
     spiReadProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500ms
     Data read;
@@ -287,7 +287,7 @@ void DeviceWindow::on_pushButtonRead_clicked()
             break;  // Abort the SPI read operation
         }
         bytesProcessed += fragmentSize;
-        spiReadProgress.setValue(bytesProcessed);
+        spiReadProgress.setValue(static_cast<int>(bytesProcessed));
     }
     usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
@@ -303,7 +303,7 @@ void DeviceWindow::on_pushButtonWrite_clicked()
     size_t fragmentSizeLimit = SIZE_LIMITS[ui->comboBoxFrequency->currentIndex()];
     size_t bytesToWrite = write_.vector.size();
     size_t bytesProcessed = 0;
-    QProgressDialog spiWriteProgress(tr("Performing SPI write..."), tr("Abort"), 0, bytesToWrite, this);  // Progress dialog implemented in version 3.0
+    QProgressDialog spiWriteProgress(tr("Performing SPI write..."), tr("Abort"), 0, static_cast<int>(bytesToWrite), this);  // Progress dialog implemented in version 3.0
     spiWriteProgress.setWindowModality(Qt::WindowModal);
     spiWriteProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500ms
     int errcnt = 0;
@@ -321,7 +321,7 @@ void DeviceWindow::on_pushButtonWrite_clicked()
             break;  // Abort the SPI write operation
         }
         bytesProcessed += fragmentSize;
-        spiWriteProgress.setValue(bytesProcessed);
+        spiWriteProgress.setValue(static_cast<int>(bytesProcessed));
     }
     usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
@@ -336,7 +336,7 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
     size_t fragmentSizeLimit = SIZE_LIMITS[ui->comboBoxFrequency->currentIndex()];
     size_t bytesToWriteRead = write_.vector.size();
     size_t bytesProcessed = 0;
-    QProgressDialog spiWriteReadProgress(tr("Performing SPI write/read..."), tr("Abort"), 0, bytesToWriteRead, this);  // Progress dialog implemented in version 3.0
+    QProgressDialog spiWriteReadProgress(tr("Performing SPI write/read..."), tr("Abort"), 0, static_cast<int>(bytesToWriteRead), this);  // Progress dialog implemented in version 3.0
     spiWriteReadProgress.setWindowModality(Qt::WindowModal);
     spiWriteReadProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500ms
     Data read;
@@ -355,7 +355,7 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
             break;  // Abort the SPI write and read operation
         }
         bytesProcessed += fragmentSize;
-        spiWriteReadProgress.setValue(bytesProcessed);
+        spiWriteReadProgress.setValue(static_cast<int>(bytesProcessed));
     }
     usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
