@@ -281,19 +281,19 @@ void DeviceWindow::on_pushButtonRead_clicked()
         }
         size_t bytesRemaining = bytesToRead - bytesProcessed;
         size_t fragmentSize = bytesRemaining > fragmentSizeLimit ? fragmentSizeLimit : bytesRemaining;
-        read.vector += cp2130_.spiRead(static_cast<quint32>(fragmentSize), epin_, epout_, errcnt, errstr);  // Read from the SPI bus
+        QVector<quint8> readFragment = cp2130_.spiRead(static_cast<quint32>(fragmentSize), epin_, epout_, errcnt, errstr);  // Read from the SPI bus
         if (errcnt > 0) {  // In case of error
             spiReadProgress.cancel();  // Important!
             break;  // Abort the SPI read operation
         }
+        read.vector += readFragment;  // The returned fragment could be considered valid at this point
         bytesProcessed += fragmentSize;
         spiReadProgress.setValue(static_cast<int>(bytesProcessed));
     }
     usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
-    if (opCheck(tr("spi-read-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-read-op" should be translated to "SPI read")
-        ui->lineEditRead->setText(read.toHexadecimal());
-    }
+    ui->lineEditRead->setText(read.toHexadecimal());  // At least, a partial result should be shown in case of error
+    opCheck(tr("spi-read-op"), errcnt, errstr);  // The string "spi-read-op" should be translated to "SPI read"
 }
 
 void DeviceWindow::on_pushButtonWrite_clicked()
@@ -325,8 +325,8 @@ void DeviceWindow::on_pushButtonWrite_clicked()
     }
     usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
-    opCheck(tr("spi-write-op"), errcnt, errstr);  // The string "spi-write-op" should be translated to "SPI write"
     ui->lineEditRead->clear();
+    opCheck(tr("spi-write-op"), errcnt, errstr);  // The string "spi-write-op" should be translated to "SPI write"
 }
 
 void DeviceWindow::on_pushButtonWriteRead_clicked()
@@ -349,19 +349,19 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
         }
         size_t bytesRemaining = bytesToWriteRead - bytesProcessed;
         size_t fragmentSize = bytesRemaining > fragmentSizeLimit ? fragmentSizeLimit : bytesRemaining;
-        read.vector += cp2130_.spiWriteRead(write_.fragment(bytesProcessed, fragmentSize), epin_, epout_, errcnt, errstr);  // Write to and read from the SPI bus, simultaneously
+        QVector<quint8> readFragment = cp2130_.spiWriteRead(write_.fragment(bytesProcessed, fragmentSize), epin_, epout_, errcnt, errstr);  // Write to and read from the SPI bus, simultaneously
         if (errcnt > 0) {  // In case of error
             spiWriteReadProgress.cancel();  // Important!
             break;  // Abort the SPI write and read operation
         }
+        read.vector += readFragment;  // The returned fragment could be considered valid at this point
         bytesProcessed += fragmentSize;
         spiWriteReadProgress.setValue(static_cast<int>(bytesProcessed));
     }
     usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
-    if (opCheck(tr("spi-write-read-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-write-read-op" should be translated to "SPI write and read")
-        ui->lineEditRead->setText(read.toHexadecimal());
-    }
+    ui->lineEditRead->setText(read.toHexadecimal());  // At least, a partial result should be shown if an error occurs
+    opCheck(tr("spi-write-read-op"), errcnt, errstr);  // The string "spi-write-read-op" should be translated to "SPI write and read"
 }
 
 void DeviceWindow::on_spinBoxCPHA_valueChanged()
