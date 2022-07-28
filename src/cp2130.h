@@ -1,4 +1,4 @@
-/* CP2130 class for Qt - Version 2.2.3
+/* CP2130 class for Qt - Version 2.2.4
    Copyright (c) 2021-2022 Samuel Lourenço
 
    This library is free software: you can redistribute it and/or modify it

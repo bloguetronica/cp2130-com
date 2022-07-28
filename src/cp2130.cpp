@@ -1,4 +1,4 @@
-/* CP2130 class for Qt - Version 2.2.3
+/* CP2130 class for Qt - Version 2.2.4
    Copyright (c) 2021-2022 Samuel Lourenço
 
    This library is free software: you can redistribute it and/or modify it
@@ -909,7 +909,8 @@ QVector<quint8> CP2130::spiWriteRead(const QVector<quint8> &data, quint8 endpoin
     size_t bytesToWriteRead = static_cast<size_t>(data.size());
     size_t bytesProcessed = 0;  // Loop control variable implemented in version 2.2.3, to replace "bytesLeft"
     QVector<quint8> retdata;
-    while (bytesProcessed < bytesToWriteRead) {
+    int preverrcnt = errcnt;
+    while (bytesProcessed < bytesToWriteRead && preverrcnt == errcnt) {  // The extra condition breaks the loop in case of error (added in version 2.2.4)
         size_t bytesRemaining = bytesToWriteRead - bytesProcessed;  // Equivalent to the variable "bytesLeft" found in version 2.2.2, except that it is no longer used for control
         quint32 payload = static_cast<quint32>(bytesRemaining > 56 ? 56 : bytesRemaining);
         int bufSize = payload + 8;
