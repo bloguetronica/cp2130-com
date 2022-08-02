@@ -55,7 +55,7 @@ void InformationDialog::setMaxPowerLabelText(quint8 maxpower)
 // Sets the labelPID text
 void InformationDialog::setPIDLabelText(quint16 pid)
 {
-    ui->labelPID->setText(QString("0x%1").arg(pid, 2, 16, QChar('0')));
+    ui->labelPID->setText(QString("0x%1").arg(pid, 4, 16, QChar('0')));
 }
 
 // Sets the labelPowerMode text
@@ -111,5 +111,5 @@ void InformationDialog::setSiliconVersionLabelText(quint8 majver, quint8 minver)
 // Sets the labelVID text
 void InformationDialog::setVIDLabelText(quint16 vid)
 {
-    ui->labelVID->setText(QString("0x%1").arg(vid, 2, 16, QChar('0')));
+    ui->labelVID->setText(QString("0x%1").arg(vid, 4, 16, QChar('0')));
 }
