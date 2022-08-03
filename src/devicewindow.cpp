@@ -49,6 +49,12 @@ DeviceWindow::~DeviceWindow()
     delete ui;
 }
 
+// Checks if the device window is currently fully enabled (implemented in version 3.0)
+bool DeviceWindow::isViewEnabled()
+{
+    return viewEnabled_;
+}
+
 // Opens the device and prepares the corresponding window
 void DeviceWindow::openDevice(quint16 vid, quint16 pid, const QString &serialstr)
 {
@@ -435,6 +441,7 @@ void DeviceWindow::disableView()
     ui->checkBoxGPIO8->setStyleSheet("");
     ui->checkBoxGPIO9->setStyleSheet("");
     ui->checkBoxGPIO10->setStyleSheet("");
+    viewEnabled_ = false;
 }
 
 // Displays the SPI mode for the currently selected channel
@@ -502,6 +509,7 @@ void DeviceWindow::initializeView()
 {
     initializeGPIOControls();
     initializeSPIControls();
+    viewEnabled_ = true;
 }
 
 // Checks for errors and validates (or ultimately halts) device operations

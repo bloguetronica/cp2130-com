@@ -41,6 +41,7 @@ public:
     explicit DeviceWindow(QWidget *parent = nullptr);
     ~DeviceWindow();
 
+    bool isViewEnabled();
     void openDevice(quint16 vid, quint16 pid, const QString &serialstr);
 
 private slots:
@@ -83,6 +84,7 @@ private:
     QTimer *timer_;
     quint8 epin_, epout_;  // Implemented in version 3.0
     quint16 pid_, vid_;
+    bool viewEnabled_ = false;  // Implemented in version 3.0
     int erracc_ = 0;
 
     void configureSPIMode();
