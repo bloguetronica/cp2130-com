@@ -82,9 +82,9 @@ private:
     QMap<QString, CP2130::SPIMode> spiModeMap_;
     QString serialstr_;
     QTimer *timer_;
-    quint8 epin_, epout_;  // Implemented in version 3.0
+    quint8 epin_, epout_;
     quint16 pid_, vid_;
-    bool viewEnabled_ = false;  // Implemented in version 3.0
+    bool viewEnabled_ = false;
     int erracc_ = 0;
 
     void configureSPIMode();

@@ -267,9 +267,9 @@ void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
     }
 }
 
+// This function was expanded in version 3.0, in order to support transfers greater than 4096 bytes
 void DeviceWindow::on_pushButtonRead_clicked()
 {
-    // This function was expanded in version 3.0, in order to support transfers greater than 4096 bytes
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
     size_t fragmentSizeLimit = SIZE_LIMITS[ui->comboBoxFrequency->currentIndex()];
     size_t bytesToRead = static_cast<size_t>(ui->spinBoxBytesToRead->value());
@@ -302,9 +302,9 @@ void DeviceWindow::on_pushButtonRead_clicked()
     opCheck(tr("spi-read-op"), errcnt, errstr);  // The string "spi-read-op" should be translated to "SPI read"
 }
 
+// This function was expanded in version 3.0, in order to support transfers greater than 4096 bytes
 void DeviceWindow::on_pushButtonWrite_clicked()
 {
-    // This function was expanded in version 3.0, in order to support transfers greater than 4096 bytes
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
     size_t fragmentSizeLimit = SIZE_LIMITS[ui->comboBoxFrequency->currentIndex()];
     size_t bytesToWrite = write_.vector.size();
@@ -335,9 +335,9 @@ void DeviceWindow::on_pushButtonWrite_clicked()
     opCheck(tr("spi-write-op"), errcnt, errstr);  // The string "spi-write-op" should be translated to "SPI write"
 }
 
+// This function was expanded in version 3.0, similar to what was done with on_pushButtonRead_clicked() and on_pushButtonWrite_clicked(), but only to implement a progress dialog
 void DeviceWindow::on_pushButtonWriteRead_clicked()
 {
-    // This function was expanded in version 3.0, similar to what was done with on_pushButtonRead_clicked() and on_pushButtonWrite_clicked(), but only to implement a progress dialog
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
     size_t fragmentSizeLimit = SIZE_LIMITS[ui->comboBoxFrequency->currentIndex()];
     size_t bytesToWriteRead = write_.vector.size();

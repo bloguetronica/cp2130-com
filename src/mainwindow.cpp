@@ -70,9 +70,9 @@ void MainWindow::on_lineEditVID_textEdited()
     validateInput();
 }
 
+// This function was expanded in version 3.0, so that when the user tries to open a device that is already open in the current instance of the application, it will bring the corresponding window to the top
 void MainWindow::on_pushButtonOpen_clicked()
 {
-    // This function was expanded in version 3.0, so that when trying to open a device that is already open by the current instance of the application, it will bring the corresponding window to the top
     QString serialstr = ui->comboBoxDevices->currentText();  // Extract the serial number from the chosen item in the combo box
     QString usbidstr = QString("%1%2%3").arg(vid_, 4, 16, QChar('0')).arg(pid_, 4, 16, QChar('0')).arg(serialstr);  // Unique identifier string for the USB device
     if (devWindowMap_.contains(usbidstr) && !devWindowMap_[usbidstr].isNull() && devWindowMap_[usbidstr]->isViewEnabled()) {  // If the device is already listed, and its window is open but not disabled
