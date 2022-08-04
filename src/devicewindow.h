@@ -84,7 +84,7 @@ private:
     QTimer *timer_;
     quint8 epin_, epout_;
     quint16 pid_, vid_;
-    bool viewEnabled_;
+    bool viewEnabled_ = false;
     int erracc_ = 0;
 
     void configureSPIMode();
