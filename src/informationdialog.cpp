@@ -35,7 +35,7 @@ InformationDialog::~InformationDialog()
     delete ui;
 }
 
-// Sets the labelManufacturer text
+// Sets the text of "labelManufacturer"
 void InformationDialog::setManufacturerLabelText(const QString &manufacturerstr)
 {
     QString manufacturer = manufacturerstr;
@@ -46,19 +46,19 @@ void InformationDialog::setManufacturerLabelText(const QString &manufacturerstr)
     ui->labelManufacturer->setText(manufacturer);
 }
 
-// Sets the labelMaxPower text
+// Sets the text of "labelMaxPower"
 void InformationDialog::setMaxPowerLabelText(quint8 maxpower)
 {
     ui->labelMaxPower->setText(QString("%1 [0x%2]").arg(2 * maxpower).arg(maxpower, 2, 16, QChar('0')));
 }
 
-// Sets the labelPID text
+// Sets the text of "labelPID"
 void InformationDialog::setPIDLabelText(quint16 pid)
 {
     ui->labelPID->setText(QString("0x%1").arg(pid, 4, 16, QChar('0')));
 }
 
-// Sets the labelPowerMode text
+// Sets the text of "labelPowerMode"
 void InformationDialog::setPowerModeLabelText(quint8 powmode)
 {
     QString powerMode;
@@ -74,7 +74,7 @@ void InformationDialog::setPowerModeLabelText(quint8 powmode)
     ui->labelPowerMode->setText(powerMode);
 }
 
-// Sets the labelProduct text
+// Sets the text of "labelProduct"
 void InformationDialog::setProductLabelText(const QString &productstr)
 {
     QString product = productstr;
@@ -85,13 +85,13 @@ void InformationDialog::setProductLabelText(const QString &productstr)
     ui->labelProduct->setText(product);
 }
 
-// Sets the labelReleaseVersion text
+// Sets the text of "labelReleaseVersion"
 void InformationDialog::setReleaseVersionLabelText(quint8 majrelease, quint8 minrelease)
 {
     ui->labelReleaseVersion->setText(QString("%1.%2 [0x%3]").arg(majrelease).arg(minrelease).arg(majrelease << 8 | minrelease, 4, 16, QChar('0')));
 }
 
-// Sets the labelSerial text
+// Sets the text of "labelSerial"
 void InformationDialog::setSerialLabelText(const QString &serialstr)
 {
     QString serial = serialstr;
@@ -102,13 +102,13 @@ void InformationDialog::setSerialLabelText(const QString &serialstr)
     ui->labelSerial->setText(serial);
 }
 
-// Sets the labelSiliconVersion text
+// Sets the text of "labelSiliconVersion"
 void InformationDialog::setSiliconVersionLabelText(quint8 majver, quint8 minver)
 {
     ui->labelSiliconVersion->setText(QString("%1.%2 [0x%3]").arg(majver).arg(minver).arg(majver << 8 | minver, 4, 16, QChar('0')));
 }
 
-// Sets the labelVID text
+// Sets the text of "labelVID"
 void InformationDialog::setVIDLabelText(quint16 vid)
 {
     ui->labelVID->setText(QString("0x%1").arg(vid, 4, 16, QChar('0')));

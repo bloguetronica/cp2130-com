@@ -34,85 +34,85 @@ DelaysDialog::~DelaysDialog()
     delete ui;
 }
 
-// Returns the "checkBoxCSToggle" state
+// Returns the state of "checkBoxCSToggle"
 bool DelaysDialog::csToggleCheckBoxIsChecked()
 {
     return ui->checkBoxCSToggle->isChecked();
 }
 
-// Returns the "checkBoxInterByteDelay" state
+// Returns the state of "checkBoxInterByteDelay"
 bool DelaysDialog::interByteDelayCheckBoxIsChecked()
 {
     return ui->checkBoxInterByteDelay->isChecked();
 }
 
-// Returns the "spinBoxInterByteDelay" value
+// Returns the value of "spinBoxInterByteDelay"
 quint16 DelaysDialog::interByteDelaySpinBoxValue()
 {
     return static_cast<quint16>(ui->spinBoxInterByteDelay->value());
 }
 
-// Returns the "checkBoxPostAssertDelay" state
+// Returns the state of "checkBoxPostAssertDelay"
 bool DelaysDialog::postAssertDelayCheckBoxIsChecked()
 {
     return ui->checkBoxPostAssertDelay->isChecked();
 }
 
-// Returns the "spinBoxPostAssertDelay" value
+// Returns the value of "spinBoxPostAssertDelay"
 quint16 DelaysDialog::postAssertDelaySpinBoxValue()
 {
     return static_cast<quint16>(ui->spinBoxPostAssertDelay->value());
 }
 
-// Returns the "checkBoxPreDeassertDelay" state
+// Returns the state of "checkBoxPreDeassertDelay"
 bool DelaysDialog::preDeassertDelayCheckBoxIsChecked()
 {
     return ui->checkBoxPreDeassertDelay->isChecked();
 }
 
-// Returns the "spinBoxPreDeassertDelay" value
+// Returns the value of "spinBoxPreDeassertDelay"
 quint16 DelaysDialog::preDeassertDelaySpinBoxValue()
 {
     return static_cast<quint16>(ui->spinBoxPreDeassertDelay->value());
 }
 
-// Sets the "checkBoxCSToggle" state
+// Sets the state of "checkBoxCSToggle"
 void DelaysDialog::setCSToggleCheckBox(bool cstglen)
 {
     ui->checkBoxCSToggle->setChecked(cstglen);
 }
 
-// Sets the "checkBoxInterByteDelay" state
+// Sets the state of "checkBoxInterByteDelay"
 void DelaysDialog::setInterByteDelayCheckBox(bool itbyten)
 {
     ui->checkBoxInterByteDelay->setChecked(itbyten);
 }
 
-// Returns the "spinBoxInterByteDelay" value
+// Sets the value of "spinBoxInterByteDelay"
 void DelaysDialog::setInterByteDelaySpinBoxValue(quint16 itbytdly)
 {
     ui->spinBoxInterByteDelay->setValue(itbytdly);
 }
 
-// Sets the "checkBoxPostAssertDelay" state
+// Sets the state of "checkBoxPostAssertDelay"
 void DelaysDialog::setPostAssertDelayCheckBox(bool pstasten)
 {
     ui->checkBoxPostAssertDelay->setChecked(pstasten);
 }
 
-// Gets the "spinBoxPostAssertDelay" value
+// Sets the value of "spinBoxPostAssertDelay"
 void DelaysDialog::setPostAssertDelaySpinBoxValue(quint16 pstastdly)
 {
     ui->spinBoxPostAssertDelay->setValue(pstastdly);
 }
 
-// Sets the "checkBoxPreDeassertDelay" state
+// Sets the state of "checkBoxPreDeassertDelay"
 void DelaysDialog::setPreDeassertDelayCheckBox(bool prdasten)
 {
     ui->checkBoxPreDeassertDelay->setChecked(prdasten);
 }
 
-// Gets the "spinBoxPreDeassertDelay" value
+// Sets the value of "spinBoxPreDeassertDelay"
 void DelaysDialog::setPreDeassertDelaySpinBoxValue(quint16 prdastdly)
 {
     ui->spinBoxPreDeassertDelay->setValue(prdastdly);
