@@ -91,6 +91,7 @@ private:
     void disableView();
     void displaySPIMode();
     void initializeGPIOControls();
+    void initializeSetClockDividerAction();
     void initializeSPIControls();
     void initializeView();
     bool opCheck(const QString &op, int errcnt, QString errstr);

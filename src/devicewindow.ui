@@ -619,6 +619,7 @@
     </property>
     <addaction name="actionInformation"/>
     <addaction name="separator"/>
+    <addaction name="actionSetClockDivider"/>
     <addaction name="actionReset"/>
     <addaction name="separator"/>
     <addaction name="actionClose"/>
@@ -653,6 +654,14 @@
   <action name="actionInformation">
    <property name="text">
     <string>&amp;Information</string>
+   </property>
+  </action>
+  <action name="actionSetClockDivider">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Set Clock &amp;Divider</string>
    </property>
   </action>
  </widget>

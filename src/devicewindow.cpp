@@ -428,6 +428,7 @@ void DeviceWindow::configureSPIMode()
 void DeviceWindow::disableView()
 {
     ui->actionInformation->setEnabled(false);
+    ui->actionSetClockDivider->setEnabled(false);
     ui->actionReset->setEnabled(false);
     ui->centralWidget->setEnabled(false);
     ui->checkBoxGPIO0->setStyleSheet("");
@@ -482,6 +483,12 @@ void DeviceWindow::initializeGPIOControls()
     // Since version 2.0, the enabled boxes not only correspond to GPIO pins that are configured as outputs, but to CS pins as well
 }
 
+// Initializes the "Set Clock Divider" action (implemented in version 3.0)
+void DeviceWindow::initializeSetClockDividerAction()
+{
+    ui->actionSetClockDivider->setEnabled(pinConfig_.gpio4 == CP2130::PCCLKOUT);
+}
+
 // Initializes the SPI controls
 void DeviceWindow::initializeSPIControls()
 {
@@ -507,6 +514,7 @@ void DeviceWindow::initializeSPIControls()
 // This is the routine that is used to initialize the device window
 void DeviceWindow::initializeView()
 {
+    initializeSetClockDividerAction();
     initializeGPIOControls();
     initializeSPIControls();
     viewEnabled_ = true;
