@@ -339,42 +339,42 @@
      </property>
      <item>
       <property name="text">
-       <string>12MHz</string>
+       <string>12 MHz</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>6MHz</string>
+       <string>6 MHz</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>3MHz</string>
+       <string>3 MHz</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>1.5MHz</string>
+       <string>1.5 MHz</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>750KHz</string>
+       <string>750 kHz</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>375KHz</string>
+       <string>375 kHz</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>187.5KHz</string>
+       <string>187.5 kHz</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>93.8KHz</string>
+       <string>93.8 kHz</string>
       </property>
      </item>
     </widget>
