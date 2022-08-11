@@ -58,9 +58,9 @@
   <widget class="QLabel" name="labelManufacturer">
    <property name="geometry">
     <rect>
-     <x>185</x>
+     <x>190</x>
      <y>10</y>
-     <width>306</width>
+     <width>301</width>
      <height>17</height>
     </rect>
    </property>
@@ -73,7 +73,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>170</width>
+     <width>175</width>
      <height>17</height>
     </rect>
    </property>
@@ -87,9 +87,9 @@
   <widget class="QLabel" name="labelSerial">
    <property name="geometry">
     <rect>
-     <x>185</x>
+     <x>190</x>
      <y>44</y>
-     <width>306</width>
+     <width>301</width>
      <height>17</height>
     </rect>
    </property>
@@ -100,9 +100,9 @@
   <widget class="QLabel" name="labelMaxPower">
    <property name="geometry">
     <rect>
-     <x>185</x>
+     <x>190</x>
      <y>129</y>
-     <width>306</width>
+     <width>301</width>
      <height>17</height>
     </rect>
    </property>
@@ -115,7 +115,7 @@
     <rect>
      <x>10</x>
      <y>44</y>
-     <width>170</width>
+     <width>175</width>
      <height>17</height>
     </rect>
    </property>
@@ -131,7 +131,7 @@
     <rect>
      <x>10</x>
      <y>95</y>
-     <width>170</width>
+     <width>175</width>
      <height>17</height>
     </rect>
    </property>
@@ -145,9 +145,9 @@
   <widget class="QLabel" name="labelReleaseVersion">
    <property name="geometry">
     <rect>
-     <x>185</x>
+     <x>190</x>
      <y>95</y>
-     <width>306</width>
+     <width>301</width>
      <height>17</height>
     </rect>
    </property>
@@ -160,7 +160,7 @@
     <rect>
      <x>10</x>
      <y>129</y>
-     <width>170</width>
+     <width>175</width>
      <height>17</height>
     </rect>
    </property>
@@ -176,7 +176,7 @@
     <rect>
      <x>10</x>
      <y>27</y>
-     <width>170</width>
+     <width>175</width>
      <height>17</height>
     </rect>
    </property>
@@ -190,9 +190,9 @@
   <widget class="QLabel" name="labelProduct">
    <property name="geometry">
     <rect>
-     <x>185</x>
+     <x>190</x>
      <y>27</y>
-     <width>306</width>
+     <width>301</width>
      <height>17</height>
     </rect>
    </property>
@@ -203,9 +203,9 @@
   <widget class="QLabel" name="labelSiliconVersion">
    <property name="geometry">
     <rect>
-     <x>185</x>
+     <x>190</x>
      <y>146</y>
-     <width>306</width>
+     <width>301</width>
      <height>17</height>
     </rect>
    </property>
@@ -218,7 +218,7 @@
     <rect>
      <x>10</x>
      <y>146</y>
-     <width>170</width>
+     <width>175</width>
      <height>17</height>
     </rect>
    </property>
@@ -232,9 +232,9 @@
   <widget class="QLabel" name="labelVID">
    <property name="geometry">
     <rect>
-     <x>185</x>
+     <x>190</x>
      <y>61</y>
-     <width>306</width>
+     <width>301</width>
      <height>17</height>
     </rect>
    </property>
@@ -247,7 +247,7 @@
     <rect>
      <x>10</x>
      <y>61</y>
-     <width>170</width>
+     <width>175</width>
      <height>17</height>
     </rect>
    </property>
@@ -261,9 +261,9 @@
   <widget class="QLabel" name="labelPID">
    <property name="geometry">
     <rect>
-     <x>185</x>
+     <x>190</x>
      <y>78</y>
-     <width>306</width>
+     <width>301</width>
      <height>17</height>
     </rect>
    </property>
@@ -276,7 +276,7 @@
     <rect>
      <x>10</x>
      <y>78</y>
-     <width>170</width>
+     <width>175</width>
      <height>17</height>
     </rect>
    </property>
@@ -290,9 +290,9 @@
   <widget class="QLabel" name="labelPowerMode">
    <property name="geometry">
     <rect>
-     <x>185</x>
+     <x>190</x>
      <y>112</y>
-     <width>306</width>
+     <width>301</width>
      <height>17</height>
     </rect>
    </property>
@@ -305,7 +305,7 @@
     <rect>
      <x>10</x>
      <y>112</y>
-     <width>170</width>
+     <width>175</width>
      <height>17</height>
     </rect>
    </property>
