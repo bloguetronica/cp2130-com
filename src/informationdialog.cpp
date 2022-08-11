@@ -49,7 +49,7 @@ void InformationDialog::setManufacturerLabelText(const QString &manufacturerstr)
 // Sets the text of "labelMaxPower"
 void InformationDialog::setMaxPowerLabelText(quint8 maxpower)
 {
-    ui->labelMaxPower->setText(QString("%1 [0x%2]").arg(2 * maxpower).arg(maxpower, 2, 16, QChar('0')));
+    ui->labelMaxPower->setText(QString("%1 mA [0x%2]").arg(2 * maxpower).arg(maxpower, 2, 16, QChar('0')));
 }
 
 // Sets the text of "labelPID"

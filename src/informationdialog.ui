@@ -165,7 +165,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Max. power cons. (mA):</string>
+    <string>Max. power consumpt.:</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
