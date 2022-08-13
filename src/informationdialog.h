@@ -36,15 +36,15 @@ public:
     explicit InformationDialog(QWidget *parent = nullptr);
     ~InformationDialog();
 
-    void setManufacturerLabelText(const QString &manufacturerstr);
-    void setMaxPowerLabelText(quint8 maxpower);
-    void setPIDLabelText(quint16 pid);
-    void setPowerModeLabelText(quint8 powmode);
-    void setProductLabelText(const QString &productstr);
-    void setReleaseVersionLabelText(quint8 majrelease, quint8 minrelease);
-    void setVIDLabelText(quint16 vid);
-    void setSerialLabelText(const QString &serialstr);
-    void setSiliconVersionLabelText(quint8 majver, quint8 minver);
+    void setManufacturerValueLabelText(const QString &manufacturerstr);
+    void setMaxPowerValueLabelText(quint8 maxpower);
+    void setPIDValueLabelText(quint16 pid);
+    void setPowerModeValueLabelText(quint8 powmode);
+    void setProductValueLabelText(const QString &productstr);
+    void setReleaseVersionValueLabelText(quint8 majrelease, quint8 minrelease);
+    void setVIDValueLabelText(quint16 vid);
+    void setSerialValueLabelText(const QString &serialstr);
+    void setSiliconVersionValueLabelText(quint8 majver, quint8 minver);
 
 private:
     Ui::InformationDialog *ui;

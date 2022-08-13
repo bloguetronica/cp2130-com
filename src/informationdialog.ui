@@ -55,7 +55,7 @@
     <set>QDialogButtonBox::Close</set>
    </property>
   </widget>
-  <widget class="QLabel" name="labelManufacturer">
+  <widget class="QLabel" name="labelManufacturerValue">
    <property name="geometry">
     <rect>
      <x>190</x>
@@ -68,7 +68,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="labelManufacturerLabel">
+  <widget class="QLabel" name="labelManufacturer">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -84,7 +84,7 @@
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="labelSerial">
+  <widget class="QLabel" name="labelSerialValue">
    <property name="geometry">
     <rect>
      <x>190</x>
@@ -97,7 +97,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="labelMaxPower">
+  <widget class="QLabel" name="labelMaxPowerValue">
    <property name="geometry">
     <rect>
      <x>190</x>
@@ -110,7 +110,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="labelSerialLabel">
+  <widget class="QLabel" name="labelSerial">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -126,7 +126,7 @@
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="labelReleaseVersionLabel">
+  <widget class="QLabel" name="labelReleaseVersion">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -142,7 +142,7 @@
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="labelReleaseVersion">
+  <widget class="QLabel" name="labelReleaseVersionValue">
    <property name="geometry">
     <rect>
      <x>190</x>
@@ -155,7 +155,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="labelMaxPowerLabel">
+  <widget class="QLabel" name="labelMaxPower">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -171,7 +171,7 @@
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="labelProductLabel">
+  <widget class="QLabel" name="labelProduct">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -187,7 +187,7 @@
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="labelProduct">
+  <widget class="QLabel" name="labelProductValue">
    <property name="geometry">
     <rect>
      <x>190</x>
@@ -200,7 +200,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="labelSiliconVersion">
+  <widget class="QLabel" name="labelSiliconVersionValue">
    <property name="geometry">
     <rect>
      <x>190</x>
@@ -213,7 +213,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="labelSiliconVersionLabel">
+  <widget class="QLabel" name="labelSiliconVersion">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -229,7 +229,7 @@
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="labelVID">
+  <widget class="QLabel" name="labelVIDValue">
    <property name="geometry">
     <rect>
      <x>190</x>
@@ -242,7 +242,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="labelVIDLabel">
+  <widget class="QLabel" name="labelVID">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -258,7 +258,7 @@
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="labelPID">
+  <widget class="QLabel" name="labelPIDValue">
    <property name="geometry">
     <rect>
      <x>190</x>
@@ -271,7 +271,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="labelPIDLabel">
+  <widget class="QLabel" name="labelPID">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -287,7 +287,7 @@
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="labelPowerMode">
+  <widget class="QLabel" name="labelPowerModeValue">
    <property name="geometry">
     <rect>
      <x>190</x>
@@ -300,7 +300,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="labelPowerModeLabel">
+  <widget class="QLabel" name="labelPowerMode">
    <property name="geometry">
     <rect>
      <x>10</x>

@@ -93,17 +93,17 @@ void DeviceWindow::on_actionInformation_triggered()
     InformationDialog infoDialog;
     int errcnt = 0;
     QString errstr;
-    infoDialog.setManufacturerLabelText(cp2130_.getManufacturerDesc(errcnt, errstr));
-    infoDialog.setProductLabelText(cp2130_.getProductDesc(errcnt, errstr));
-    infoDialog.setSerialLabelText(cp2130_.getSerialDesc(errcnt, errstr));  // It is important to read the serial number from the OTP ROM, instead of just passing the value of serialstr_
+    infoDialog.setManufacturerValueLabelText(cp2130_.getManufacturerDesc(errcnt, errstr));
+    infoDialog.setProductValueLabelText(cp2130_.getProductDesc(errcnt, errstr));
+    infoDialog.setSerialValueLabelText(cp2130_.getSerialDesc(errcnt, errstr));  // It is important to read the serial number from the OTP ROM, instead of just passing the value of serialstr_
     CP2130::USBConfig config = cp2130_.getUSBConfig(errcnt, errstr);
-    infoDialog.setVIDLabelText(config.vid);
-    infoDialog.setPIDLabelText(config.pid);
-    infoDialog.setReleaseVersionLabelText(config.majrel, config.minrel);
-    infoDialog.setPowerModeLabelText(config.powmode);
-    infoDialog.setMaxPowerLabelText(config.maxpow);
+    infoDialog.setVIDValueLabelText(config.vid);
+    infoDialog.setPIDValueLabelText(config.pid);
+    infoDialog.setReleaseVersionValueLabelText(config.majrel, config.minrel);
+    infoDialog.setPowerModeValueLabelText(config.powmode);
+    infoDialog.setMaxPowerValueLabelText(config.maxpow);
     CP2130::SiliconVersion siversion = cp2130_.getSiliconVersion(errcnt, errstr);
-    infoDialog.setSiliconVersionLabelText(siversion.maj, siversion.min);
+    infoDialog.setSiliconVersionValueLabelText(siversion.maj, siversion.min);
     if (opCheck(tr("device-information-retrieval-op"), errcnt, errstr)) {  // If error check passes (the string "device-information-retrieval-op" should be translated to "Device information retrieval")
         infoDialog.exec();
     }

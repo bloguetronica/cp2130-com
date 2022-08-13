@@ -35,31 +35,31 @@ InformationDialog::~InformationDialog()
     delete ui;
 }
 
-// Sets the text of "labelManufacturer"
-void InformationDialog::setManufacturerLabelText(const QString &manufacturerstr)
+// Sets the text of "labelManufacturerValue"
+void InformationDialog::setManufacturerValueLabelText(const QString &manufacturerstr)
 {
     QString manufacturer = manufacturerstr;
     if (manufacturerstr.size() > 26) {
         manufacturer.truncate(24);
         manufacturer += "...";
     }
-    ui->labelManufacturer->setText(manufacturer);
+    ui->labelManufacturerValue->setText(manufacturer);
 }
 
-// Sets the text of "labelMaxPower"
-void InformationDialog::setMaxPowerLabelText(quint8 maxpower)
+// Sets the text of "labelMaxPowerValue"
+void InformationDialog::setMaxPowerValueLabelText(quint8 maxpower)
 {
-    ui->labelMaxPower->setText(QString("%1 mA [0x%2]").arg(2 * maxpower).arg(maxpower, 2, 16, QChar('0')));
+    ui->labelMaxPowerValue->setText(QString("%1 mA [0x%2]").arg(2 * maxpower).arg(maxpower, 2, 16, QChar('0')));
 }
 
-// Sets the text of "labelPID"
-void InformationDialog::setPIDLabelText(quint16 pid)
+// Sets the text of "labelPIDValue"
+void InformationDialog::setPIDValueLabelText(quint16 pid)
 {
-    ui->labelPID->setText(QString("0x%1").arg(pid, 4, 16, QChar('0')));
+    ui->labelPIDValue->setText(QString("0x%1").arg(pid, 4, 16, QChar('0')));
 }
 
-// Sets the text of "labelPowerMode"
-void InformationDialog::setPowerModeLabelText(quint8 powmode)
+// Sets the text of "labelPowerModeValue"
+void InformationDialog::setPowerModeValueLabelText(quint8 powmode)
 {
     QString powerMode;
     if (powmode == CP2130::PMBUSREGEN) {
@@ -71,45 +71,45 @@ void InformationDialog::setPowerModeLabelText(quint8 powmode)
     } else {
         powerMode = tr("Unknown");
     }
-    ui->labelPowerMode->setText(powerMode);
+    ui->labelPowerModeValue->setText(powerMode);
 }
 
-// Sets the text of "labelProduct"
-void InformationDialog::setProductLabelText(const QString &productstr)
+// Sets the text of "labelProductValue"
+void InformationDialog::setProductValueLabelText(const QString &productstr)
 {
     QString product = productstr;
     if (productstr.size() > 26) {
         product.truncate(24);
         product += "...";
     }
-    ui->labelProduct->setText(product);
+    ui->labelProductValue->setText(product);
 }
 
-// Sets the text of "labelReleaseVersion"
-void InformationDialog::setReleaseVersionLabelText(quint8 majrelease, quint8 minrelease)
+// Sets the text of "labelReleaseVersionValue"
+void InformationDialog::setReleaseVersionValueLabelText(quint8 majrelease, quint8 minrelease)
 {
-    ui->labelReleaseVersion->setText(QString("%1.%2 [0x%3]").arg(majrelease).arg(minrelease).arg(majrelease << 8 | minrelease, 4, 16, QChar('0')));
+    ui->labelReleaseVersionValue->setText(QString("%1.%2 [0x%3]").arg(majrelease).arg(minrelease).arg(majrelease << 8 | minrelease, 4, 16, QChar('0')));
 }
 
-// Sets the text of "labelSerial"
-void InformationDialog::setSerialLabelText(const QString &serialstr)
+// Sets the text of "labelSerialValue"
+void InformationDialog::setSerialValueLabelText(const QString &serialstr)
 {
     QString serial = serialstr;
     if (serialstr.size() > 26) {
         serial.truncate(24);
         serial += "...";
     }
-    ui->labelSerial->setText(serial);
+    ui->labelSerialValue->setText(serial);
 }
 
-// Sets the text of "labelSiliconVersion"
-void InformationDialog::setSiliconVersionLabelText(quint8 majver, quint8 minver)
+// Sets the text of "labelSiliconVersionValue"
+void InformationDialog::setSiliconVersionValueLabelText(quint8 majver, quint8 minver)
 {
-    ui->labelSiliconVersion->setText(QString("%1.%2 [0x%3]").arg(majver).arg(minver).arg(majver << 8 | minver, 4, 16, QChar('0')));
+    ui->labelSiliconVersionValue->setText(QString("%1.%2 [0x%3]").arg(majver).arg(minver).arg(majver << 8 | minver, 4, 16, QChar('0')));
 }
 
-// Sets the text of "labelVID"
-void InformationDialog::setVIDLabelText(quint16 vid)
+// Sets the text of "labelVIDValue"
+void InformationDialog::setVIDValueLabelText(quint16 vid)
 {
-    ui->labelVID->setText(QString("0x%1").arg(vid, 4, 16, QChar('0')));
+    ui->labelVIDValue->setText(QString("0x%1").arg(vid, 4, 16, QChar('0')));
 }
