@@ -29,6 +29,7 @@ SOURCES += \
     delaysdialog.cpp \
     devicewindow.cpp \
     cp2130.cpp \
+    dividerdialog.cpp \
     informationdialog.cpp \
     libusb-extra.c \
     main.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
     delaysdialog.h \
     devicewindow.h \
     cp2130.h \
+    dividerdialog.h \
     informationdialog.h \
     libusb-extra.h \
     mainwindow.h
@@ -48,6 +50,7 @@ FORMS += \
     aboutdialog.ui \
     delaysdialog.ui \
     devicewindow.ui \
+    dividerdialog.ui \
     informationdialog.ui \
     mainwindow.ui
 
