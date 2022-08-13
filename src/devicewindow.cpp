@@ -27,6 +27,7 @@
 #include <unistd.h>
 #include "aboutdialog.h"
 #include "delaysdialog.h"
+#include "dividerdialog.h"
 #include "informationdialog.h"
 #include "devicewindow.h"
 #include "ui_devicewindow.h"
@@ -86,6 +87,18 @@ void DeviceWindow::on_actionAbout_triggered()
 {
     AboutDialog aboutDialog;
     aboutDialog.exec();
+}
+
+void DeviceWindow::on_actionSetClockDivider_triggered()
+{
+    DividerDialog dividerDialog;
+    int errcnt = 0;
+    QString errstr;
+    dividerDialog.setClockDividerSpinBoxValue(cp2130_.getClockDivider(errcnt, errstr));
+    if (opCheck(tr("clock-divider-retrieval-op"), errcnt, errstr) && dividerDialog.exec() == QDialog::Accepted) {  // If error check passes (the string "clock-divider-retrieval-op" should be translated to "clock divider retrieval") and if the user click "OK" on the dialog that opens after that, the new clock divider setting is applied
+        cp2130_.setClockDivider(dividerDialog.clockDividerSpinBoxValue(), errcnt, errstr);
+        opCheck(tr("clock-divider-setting-op"), errcnt, errstr);  // The string "clock-divider-setting-op" should be translated to "clock divider setting"
+    }
 }
 
 void DeviceWindow::on_actionInformation_triggered()

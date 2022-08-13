@@ -46,6 +46,7 @@ public:
 
 private slots:
     void on_actionAbout_triggered();
+    void on_actionSetClockDivider_triggered();
     void on_actionInformation_triggered();
     void on_actionReset_triggered();
     void on_checkBoxGPIO0_clicked();

@@ -36,6 +36,9 @@ public:
     explicit DividerDialog(QWidget *parent = nullptr);
     ~DividerDialog();
 
+    quint8 clockDividerSpinBoxValue();
+    void setClockDividerSpinBoxValue(quint8 divider);
+
 private:
     Ui::DividerDialog *ui;
 };

@@ -33,3 +33,15 @@ DividerDialog::~DividerDialog()
 {
     delete ui;
 }
+
+// Returns the value of "spinBoxClockDivider"
+quint8 DividerDialog::clockDividerSpinBoxValue()
+{
+    return static_cast<quint8>(ui->spinBoxClockDivider->value());
+}
+
+// Sets the value of "spinBoxClockDivider"
+void DividerDialog::setClockDividerSpinBoxValue(quint8 divider)
+{
+    ui->spinBoxClockDivider->setValue(divider);
+}
