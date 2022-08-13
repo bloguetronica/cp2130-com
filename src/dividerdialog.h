@@ -39,8 +39,13 @@ public:
     quint8 clockDividerSpinBoxValue();
     void setClockDividerSpinBoxValue(quint8 divider);
 
+private slots:
+    void on_spinBoxClockDivider_valueChanged(int i);
+
 private:
     Ui::DividerDialog *ui;
+
+    void setExpectedFrequencyValueLabelText(quint8 divider);
 };
 
-#endif // DIVIDERDIALOG_H
+#endif  // DIVIDERDIALOG_H

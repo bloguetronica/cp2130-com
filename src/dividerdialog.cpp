@@ -22,16 +22,25 @@
 #include "dividerdialog.h"
 #include "ui_dividerdialog.h"
 
+// Definitions
+const float MCLK = 24000;  // 24 MHz clock
+
 DividerDialog::DividerDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DividerDialog)
 {
     ui->setupUi(this);
+    setExpectedFrequencyValueLabelText(0);  // This is required in order to show the value of the expected frequency when the dialog is opened
 }
 
 DividerDialog::~DividerDialog()
 {
     delete ui;
+}
+
+void DividerDialog::on_spinBoxClockDivider_valueChanged(int i)
+{
+    setExpectedFrequencyValueLabelText(i);
 }
 
 // Returns the value of "spinBoxClockDivider"
@@ -44,4 +53,15 @@ quint8 DividerDialog::clockDividerSpinBoxValue()
 void DividerDialog::setClockDividerSpinBoxValue(quint8 divider)
 {
     ui->spinBoxClockDivider->setValue(divider);
+}
+
+// Sets the text of "labelExpectedFrequencyValue" based on a given divider value
+void DividerDialog::setExpectedFrequencyValueLabelText(quint8 divider)
+{
+    float frequency = MCLK / (divider == 0 ? 256 : divider);  // Frequency in kHz
+    if (frequency < 1000) {
+        ui->labelExpectedFrequencyValue->setText(QString("%1 kHz").arg(frequency, 0, 'f', 2));
+    } else {
+        ui->labelExpectedFrequencyValue->setText(QString("%1 MHz").arg(frequency / 1000, 0, 'f', 2));
+    }
 }
