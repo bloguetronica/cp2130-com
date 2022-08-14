@@ -33,9 +33,10 @@
 #include "ui_devicewindow.h"
 
 // Definitions
-const int ENUM_RETRIES = 10;                                                           // Number of enumeration retries
-const int ERR_LIMIT = 10;                                                              // Error limit
-const size_t SIZE_LIMITS[8] = {131072, 65536, 65536, 32768, 16384, 8192, 4096, 2048};  // Fragment size limits (from 12MHz to 93.8KHz)
+const int ENUM_RETRIES = 10;                                                         // Number of enumeration retries
+const int ERR_LIMIT = 10;                                                            // Error limit
+const size_t SIZE_LIMITS[8] = {65536, 32768, 32768, 16384, 8192, 4096, 2048, 1024};  // Fragment size limits (from 12MHz to 93.8KHz)
+const size_t SIZE_LIMITS_MAXIDX = sizeof(SIZE_LIMITS) / sizeof(SIZE_LIMITS[0]) - 1;  // Maximum index of the previous array [7]
 
 DeviceWindow::DeviceWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -89,23 +90,11 @@ void DeviceWindow::on_actionAbout_triggered()
     aboutDialog.exec();
 }
 
-void DeviceWindow::on_actionSetClockDivider_triggered()
-{
-    DividerDialog dividerDialog;
-    int errcnt = 0;
-    QString errstr;
-    dividerDialog.setClockDividerSpinBoxValue(cp2130_.getClockDivider(errcnt, errstr));
-    if (opCheck(tr("clock-divider-retrieval-op"), errcnt, errstr) && dividerDialog.exec() == QDialog::Accepted) {  // If error check passes (the string "clock-divider-retrieval-op" should be translated to "clock divider retrieval") and if the user click "OK" on the dialog that opens after that, the new clock divider setting is applied
-        cp2130_.setClockDivider(dividerDialog.clockDividerSpinBoxValue(), errcnt, errstr);
-        opCheck(tr("clock-divider-setting-op"), errcnt, errstr);  // The string "clock-divider-setting-op" should be translated to "clock divider setting"
-    }
-}
-
 void DeviceWindow::on_actionInformation_triggered()
 {
-    InformationDialog infoDialog;
     int errcnt = 0;
     QString errstr;
+    InformationDialog infoDialog;
     infoDialog.setManufacturerValueLabelText(cp2130_.getManufacturerDesc(errcnt, errstr));
     infoDialog.setProductValueLabelText(cp2130_.getProductDesc(errcnt, errstr));
     infoDialog.setSerialValueLabelText(cp2130_.getSerialDesc(errcnt, errstr));  // It is important to read the serial number from the OTP ROM, instead of just passing the value of serialstr_
@@ -125,6 +114,19 @@ void DeviceWindow::on_actionInformation_triggered()
 void DeviceWindow::on_actionReset_triggered()
 {
     resetDevice();
+}
+
+// Implemented in version 3.0
+void DeviceWindow::on_actionSetClockDivider_triggered()
+{
+    int errcnt = 0;
+    QString errstr;
+    DividerDialog dividerDialog;
+    dividerDialog.setClockDividerSpinBoxValue(cp2130_.getClockDivider(errcnt, errstr));
+    if (opCheck(tr("clock-divider-retrieval-op"), errcnt, errstr) && dividerDialog.exec() == QDialog::Accepted) {  // If error check passes (the string "clock-divider-retrieval-op" should be translated to "clock divider retrieval") and if the user click "OK" on the dialog that opens after that, the new clock divider setting is applied
+        cp2130_.setClockDivider(dividerDialog.clockDividerSpinBoxValue(), errcnt, errstr);
+        opCheck(tr("clock-divider-setting-op"), errcnt, errstr);  // The string "clock-divider-setting-op" should be translated to "clock divider setting"
+    }
 }
 
 void DeviceWindow::on_checkBoxGPIO0_clicked()
@@ -251,31 +253,32 @@ void DeviceWindow::on_lineEditWrite_textEdited()
     ui->lineEditWrite->setCursorPosition(curPosition);
 }
 
+// This function no longer reads SPI delays directly (changed in version 3.0)
 void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
 {
-    quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
-    int errcnt = 0;
-    QString errstr;
-    CP2130::SPIDelays spiDelays = cp2130_.getSPIDelays(channel, errcnt, errstr);
-    if (opCheck(tr("spi-delays-retrieval-op"), errcnt, errstr)) {  // If error check passes (the string "spi-delays-retrieval-op" should be translated to "SPI delays retrieval")
-        DelaysDialog delaysDialog;
-        delaysDialog.setCSToggleCheckBox(spiDelays.cstglen);
-        delaysDialog.setPostAssertDelaySpinBoxValue(spiDelays.pstastdly);
-        delaysDialog.setPostAssertDelayCheckBox(spiDelays.pstasten);
-        delaysDialog.setPreDeassertDelaySpinBoxValue(spiDelays.prdastdly);
-        delaysDialog.setPreDeassertDelayCheckBox(spiDelays.prdasten);
-        delaysDialog.setInterByteDelaySpinBoxValue(spiDelays.itbytdly);
-        delaysDialog.setInterByteDelayCheckBox(spiDelays.itbyten);
-        if (delaysDialog.exec() == QDialog::Accepted) {  // If the user clicks "OK", the new delay settings are applied to the current channel (only the first channel will be configured correctly, due to a design issue with the CP2130)
-            spiDelays.cstglen = delaysDialog.csToggleCheckBoxIsChecked();
-            spiDelays.pstasten = delaysDialog.postAssertDelayCheckBoxIsChecked();
-            spiDelays.prdasten = delaysDialog.preDeassertDelayCheckBoxIsChecked();
-            spiDelays.itbyten = delaysDialog.interByteDelayCheckBoxIsChecked();
-            spiDelays.pstastdly = delaysDialog.postAssertDelaySpinBoxValue();
-            spiDelays.prdastdly = delaysDialog.preDeassertDelaySpinBoxValue();
-            spiDelays.itbytdly = delaysDialog.interByteDelaySpinBoxValue();
-            cp2130_.configureSPIDelays(channel, spiDelays, errcnt, errstr);
-            opCheck(tr("spi-delays-configuration-op"), errcnt, errstr);  // The string "spi-delays-configuration-op" should be translated to "SPI delays configuration"
+    QString channelName = ui->comboBoxChannel->currentText();
+    CP2130::SPIDelays spiDelays = spiDelaysMap_[channelName];
+    DelaysDialog delaysDialog;
+    delaysDialog.setCSToggleCheckBox(spiDelays.cstglen);
+    delaysDialog.setPostAssertDelaySpinBoxValue(spiDelays.pstastdly);
+    delaysDialog.setPostAssertDelayCheckBox(spiDelays.pstasten);
+    delaysDialog.setPreDeassertDelaySpinBoxValue(spiDelays.prdastdly);
+    delaysDialog.setPreDeassertDelayCheckBox(spiDelays.prdasten);
+    delaysDialog.setInterByteDelaySpinBoxValue(spiDelays.itbytdly);
+    delaysDialog.setInterByteDelayCheckBox(spiDelays.itbyten);
+    if (delaysDialog.exec() == QDialog::Accepted) {  // If the user clicks "OK", the new delay settings are applied to the current channel
+        spiDelays.cstglen = delaysDialog.csToggleCheckBoxIsChecked();
+        spiDelays.pstasten = delaysDialog.postAssertDelayCheckBoxIsChecked();
+        spiDelays.prdasten = delaysDialog.preDeassertDelayCheckBoxIsChecked();
+        spiDelays.itbyten = delaysDialog.interByteDelayCheckBoxIsChecked();
+        spiDelays.pstastdly = delaysDialog.postAssertDelaySpinBoxValue();
+        spiDelays.prdastdly = delaysDialog.preDeassertDelaySpinBoxValue();
+        spiDelays.itbytdly = delaysDialog.interByteDelaySpinBoxValue();
+        int errcnt = 0;
+        QString errstr;
+        cp2130_.configureSPIDelays(static_cast<quint8>(channelName.toUInt()), spiDelays, errcnt, errstr);
+        if (opCheck(tr("spi-delays-configuration-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-delays-configuration-op" should be translated to "SPI delays configuration")
+            spiDelaysMap_[channelName] = spiDelays;  // Update "spiDelaysMap_" regarding the current channel
         }
     }
 }
@@ -284,10 +287,11 @@ void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
 void DeviceWindow::on_pushButtonRead_clicked()
 {
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
-    size_t fragmentSizeLimit = SIZE_LIMITS[ui->comboBoxFrequency->currentIndex()];
+    size_t fragmentSizeLimit = evaluateSizeLimit();
     size_t bytesToRead = static_cast<size_t>(ui->spinBoxBytesToRead->value());
     size_t bytesProcessed = 0;
     QProgressDialog spiReadProgress(tr("Performing SPI read..."), tr("Abort"), 0, static_cast<int>(bytesToRead), this);  // Progress dialog implemented in version 3.0
+    spiReadProgress.setWindowTitle(tr("SPI Read"));
     spiReadProgress.setWindowModality(Qt::WindowModal);
     spiReadProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500ms
     Data read;
@@ -319,10 +323,11 @@ void DeviceWindow::on_pushButtonRead_clicked()
 void DeviceWindow::on_pushButtonWrite_clicked()
 {
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
-    size_t fragmentSizeLimit = SIZE_LIMITS[ui->comboBoxFrequency->currentIndex()];
+    size_t fragmentSizeLimit = evaluateSizeLimit();
     size_t bytesToWrite = write_.vector.size();
     size_t bytesProcessed = 0;
     QProgressDialog spiWriteProgress(tr("Performing SPI write..."), tr("Abort"), 0, static_cast<int>(bytesToWrite), this);  // Progress dialog implemented in version 3.0
+    spiWriteProgress.setWindowTitle(tr("SPI Write"));
     spiWriteProgress.setWindowModality(Qt::WindowModal);
     spiWriteProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500ms
     int errcnt = 0;
@@ -352,10 +357,11 @@ void DeviceWindow::on_pushButtonWrite_clicked()
 void DeviceWindow::on_pushButtonWriteRead_clicked()
 {
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
-    size_t fragmentSizeLimit = SIZE_LIMITS[ui->comboBoxFrequency->currentIndex()];
+    size_t fragmentSizeLimit = evaluateSizeLimit();
     size_t bytesToWriteRead = write_.vector.size();
     size_t bytesProcessed = 0;
     QProgressDialog spiWriteReadProgress(tr("Performing SPI write/read..."), tr("Abort"), 0, static_cast<int>(bytesToWriteRead), this);  // Progress dialog implemented in version 3.0
+    spiWriteReadProgress.setWindowTitle(tr("SPI Write/Read"));
     spiWriteReadProgress.setWindowModality(Qt::WindowModal);
     spiWriteReadProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500ms
     Data read;
@@ -423,7 +429,7 @@ void DeviceWindow::update()
 // Configures the SPI mode for the currently selected channel
 void DeviceWindow::configureSPIMode()
 {
-    QString channel = ui->comboBoxChannel->currentText();
+    QString channelName = ui->comboBoxChannel->currentText();
     CP2130::SPIMode spiMode;
     spiMode.csmode = ui->comboBoxCSPinMode->currentIndex() != 0;
     spiMode.cfrq = static_cast<quint8>(ui->comboBoxFrequency->currentIndex());  // Corrected in version 3.0
@@ -431,9 +437,9 @@ void DeviceWindow::configureSPIMode()
     spiMode.cpha = ui->spinBoxCPHA->value() != 0;
     int errcnt = 0;
     QString errstr;
-    cp2130_.configureSPIMode(static_cast<quint8>(channel.toUInt()), spiMode, errcnt, errstr);
+    cp2130_.configureSPIMode(static_cast<quint8>(channelName.toUInt()), spiMode, errcnt, errstr);
     if (opCheck(tr("spi-mode-configuration-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-mode-configuration-op" should be translated to "SPI mode configuration")
-        spiModeMap_[channel] = spiMode;  // Update "spiModeMap_" regarding the current channel
+        spiModeMap_[channelName] = spiMode;  // Update "spiModeMap_" regarding the current channel
     }
 }
 
@@ -466,6 +472,12 @@ void DeviceWindow::displaySPIMode()
     ui->comboBoxFrequency->setCurrentIndex(spiMode.cfrq);
     ui->spinBoxCPOL->setValue(spiMode.cpol);
     ui->spinBoxCPHA->setValue(spiMode.cpha);
+}
+
+// Evaluates the optimal fragment size limit based on some parameters of the currently selected channel
+size_t DeviceWindow::evaluateSizeLimit()
+{
+    return SIZE_LIMITS[spiDelaysMap_[ui->comboBoxChannel->currentText()].itbyten == true ? SIZE_LIMITS_MAXIDX : ui->comboBoxFrequency->currentIndex()];
 }
 
 // Initializes the GPIO controls
@@ -571,38 +583,49 @@ void DeviceWindow::readConfiguration()
     pinConfig_ = cp2130_.getPinConfig(errcnt, errstr);
     if (pinConfig_.gpio0 == CP2130::PCCS) {
         spiModeMap_["0"] = cp2130_.getSPIMode(0, errcnt, errstr);
+        spiDelaysMap_["0"] = cp2130_.getSPIDelays(0, errcnt, errstr);  // Implemented in version 3.0
     }
     if (pinConfig_.gpio1 == CP2130::PCCS) {
         spiModeMap_["1"] = cp2130_.getSPIMode(1, errcnt, errstr);
+        spiDelaysMap_["1"] = cp2130_.getSPIDelays(1, errcnt, errstr);  // Implemented in version 3.0
     }
     if (pinConfig_.gpio2 == CP2130::PCCS) {
         spiModeMap_["2"] = cp2130_.getSPIMode(2, errcnt, errstr);
+        spiDelaysMap_["2"] = cp2130_.getSPIDelays(2, errcnt, errstr);  // Implemented in version 3.0
     }
     if (pinConfig_.gpio3 == CP2130::PCCS) {
         spiModeMap_["3"] = cp2130_.getSPIMode(3, errcnt, errstr);
+        spiDelaysMap_["3"] = cp2130_.getSPIDelays(3, errcnt, errstr);  // Implemented in version 3.0
     }
     if (pinConfig_.gpio4 == CP2130::PCCS) {
         spiModeMap_["4"] = cp2130_.getSPIMode(4, errcnt, errstr);
+        spiDelaysMap_["4"] = cp2130_.getSPIDelays(4, errcnt, errstr);  // Implemented in version 3.0
     }
     if (pinConfig_.gpio5 == CP2130::PCCS) {
         spiModeMap_["5"] = cp2130_.getSPIMode(5, errcnt, errstr);
+        spiDelaysMap_["5"] = cp2130_.getSPIDelays(5, errcnt, errstr);  // Implemented in version 3.0
     }
     if (pinConfig_.gpio6 == CP2130::PCCS) {
         spiModeMap_["6"] = cp2130_.getSPIMode(6, errcnt, errstr);
+        spiDelaysMap_["6"] = cp2130_.getSPIDelays(6, errcnt, errstr);  // Implemented in version 3.0
     }
     if (pinConfig_.gpio7 == CP2130::PCCS) {
         spiModeMap_["7"] = cp2130_.getSPIMode(7, errcnt, errstr);
+        spiDelaysMap_["7"] = cp2130_.getSPIDelays(7, errcnt, errstr);  // Implemented in version 3.0
     }
     if (pinConfig_.gpio8 == CP2130::PCCS) {
         spiModeMap_["8"] = cp2130_.getSPIMode(8, errcnt, errstr);
+        spiDelaysMap_["8"] = cp2130_.getSPIDelays(8, errcnt, errstr);  // Implemented in version 3.0
     }
     if (pinConfig_.gpio9 == CP2130::PCCS) {
         spiModeMap_["9"] = cp2130_.getSPIMode(9, errcnt, errstr);
+        spiDelaysMap_["9"] = cp2130_.getSPIDelays(9, errcnt, errstr);  // Implemented in version 3.0
     }
     if (pinConfig_.gpio10 == CP2130::PCCS) {
         spiModeMap_["10"] = cp2130_.getSPIMode(10, errcnt, errstr);
+        spiDelaysMap_["10"] = cp2130_.getSPIDelays(10, errcnt, errstr);  // Implemented in version 3.0
     }
-    // Note that "spiModeMap_" is populated in relation to pins that are configured as chip select pins
+    // Note that both "spiModeMap_" and "spiDelaysMap_" are populated in relation to pins that are configured as chip select pins
     epin_ = cp2130_.getEndpointInAddr(errcnt, errstr);  // Implemented in version 3.0
     epout_ = cp2130_.getEndpointOutAddr(errcnt, errstr);  // Implemented in version 3.0
     if (errcnt > 0) {

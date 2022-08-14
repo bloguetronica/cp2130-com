@@ -46,9 +46,9 @@ public:
 
 private slots:
     void on_actionAbout_triggered();
-    void on_actionSetClockDivider_triggered();
     void on_actionInformation_triggered();
     void on_actionReset_triggered();
+    void on_actionSetClockDivider_triggered();
     void on_checkBoxGPIO0_clicked();
     void on_checkBoxGPIO1_clicked();
     void on_checkBoxGPIO2_clicked();
@@ -80,6 +80,7 @@ private:
     CP2130 cp2130_;
     CP2130::PinConfig pinConfig_;
     Data write_;
+    QMap<QString, CP2130::SPIDelays> spiDelaysMap_;
     QMap<QString, CP2130::SPIMode> spiModeMap_;
     QString serialstr_;
     QTimer *timer_;
@@ -91,6 +92,7 @@ private:
     void configureSPIMode();
     void disableView();
     void displaySPIMode();
+    size_t evaluateSizeLimit();
     void initializeGPIOControls();
     void initializeSetClockDividerAction();
     void initializeSPIControls();
