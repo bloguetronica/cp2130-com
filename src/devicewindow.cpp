@@ -28,6 +28,7 @@
 #include "aboutdialog.h"
 #include "delaysdialog.h"
 #include "dividerdialog.h"
+#include "functionsdialog.h"
 #include "informationdialog.h"
 #include "devicewindow.h"
 #include "ui_devicewindow.h"
@@ -88,6 +89,12 @@ void DeviceWindow::on_actionAbout_triggered()
 {
     AboutDialog aboutDialog;
     aboutDialog.exec();
+}
+
+void DeviceWindow::on_actionGPIOFunctions_triggered()
+{
+    FunctionsDialog functionsDialog;
+    functionsDialog.exec();
 }
 
 void DeviceWindow::on_actionInformation_triggered()
