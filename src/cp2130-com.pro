@@ -30,11 +30,11 @@ SOURCES += \
     devicewindow.cpp \
     cp2130.cpp \
     dividerdialog.cpp \
-    functionsdialog.cpp \
     informationdialog.cpp \
     libusb-extra.c \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    pinfunctionsdialog.cpp
 
 HEADERS += \
     aboutdialog.h \
@@ -43,19 +43,19 @@ HEADERS += \
     devicewindow.h \
     cp2130.h \
     dividerdialog.h \
-    functionsdialog.h \
     informationdialog.h \
     libusb-extra.h \
-    mainwindow.h
+    mainwindow.h \
+    pinfunctionsdialog.h
 
 FORMS += \
     aboutdialog.ui \
     delaysdialog.ui \
     devicewindow.ui \
     dividerdialog.ui \
-    functionsdialog.ui \
     informationdialog.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    pinfunctionsdialog.ui
 
 TRANSLATIONS += \
     translations/cp2130-com_en.ts \

@@ -28,7 +28,7 @@
 #include "aboutdialog.h"
 #include "delaysdialog.h"
 #include "dividerdialog.h"
-#include "functionsdialog.h"
+#include "pinfunctionsdialog.h"
 #include "informationdialog.h"
 #include "devicewindow.h"
 #include "ui_devicewindow.h"
@@ -91,10 +91,11 @@ void DeviceWindow::on_actionAbout_triggered()
     aboutDialog.exec();
 }
 
-void DeviceWindow::on_actionGPIOFunctions_triggered()
+// Implemented in version 3.0
+void DeviceWindow::on_actionGPIOPinFunctions_triggered()
 {
-    FunctionsDialog functionsDialog;
-    functionsDialog.exec();
+    PinFunctionsDialog pinFunctionsDialog;
+    pinFunctionsDialog.exec();
 }
 
 void DeviceWindow::on_actionInformation_triggered()
