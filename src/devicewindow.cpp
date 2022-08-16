@@ -28,8 +28,8 @@
 #include "aboutdialog.h"
 #include "delaysdialog.h"
 #include "dividerdialog.h"
-#include "pinfunctionsdialog.h"
 #include "informationdialog.h"
+#include "pinfunctionsdialog.h"
 #include "devicewindow.h"
 #include "ui_devicewindow.h"
 
