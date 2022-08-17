@@ -97,12 +97,10 @@ void PinFunctionsDialog::setGPIO4ValueLabelText(quint8 gpio4)
 void PinFunctionsDialog::setGPIO5ValueLabelText(quint8 gpio5)
 {
     QString gpio5str;
-    switch (gpio5) {
-        case CP2130::PCCLKOUT:
-            gpio5str = tr("CLKOUT push-pull output");
-            break;
-        default:
-            gpio5str = genericGPIOConfigString(gpio5);
+    if (gpio5 == CP2130::PCCLKOUT) {
+        gpio5str = tr("CLKOUT push-pull output");
+    } else {
+        gpio5str = genericGPIOConfigString(gpio5);
     }
     ui->labelGPIO5Value->setText(gpio5str);
 }
@@ -123,12 +121,10 @@ void PinFunctionsDialog::setGPIO7ValueLabelText(quint8 gpio7)
 void PinFunctionsDialog::setGPIO8ValueLabelText(quint8 gpio8)
 {
     QString gpio8str;
-    switch (gpio8) {
-        case CP2130::PCSPIACT:
-            gpio8str = tr("SPIACT push-pull output");
-            break;
-        default:
-            gpio8str = genericGPIOConfigString(gpio8);
+    if (gpio8 == CP2130::PCSPIACT) {
+        gpio8str = tr("SPIACT push-pull output");
+    } else {
+        gpio8str = genericGPIOConfigString(gpio8);
     }
     ui->labelGPIO8Value->setText(gpio8str);
 }
@@ -137,12 +133,10 @@ void PinFunctionsDialog::setGPIO8ValueLabelText(quint8 gpio8)
 void PinFunctionsDialog::setGPIO9ValueLabelText(quint8 gpio9)
 {
     QString gpio9str;
-    switch (gpio9) {
-        case CP2130::PCSSPND:
-            gpio9str = tr("SUSPEND push-pull output");
-            break;
-        default:
-            gpio9str = genericGPIOConfigString(gpio9);
+    if (gpio9 == CP2130::PCSSPND) {
+        gpio9str = tr("SUSPEND push-pull output");
+    } else {
+        gpio9str = genericGPIOConfigString(gpio9);
     }
     ui->labelGPIO9Value->setText(gpio9str);
 }
@@ -151,12 +145,10 @@ void PinFunctionsDialog::setGPIO9ValueLabelText(quint8 gpio9)
 void PinFunctionsDialog::setGPIO10ValueLabelText(quint8 gpio10)
 {
     QString gpio10str;
-    switch (gpio10) {
-        case CP2130::PCNSSPND:
-            gpio10str = tr("!SUSPEND push-pull output");
-            break;
-        default:
-            gpio10str = genericGPIOConfigString(gpio10);
+    if (gpio10 == CP2130::PCNSSPND) {
+        gpio10str = tr("!SUSPEND push-pull output");
+    } else {
+        gpio10str = genericGPIOConfigString(gpio10);
     }
     ui->labelGPIO10Value->setText(gpio10str);
 }
