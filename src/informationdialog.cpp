@@ -58,18 +58,22 @@ void InformationDialog::setPIDValueLabelText(quint16 pid)
     ui->labelPIDValue->setText(QString("0x%1").arg(pid, 4, 16, QChar('0')));
 }
 
-// Sets the text of "labelPowerModeValue"
+// Sets the text of "labelPowerModeValue" (fixed in version 3.0)
 void InformationDialog::setPowerModeValueLabelText(quint8 powmode)
 {
     QString powerMode;
-    if (powmode == CP2130::PMBUSREGEN) {
-        powerMode = tr("Bus-powered (regulator enabled)");
-    } else if (powmode == CP2130::PMBUSREGEN) {
-        powerMode = tr("Bus-powered (regulator disabled)");
-    } else if (powmode == CP2130::PMBUSREGEN) {
-        powerMode = tr("Self-powered");
-    } else {
-        powerMode = tr("Unknown");
+    switch (powmode) {
+        case CP2130::PMBUSREGEN:
+            powerMode = tr("Bus-powered (regulator enabled)");
+            break;
+        case CP2130::PMBUSREGDIS:
+            powerMode = tr("Bus-powered (regulator disabled)");
+            break;
+        case CP2130::PMSELFREGEN:
+            powerMode = tr("Self-powered");
+            break;
+        default:
+            powerMode = tr("Unknown");
     }
     ui->labelPowerModeValue->setText(powerMode);
 }

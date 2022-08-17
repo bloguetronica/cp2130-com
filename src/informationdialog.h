@@ -23,6 +23,7 @@
 
 // Includes
 #include <QDialog>
+#include <QString>
 
 namespace Ui {
 class InformationDialog;
