@@ -23,6 +23,7 @@
 
 // Includes
 #include <QDialog>
+#include <QString>
 
 namespace Ui {
 class PinFunctionsDialog;
@@ -36,8 +37,22 @@ public:
     explicit PinFunctionsDialog(QWidget *parent = nullptr);
     ~PinFunctionsDialog();
 
+    void setGPIO0ValueLabelText(quint8 gpio0);
+    void setGPIO1ValueLabelText(quint8 gpio1);
+    void setGPIO2ValueLabelText(quint8 gpio2);
+    void setGPIO3ValueLabelText(quint8 gpio3);
+    void setGPIO4ValueLabelText(quint8 gpio4);
+    void setGPIO5ValueLabelText(quint8 gpio5);
+    void setGPIO6ValueLabelText(quint8 gpio6);
+    void setGPIO7ValueLabelText(quint8 gpio7);
+    void setGPIO8ValueLabelText(quint8 gpio8);
+    void setGPIO9ValueLabelText(quint8 gpio9);
+    void setGPIO10ValueLabelText(quint8 gpio10);
+
 private:
     Ui::PinFunctionsDialog *ui;
+
+    QString genericGPIOConfigString(quint8 gpio);
 };
 
 #endif  // PINFUNCTIONSDIALOG_H

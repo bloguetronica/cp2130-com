@@ -19,6 +19,7 @@
 
 
 // Includes
+#include "cp2130.h"
 #include "pinfunctionsdialog.h"
 #include "ui_pinfunctionsdialog.h"
 
@@ -32,4 +33,153 @@ PinFunctionsDialog::PinFunctionsDialog(QWidget *parent) :
 PinFunctionsDialog::~PinFunctionsDialog()
 {
     delete ui;
+}
+
+// Sets the text of "labelGPIO0Value"
+void PinFunctionsDialog::setGPIO0ValueLabelText(quint8 gpio0)
+{
+    ui->labelGPIO0Value->setText(genericGPIOConfigString(gpio0));
+}
+
+// Sets the text of "labelGPIO1Value"
+void PinFunctionsDialog::setGPIO1ValueLabelText(quint8 gpio1)
+{
+    ui->labelGPIO1Value->setText(genericGPIOConfigString(gpio1));
+}
+
+// Sets the text of "labelGPIO2Value"
+void PinFunctionsDialog::setGPIO2ValueLabelText(quint8 gpio2)
+{
+    ui->labelGPIO2Value->setText(genericGPIOConfigString(gpio2));
+}
+
+// Sets the text of "labelGPIO3Value"
+void PinFunctionsDialog::setGPIO3ValueLabelText(quint8 gpio3)
+{
+    QString gpio3str;
+    switch (gpio3) {
+        case CP2130::PCNRTR:
+            gpio3str = tr("!RTR input");
+            break;
+        case CP2130::PCRTR:
+            gpio3str = tr("RTR input");
+            break;
+        default:
+            gpio3str = genericGPIOConfigString(gpio3);
+    }
+    ui->labelGPIO3Value->setText(gpio3str);
+}
+
+// Sets the text of "labelGPIO4Value"
+void PinFunctionsDialog::setGPIO4ValueLabelText(quint8 gpio4)
+{
+    QString gpio4str;
+    switch (gpio4) {
+        case CP2130::PCEVTCNTRRE:
+            gpio4str = tr("EVTCNTR rising edge input");
+            break;
+        case CP2130::PCEVTCNTRFE:
+            gpio4str = tr("EVTCNTR falling edge input");
+            break;
+        case CP2130::PCEVTCNTRNP:
+            gpio4str = tr("EVTCNTR negative pulse input");
+            break;
+        case CP2130::PCEVTCNTRPP:
+            gpio4str = tr("EVTCNTR positive pulse input");
+            break;
+        default:
+            gpio4str = genericGPIOConfigString(gpio4);
+    }
+    ui->labelGPIO4Value->setText(gpio4str);
+}
+
+// Sets the text of "labelGPIO5Value"
+void PinFunctionsDialog::setGPIO5ValueLabelText(quint8 gpio5)
+{
+    QString gpio5str;
+    switch (gpio5) {
+        case CP2130::PCCLKOUT:
+            gpio5str = tr("CLKOUT push-pull output");
+            break;
+        default:
+            gpio5str = genericGPIOConfigString(gpio5);
+    }
+    ui->labelGPIO5Value->setText(gpio5str);
+}
+
+// Sets the text of "labelGPIO6Value"
+void PinFunctionsDialog::setGPIO6ValueLabelText(quint8 gpio6)
+{
+    ui->labelGPIO6Value->setText(genericGPIOConfigString(gpio6));
+}
+
+// Sets the text of "labelGPIO7Value"
+void PinFunctionsDialog::setGPIO7ValueLabelText(quint8 gpio7)
+{
+    ui->labelGPIO7Value->setText(genericGPIOConfigString(gpio7));
+}
+
+// Sets the text of "labelGPIO8Value"
+void PinFunctionsDialog::setGPIO8ValueLabelText(quint8 gpio8)
+{
+    QString gpio8str;
+    switch (gpio8) {
+        case CP2130::PCSPIACT:
+            gpio8str = tr("SPIACT push-pull output");
+            break;
+        default:
+            gpio8str = genericGPIOConfigString(gpio8);
+    }
+    ui->labelGPIO8Value->setText(gpio8str);
+}
+
+// Sets the text of "labelGPIO9Value"
+void PinFunctionsDialog::setGPIO9ValueLabelText(quint8 gpio9)
+{
+    QString gpio9str;
+    switch (gpio9) {
+        case CP2130::PCSSPND:
+            gpio9str = tr("SUSPEND push-pull output");
+            break;
+        default:
+            gpio9str = genericGPIOConfigString(gpio9);
+    }
+    ui->labelGPIO9Value->setText(gpio9str);
+}
+
+// Sets the text of "labelGPIO10Value"
+void PinFunctionsDialog::setGPIO10ValueLabelText(quint8 gpio10)
+{
+    QString gpio10str;
+    switch (gpio10) {
+        case CP2130::PCNSSPND:
+            gpio10str = tr("!SUSPEND push-pull output");
+            break;
+        default:
+            gpio10str = genericGPIOConfigString(gpio10);
+    }
+    ui->labelGPIO10Value->setText(gpio10str);
+}
+
+// Returns the string corresponding to the GPIO configuration if it is generic (i.e. input, output or chip select)
+QString PinFunctionsDialog::genericGPIOConfigString(quint8 gpio)
+{
+    QString gpiostr;
+    switch (gpio) {
+        case CP2130::PCIN:
+            gpiostr = tr("Input");
+            break;
+        case CP2130::PCOUTOD:
+            gpiostr = tr("Open-drain output");
+            break;
+        case CP2130::PCOUTPP:
+            gpiostr = tr("Push-pull output");
+            break;
+        case CP2130::PCCS:
+            gpiostr = tr("Chip select");
+            break;
+        default:
+            gpiostr = tr("Unknown");
+    }
+    return gpiostr;
 }

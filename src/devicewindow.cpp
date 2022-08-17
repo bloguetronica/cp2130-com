@@ -95,6 +95,17 @@ void DeviceWindow::on_actionAbout_triggered()
 void DeviceWindow::on_actionGPIOPinFunctions_triggered()
 {
     PinFunctionsDialog pinFunctionsDialog;
+    pinFunctionsDialog.setGPIO0ValueLabelText(pinConfig_.gpio0);
+    pinFunctionsDialog.setGPIO1ValueLabelText(pinConfig_.gpio1);
+    pinFunctionsDialog.setGPIO2ValueLabelText(pinConfig_.gpio2);
+    pinFunctionsDialog.setGPIO3ValueLabelText(pinConfig_.gpio3);
+    pinFunctionsDialog.setGPIO4ValueLabelText(pinConfig_.gpio4);
+    pinFunctionsDialog.setGPIO5ValueLabelText(pinConfig_.gpio5);
+    pinFunctionsDialog.setGPIO6ValueLabelText(pinConfig_.gpio6);
+    pinFunctionsDialog.setGPIO7ValueLabelText(pinConfig_.gpio7);
+    pinFunctionsDialog.setGPIO8ValueLabelText(pinConfig_.gpio8);
+    pinFunctionsDialog.setGPIO9ValueLabelText(pinConfig_.gpio9);
+    pinFunctionsDialog.setGPIO10ValueLabelText(pinConfig_.gpio10);
     pinFunctionsDialog.exec();
 }
 
@@ -455,8 +466,10 @@ void DeviceWindow::configureSPIMode()
 void DeviceWindow::disableView()
 {
     ui->actionInformation->setEnabled(false);
+    ui->actionGPIOPinFunctions->setEnabled(false);
     ui->actionSetClockDivider->setEnabled(false);
     ui->actionReset->setEnabled(false);
+    ui->actionClose->setText(tr("Close Window"));  // Implemented in version 3.0, to hint the user that the device is effectively closed and only its window remains open
     ui->centralWidget->setEnabled(false);
     ui->checkBoxGPIO0->setStyleSheet("");
     ui->checkBoxGPIO1->setStyleSheet("");
