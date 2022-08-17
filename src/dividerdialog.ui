@@ -117,6 +117,9 @@
    </property>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>spinBoxClockDivider</tabstop>
+ </tabstops>
  <resources>
   <include location="resources.qrc"/>
  </resources>
