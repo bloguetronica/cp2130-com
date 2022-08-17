@@ -102,20 +102,20 @@ void DeviceWindow::on_actionInformation_triggered()
 {
     int errcnt = 0;
     QString errstr;
-    InformationDialog infoDialog;
-    infoDialog.setManufacturerValueLabelText(cp2130_.getManufacturerDesc(errcnt, errstr));
-    infoDialog.setProductValueLabelText(cp2130_.getProductDesc(errcnt, errstr));
-    infoDialog.setSerialValueLabelText(cp2130_.getSerialDesc(errcnt, errstr));  // It is important to read the serial number from the OTP ROM, instead of just passing the value of serialstr_
+    InformationDialog informationDialog;
+    informationDialog.setManufacturerValueLabelText(cp2130_.getManufacturerDesc(errcnt, errstr));
+    informationDialog.setProductValueLabelText(cp2130_.getProductDesc(errcnt, errstr));
+    informationDialog.setSerialValueLabelText(cp2130_.getSerialDesc(errcnt, errstr));  // It is important to read the serial number from the OTP ROM, instead of just passing the value of serialstr_
     CP2130::USBConfig config = cp2130_.getUSBConfig(errcnt, errstr);
-    infoDialog.setVIDValueLabelText(config.vid);
-    infoDialog.setPIDValueLabelText(config.pid);
-    infoDialog.setReleaseVersionValueLabelText(config.majrel, config.minrel);
-    infoDialog.setPowerModeValueLabelText(config.powmode);
-    infoDialog.setMaxPowerValueLabelText(config.maxpow);
+    informationDialog.setVIDValueLabelText(config.vid);
+    informationDialog.setPIDValueLabelText(config.pid);
+    informationDialog.setReleaseVersionValueLabelText(config.majrel, config.minrel);
+    informationDialog.setPowerModeValueLabelText(config.powmode);
+    informationDialog.setMaxPowerValueLabelText(config.maxpow);
     CP2130::SiliconVersion siversion = cp2130_.getSiliconVersion(errcnt, errstr);
-    infoDialog.setSiliconVersionValueLabelText(siversion.maj, siversion.min);
+    informationDialog.setSiliconVersionValueLabelText(siversion.maj, siversion.min);
     if (opCheck(tr("device-information-retrieval-op"), errcnt, errstr)) {  // If error check passes (the string "device-information-retrieval-op" should be translated to "Device information retrieval")
-        infoDialog.exec();
+        informationDialog.exec();
     }
 }
 
