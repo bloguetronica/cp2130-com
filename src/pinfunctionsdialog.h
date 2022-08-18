@@ -52,7 +52,7 @@ public:
 private:
     Ui::PinFunctionsDialog *ui;
 
-    QString genericGPIOString(quint8 gpio);
+    QString genericGPIOValue(quint8 gpio);
 };
 
 #endif  // PINFUNCTIONSDIALOG_H
