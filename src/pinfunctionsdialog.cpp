@@ -38,19 +38,19 @@ PinFunctionsDialog::~PinFunctionsDialog()
 // Sets the text of "labelGPIO0Value"
 void PinFunctionsDialog::setGPIO0ValueLabelText(quint8 gpio0)
 {
-    ui->labelGPIO0Value->setText(genericGPIOConfigString(gpio0));
+    ui->labelGPIO0Value->setText(genericGPIOString(gpio0));
 }
 
 // Sets the text of "labelGPIO1Value"
 void PinFunctionsDialog::setGPIO1ValueLabelText(quint8 gpio1)
 {
-    ui->labelGPIO1Value->setText(genericGPIOConfigString(gpio1));
+    ui->labelGPIO1Value->setText(genericGPIOString(gpio1));
 }
 
 // Sets the text of "labelGPIO2Value"
 void PinFunctionsDialog::setGPIO2ValueLabelText(quint8 gpio2)
 {
-    ui->labelGPIO2Value->setText(genericGPIOConfigString(gpio2));
+    ui->labelGPIO2Value->setText(genericGPIOString(gpio2));
 }
 
 // Sets the text of "labelGPIO3Value"
@@ -65,7 +65,7 @@ void PinFunctionsDialog::setGPIO3ValueLabelText(quint8 gpio3)
             gpio3str = tr("RTR input");
             break;
         default:
-            gpio3str = genericGPIOConfigString(gpio3);
+            gpio3str = genericGPIOString(gpio3);
     }
     ui->labelGPIO3Value->setText(gpio3str);
 }
@@ -88,7 +88,7 @@ void PinFunctionsDialog::setGPIO4ValueLabelText(quint8 gpio4)
             gpio4str = tr("EVTCNTR positive pulse input");
             break;
         default:
-            gpio4str = genericGPIOConfigString(gpio4);
+            gpio4str = genericGPIOString(gpio4);
     }
     ui->labelGPIO4Value->setText(gpio4str);
 }
@@ -100,7 +100,7 @@ void PinFunctionsDialog::setGPIO5ValueLabelText(quint8 gpio5)
     if (gpio5 == CP2130::PCCLKOUT) {
         gpio5str = tr("CLKOUT push-pull output");
     } else {
-        gpio5str = genericGPIOConfigString(gpio5);
+        gpio5str = genericGPIOString(gpio5);
     }
     ui->labelGPIO5Value->setText(gpio5str);
 }
@@ -108,13 +108,13 @@ void PinFunctionsDialog::setGPIO5ValueLabelText(quint8 gpio5)
 // Sets the text of "labelGPIO6Value"
 void PinFunctionsDialog::setGPIO6ValueLabelText(quint8 gpio6)
 {
-    ui->labelGPIO6Value->setText(genericGPIOConfigString(gpio6));
+    ui->labelGPIO6Value->setText(genericGPIOString(gpio6));
 }
 
 // Sets the text of "labelGPIO7Value"
 void PinFunctionsDialog::setGPIO7ValueLabelText(quint8 gpio7)
 {
-    ui->labelGPIO7Value->setText(genericGPIOConfigString(gpio7));
+    ui->labelGPIO7Value->setText(genericGPIOString(gpio7));
 }
 
 // Sets the text of "labelGPIO8Value"
@@ -124,7 +124,7 @@ void PinFunctionsDialog::setGPIO8ValueLabelText(quint8 gpio8)
     if (gpio8 == CP2130::PCSPIACT) {
         gpio8str = tr("SPIACT push-pull output");
     } else {
-        gpio8str = genericGPIOConfigString(gpio8);
+        gpio8str = genericGPIOString(gpio8);
     }
     ui->labelGPIO8Value->setText(gpio8str);
 }
@@ -136,7 +136,7 @@ void PinFunctionsDialog::setGPIO9ValueLabelText(quint8 gpio9)
     if (gpio9 == CP2130::PCSSPND) {
         gpio9str = tr("SUSPEND push-pull output");
     } else {
-        gpio9str = genericGPIOConfigString(gpio9);
+        gpio9str = genericGPIOString(gpio9);
     }
     ui->labelGPIO9Value->setText(gpio9str);
 }
@@ -148,13 +148,13 @@ void PinFunctionsDialog::setGPIO10ValueLabelText(quint8 gpio10)
     if (gpio10 == CP2130::PCNSSPND) {
         gpio10str = tr("!SUSPEND push-pull output");
     } else {
-        gpio10str = genericGPIOConfigString(gpio10);
+        gpio10str = genericGPIOString(gpio10);
     }
     ui->labelGPIO10Value->setText(gpio10str);
 }
 
-// Returns the string corresponding to the GPIO configuration if it is generic (i.e. input, output or chip select)
-QString PinFunctionsDialog::genericGPIOConfigString(quint8 gpio)
+// Returns the string corresponding to the GPIO configuration if such is generic (i.e. input, output or chip select)
+QString PinFunctionsDialog::genericGPIOString(quint8 gpio)
 {
     QString gpiostr;
     switch (gpio) {
