@@ -469,7 +469,7 @@ void DeviceWindow::disableView()
     ui->actionGPIOPinFunctions->setEnabled(false);
     ui->actionSetClockDivider->setEnabled(false);
     ui->actionReset->setEnabled(false);
-    ui->actionClose->setText(tr("Close Window"));  // Implemented in version 3.0, to hint the user that the device is effectively closed and only its window remains open
+    ui->actionClose->setText(tr("&Close Window"));  // Implemented in version 3.0, to hint the user that the device is effectively closed and only its window remains open
     ui->centralWidget->setEnabled(false);
     ui->checkBoxGPIO0->setStyleSheet("");
     ui->checkBoxGPIO1->setStyleSheet("");
