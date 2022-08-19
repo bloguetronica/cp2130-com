@@ -504,28 +504,28 @@ size_t DeviceWindow::evaluateSizeLimit()
 // Initializes the GPIO controls
 void DeviceWindow::initializeGPIOControls()
 {
-    ui->checkBoxGPIO0->setEnabled(pinConfig_.gpio0 == CP2130::PCOUTOD || pinConfig_.gpio0 == CP2130::PCOUTPP || pinConfig_.gpio0 == CP2130::PCCS);
     ui->checkBoxGPIO0->setStyleSheet(pinConfig_.gpio0 == CP2130::PCCS ? "color: darkred;" : "");
-    ui->checkBoxGPIO1->setEnabled(pinConfig_.gpio1 == CP2130::PCOUTOD || pinConfig_.gpio1 == CP2130::PCOUTPP || pinConfig_.gpio1 == CP2130::PCCS);
+    ui->checkBoxGPIO0->setEnabled(pinConfig_.gpio0 == CP2130::PCOUTOD || pinConfig_.gpio0 == CP2130::PCOUTPP || pinConfig_.gpio0 == CP2130::PCCS);
     ui->checkBoxGPIO1->setStyleSheet(pinConfig_.gpio1 == CP2130::PCCS ? "color: darkred;" : "");
-    ui->checkBoxGPIO2->setEnabled(pinConfig_.gpio2 == CP2130::PCOUTOD || pinConfig_.gpio2 == CP2130::PCOUTPP || pinConfig_.gpio2 == CP2130::PCCS);
+    ui->checkBoxGPIO1->setEnabled(pinConfig_.gpio1 == CP2130::PCOUTOD || pinConfig_.gpio1 == CP2130::PCOUTPP || pinConfig_.gpio1 == CP2130::PCCS);
     ui->checkBoxGPIO2->setStyleSheet(pinConfig_.gpio2 == CP2130::PCCS ? "color: darkred;" : "");
-    ui->checkBoxGPIO3->setEnabled(pinConfig_.gpio3 == CP2130::PCOUTOD || pinConfig_.gpio3 == CP2130::PCOUTPP || pinConfig_.gpio3 == CP2130::PCCS);
+    ui->checkBoxGPIO2->setEnabled(pinConfig_.gpio2 == CP2130::PCOUTOD || pinConfig_.gpio2 == CP2130::PCOUTPP || pinConfig_.gpio2 == CP2130::PCCS);
     ui->checkBoxGPIO3->setStyleSheet(pinConfig_.gpio3 == CP2130::PCCS ? "color: darkred;" : "");
-    ui->checkBoxGPIO4->setEnabled(pinConfig_.gpio4 == CP2130::PCOUTOD || pinConfig_.gpio4 == CP2130::PCOUTPP || pinConfig_.gpio4 == CP2130::PCCS);
+    ui->checkBoxGPIO3->setEnabled(pinConfig_.gpio3 == CP2130::PCOUTOD || pinConfig_.gpio3 == CP2130::PCOUTPP || pinConfig_.gpio3 == CP2130::PCCS);
     ui->checkBoxGPIO4->setStyleSheet(pinConfig_.gpio4 == CP2130::PCCS ? "color: darkred;" : "");
-    ui->checkBoxGPIO5->setEnabled(pinConfig_.gpio5 == CP2130::PCOUTOD || pinConfig_.gpio5 == CP2130::PCOUTPP || pinConfig_.gpio5 == CP2130::PCCS);
+    ui->checkBoxGPIO4->setEnabled(pinConfig_.gpio4 == CP2130::PCOUTOD || pinConfig_.gpio4 == CP2130::PCOUTPP || pinConfig_.gpio4 == CP2130::PCCS);
     ui->checkBoxGPIO5->setStyleSheet(pinConfig_.gpio5 == CP2130::PCCS ? "color: darkred;" : "");
-    ui->checkBoxGPIO6->setEnabled(pinConfig_.gpio6 == CP2130::PCOUTOD || pinConfig_.gpio6 == CP2130::PCOUTPP || pinConfig_.gpio6 == CP2130::PCCS);
+    ui->checkBoxGPIO5->setEnabled(pinConfig_.gpio5 == CP2130::PCOUTOD || pinConfig_.gpio5 == CP2130::PCOUTPP || pinConfig_.gpio5 == CP2130::PCCS);
     ui->checkBoxGPIO6->setStyleSheet(pinConfig_.gpio6 == CP2130::PCCS ? "color: darkred;" : "");
-    ui->checkBoxGPIO7->setEnabled(pinConfig_.gpio7 == CP2130::PCOUTOD || pinConfig_.gpio7 == CP2130::PCOUTPP || pinConfig_.gpio7 == CP2130::PCCS);
+    ui->checkBoxGPIO6->setEnabled(pinConfig_.gpio6 == CP2130::PCOUTOD || pinConfig_.gpio6 == CP2130::PCOUTPP || pinConfig_.gpio6 == CP2130::PCCS);
     ui->checkBoxGPIO7->setStyleSheet(pinConfig_.gpio7 == CP2130::PCCS ? "color: darkred;" : "");
-    ui->checkBoxGPIO8->setEnabled(pinConfig_.gpio8 == CP2130::PCOUTOD || pinConfig_.gpio8 == CP2130::PCOUTPP || pinConfig_.gpio8 == CP2130::PCCS);
+    ui->checkBoxGPIO7->setEnabled(pinConfig_.gpio7 == CP2130::PCOUTOD || pinConfig_.gpio7 == CP2130::PCOUTPP || pinConfig_.gpio7 == CP2130::PCCS);
     ui->checkBoxGPIO8->setStyleSheet(pinConfig_.gpio8 == CP2130::PCCS ? "color: darkred;" : "");
-    ui->checkBoxGPIO9->setEnabled(pinConfig_.gpio9 == CP2130::PCOUTOD || pinConfig_.gpio9 == CP2130::PCOUTPP || pinConfig_.gpio9 == CP2130::PCCS);
+    ui->checkBoxGPIO8->setEnabled(pinConfig_.gpio8 == CP2130::PCOUTOD || pinConfig_.gpio8 == CP2130::PCOUTPP || pinConfig_.gpio8 == CP2130::PCCS);
     ui->checkBoxGPIO9->setStyleSheet(pinConfig_.gpio9 == CP2130::PCCS ? "color: darkred;" : "");
-    ui->checkBoxGPIO10->setEnabled(pinConfig_.gpio10 == CP2130::PCOUTOD || pinConfig_.gpio10 == CP2130::PCOUTPP || pinConfig_.gpio10 == CP2130::PCCS);
+    ui->checkBoxGPIO9->setEnabled(pinConfig_.gpio9 == CP2130::PCOUTOD || pinConfig_.gpio9 == CP2130::PCOUTPP || pinConfig_.gpio9 == CP2130::PCCS);
     ui->checkBoxGPIO10->setStyleSheet(pinConfig_.gpio10 == CP2130::PCCS ? "color: darkred;" : "");
+    ui->checkBoxGPIO10->setEnabled(pinConfig_.gpio10 == CP2130::PCOUTOD || pinConfig_.gpio10 == CP2130::PCOUTPP || pinConfig_.gpio10 == CP2130::PCCS);
     // Since version 2.0, the enabled boxes not only correspond to GPIO pins that are configured as outputs, but to CS pins as well
 }
 
@@ -683,17 +683,16 @@ void DeviceWindow::resetDevice()
             initializeView();  // Reinitialize device window
             timer_->start();  // Restart the timer
         } else {  // Failed to reopen device
-            this->setEnabled(false);
+            disableView();  // Since version 3.0, the window will not close itself after a failed reset, so it should only be disabled partially
             if (err == CP2130::ERROR_INIT) {  // Failed to initialize libusb
                 QMessageBox::critical(this, tr("Critical Error"), tr("Could not reinitialize libusb.\n\nThis is a critical error and execution will be aborted."));
                 exit(EXIT_FAILURE);  // This error is critical because libusb failed to initialize
             } else if (err == CP2130::ERROR_NOT_FOUND) {  // Failed to find device
                 QMessageBox::critical(this, tr("Error"), tr("Device disconnected.\n\nPlease reconnect it and try again."));
-                this->close();  // Close window
             } else if (err == CP2130::ERROR_BUSY) {  // Failed to claim interface
                 QMessageBox::critical(this, tr("Error"), tr("Device ceased to be available.\n\nPlease verify that the device is not in use by another application."));
-                this->close();  // Close window
             }
+            // In order to avoid confusion, and for consistency, a failed reset will no longer lead to a closed window (change implemented in version 3.0)
         }
     }
 }
