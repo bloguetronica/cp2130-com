@@ -230,6 +230,9 @@
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBoxSPIConfiguration">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -258,9 +261,6 @@
      </property>
     </widget>
     <widget class="QComboBox" name="comboBoxChannel">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
      <property name="geometry">
       <rect>
        <x>340</x>
@@ -287,9 +287,6 @@
      </property>
     </widget>
     <widget class="QComboBox" name="comboBoxCSPinMode">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
      <property name="geometry">
       <rect>
        <x>120</x>
@@ -326,9 +323,6 @@
      </property>
     </widget>
     <widget class="QComboBox" name="comboBoxFrequency">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
      <property name="geometry">
       <rect>
        <x>340</x>
@@ -395,9 +389,6 @@
      </property>
     </widget>
     <widget class="QSpinBox" name="spinBoxCPOL">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
      <property name="geometry">
       <rect>
        <x>500</x>
@@ -427,9 +418,6 @@
      </property>
     </widget>
     <widget class="QSpinBox" name="spinBoxCPHA">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
      <property name="geometry">
       <rect>
        <x>610</x>
@@ -443,9 +431,6 @@
      </property>
     </widget>
     <widget class="QPushButton" name="pushButtonConfigureSPIDelays">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
      <property name="geometry">
       <rect>
        <x>450</x>
@@ -460,6 +445,9 @@
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBoxSPITransfers">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -520,9 +508,6 @@
      </property>
     </widget>
     <widget class="QLineEdit" name="lineEditWrite">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -547,9 +532,6 @@
      </property>
     </widget>
     <widget class="QLineEdit" name="lineEditRead">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -587,9 +569,6 @@
      </property>
     </widget>
     <widget class="QSpinBox" name="spinBoxBytesToRead">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
      <property name="geometry">
       <rect>
        <x>120</x>
@@ -658,9 +637,6 @@
    </property>
   </action>
   <action name="actionSetClockDivider">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="text">
     <string>&amp;Set Clock Divider</string>
    </property>

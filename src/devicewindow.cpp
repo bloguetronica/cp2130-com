@@ -545,15 +545,8 @@ void DeviceWindow::initializeSPIControls()
             ui->comboBoxChannel->addItem(key);
         }
         displaySPIMode();
-        ui->comboBoxChannel->setEnabled(true);
-        ui->pushButtonConfigureSPIDelays->setEnabled(true);
-        ui->comboBoxCSPinMode->setEnabled(true);
-        ui->comboBoxFrequency->setEnabled(true);
-        ui->spinBoxCPOL->setEnabled(true);
-        ui->spinBoxCPHA->setEnabled(true);
-        ui->lineEditWrite->setEnabled(true);
-        ui->lineEditRead->setEnabled(true);
-        ui->spinBoxBytesToRead->setEnabled(true);
+        ui->groupBoxSPIConfiguration->setEnabled(true);
+        ui->groupBoxSPITransfers->setEnabled(true);
     }
 }
 
