@@ -637,6 +637,9 @@
    </property>
   </action>
   <action name="actionSetClockDivider">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>&amp;Set Clock Divider</string>
    </property>
