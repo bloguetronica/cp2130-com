@@ -450,6 +450,23 @@ void DeviceWindow::update()
     }
 }
 
+// Removes all previously applied styles (implemented in version 3.0)
+void DeviceWindow::clearStyles()
+{
+    ui->checkBoxGPIO0->setStyleSheet("");
+    ui->checkBoxGPIO1->setStyleSheet("");
+    ui->checkBoxGPIO2->setStyleSheet("");
+    ui->checkBoxGPIO3->setStyleSheet("");
+    ui->checkBoxGPIO4->setStyleSheet("");
+    ui->checkBoxGPIO5->setStyleSheet("");
+    ui->checkBoxGPIO6->setStyleSheet("");
+    ui->checkBoxGPIO7->setStyleSheet("");
+    ui->checkBoxGPIO8->setStyleSheet("");
+    ui->checkBoxGPIO9->setStyleSheet("");
+    ui->checkBoxGPIO10->setStyleSheet("");
+    ui->lcdNumberEventCount->setStyleSheet("");
+}
+
 // Configures the SPI mode for the currently selected channel
 void DeviceWindow::configureSPIMode()
 {
@@ -476,18 +493,7 @@ void DeviceWindow::disableView()
     ui->actionReset->setEnabled(false);
     ui->actionClose->setText(tr("&Close Window"));  // Implemented in version 3.0, to hint the user that the device is effectively closed and only its window remains open
     ui->centralWidget->setEnabled(false);
-    ui->checkBoxGPIO0->setStyleSheet("");
-    ui->checkBoxGPIO1->setStyleSheet("");
-    ui->checkBoxGPIO2->setStyleSheet("");
-    ui->checkBoxGPIO3->setStyleSheet("");
-    ui->checkBoxGPIO4->setStyleSheet("");
-    ui->checkBoxGPIO5->setStyleSheet("");
-    ui->checkBoxGPIO6->setStyleSheet("");
-    ui->checkBoxGPIO7->setStyleSheet("");
-    ui->checkBoxGPIO8->setStyleSheet("");
-    ui->checkBoxGPIO9->setStyleSheet("");
-    ui->checkBoxGPIO10->setStyleSheet("");
-    ui->lcdNumberEventCount->setStyleSheet("");
+    clearStyles();
     viewEnabled_ = false;
 }
 
@@ -699,18 +705,7 @@ void DeviceWindow::resetDevice()
             timer_->start();  // Restart the timer
         } else {  // Failed to reopen device
             this->setEnabled(false);
-            ui->checkBoxGPIO0->setStyleSheet("");
-            ui->checkBoxGPIO1->setStyleSheet("");
-            ui->checkBoxGPIO2->setStyleSheet("");
-            ui->checkBoxGPIO3->setStyleSheet("");
-            ui->checkBoxGPIO4->setStyleSheet("");
-            ui->checkBoxGPIO5->setStyleSheet("");
-            ui->checkBoxGPIO6->setStyleSheet("");
-            ui->checkBoxGPIO7->setStyleSheet("");
-            ui->checkBoxGPIO8->setStyleSheet("");
-            ui->checkBoxGPIO9->setStyleSheet("");
-            ui->checkBoxGPIO10->setStyleSheet("");
-            ui->lcdNumberEventCount->setStyleSheet("");
+            clearStyles();
             if (err == CP2130::ERROR_INIT) {  // Failed to initialize libusb
                 QMessageBox::critical(this, tr("Critical Error"), tr("Could not reinitialize libusb.\n\nThis is a critical error and execution will be aborted."));
                 exit(EXIT_FAILURE);  // This error is critical because libusb failed to initialize
@@ -738,7 +733,7 @@ void DeviceWindow::setEventCounter()
     opCheck(tr("event-counter-setting-op"), errcnt, errstr);  // The string "event-counter-setting-op" should be translated to "Event counter setting"
 }
 
-// Updates the view (simplified and expanded in version 3.0)
+// Updates the view (expanded in version 3.0)
 void DeviceWindow::updateView(quint16 gpios, CP2130::EventCounter evtcntr)
 {
     ui->checkBoxGPIO0->setChecked((CP2130::BMGPIO0 & gpios) != 0x0000);

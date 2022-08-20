@@ -92,6 +92,7 @@ private:
     bool viewEnabled_ = false;
     int erracc_ = 0;
 
+    void clearStyles();
     void configureSPIMode();
     void disableView();
     void displaySPIMode();
