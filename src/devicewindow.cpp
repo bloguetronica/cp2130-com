@@ -251,6 +251,12 @@ void DeviceWindow::on_comboBoxFrequency_activated()
     configureSPIMode();
 }
 
+// Implemented in version 3.0
+void DeviceWindow::on_comboBoxTriggerMode_activated()
+{
+    setEventCounter();
+}
+
 void DeviceWindow::on_lineEditWrite_editingFinished()
 {
     ui->lineEditWrite->setText(write_.toHexadecimal());  // Required to reformat the hexadecimal string
@@ -408,6 +414,12 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
     opCheck(tr("spi-write-read-op"), errcnt, errstr);  // The string "spi-write-read-op" should be translated to "SPI write and read"
 }
 
+// Implemented in version 3.0
+void DeviceWindow::on_pushButtonZeroCounter_clicked()
+{
+    setEventCounter();
+}
+
 void DeviceWindow::on_spinBoxCPHA_valueChanged()
 {
     configureSPIMode();
@@ -423,25 +435,18 @@ void DeviceWindow::on_spinBoxBytesToRead_valueChanged(int i)
     ui->pushButtonRead->setEnabled(i > 0);  // The button "Read" should only be enabled when the user specifies a number of bytes to read greater than zero
 }
 
-// This is the main update routine
+// This is the main update routine (expanded in version 3.0)
 void DeviceWindow::update()
 {
     int errcnt = 0;
     QString errstr;
     quint16 gpios = cp2130_.getGPIOs(errcnt, errstr);
-    bool gpio0 = (CP2130::BMGPIO0 & gpios) != 0x0000;
-    bool gpio1 = (CP2130::BMGPIO1 & gpios) != 0x0000;
-    bool gpio2 = (CP2130::BMGPIO2 & gpios) != 0x0000;
-    bool gpio3 = (CP2130::BMGPIO3 & gpios) != 0x0000;
-    bool gpio4 = (CP2130::BMGPIO4 & gpios) != 0x0000;
-    bool gpio5 = (CP2130::BMGPIO5 & gpios) != 0x0000;
-    bool gpio6 = (CP2130::BMGPIO6 & gpios) != 0x0000;
-    bool gpio7 = (CP2130::BMGPIO7 & gpios) != 0x0000;
-    bool gpio8 = (CP2130::BMGPIO8 & gpios) != 0x0000;
-    bool gpio9 = (CP2130::BMGPIO9 & gpios) != 0x0000;
-    bool gpio10 = (CP2130::BMGPIO10 & gpios) != 0x0000;
+    CP2130::EventCounter evtcntr;
+    if (pinConfig_.gpio5 == CP2130::PCEVTCNTRRE || pinConfig_.gpio5 == CP2130::PCEVTCNTRFE || pinConfig_.gpio5 == CP2130::PCEVTCNTRNP || pinConfig_.gpio5 == CP2130::PCEVTCNTRPP) {
+        evtcntr = cp2130_.getEventCounter(errcnt, errstr);
+    }
     if (opCheck(tr("update-op"), errcnt, errstr)) {  // If no errors occur (the string "update-op" should be translated to "Update")
-        updateView(gpio0, gpio1, gpio2, gpio3, gpio4, gpio5, gpio6, gpio7, gpio8, gpio9, gpio10);  // Update values
+        updateView(gpios, evtcntr);  // Update values
     }
 }
 
@@ -482,6 +487,7 @@ void DeviceWindow::disableView()
     ui->checkBoxGPIO8->setStyleSheet("");
     ui->checkBoxGPIO9->setStyleSheet("");
     ui->checkBoxGPIO10->setStyleSheet("");
+    ui->lcdNumberEventCount->setStyleSheet("");
     viewEnabled_ = false;
 }
 
@@ -499,6 +505,14 @@ void DeviceWindow::displaySPIMode()
 size_t DeviceWindow::evaluateSizeLimit()
 {
     return SIZE_LIMITS[spiDelaysMap_[ui->comboBoxChannel->currentText()].itbyten == true ? SIZE_LIMITS_MAXIDX : ui->comboBoxFrequency->currentIndex()];
+}
+
+// Initializes the event counter controls (implemented in version 3.0)
+void DeviceWindow::initializeEventCounterControls()
+{
+    if (pinConfig_.gpio5 == CP2130::PCEVTCNTRRE || pinConfig_.gpio5 == CP2130::PCEVTCNTRFE || pinConfig_.gpio5 == CP2130::PCEVTCNTRNP || pinConfig_.gpio5 == CP2130::PCEVTCNTRPP) {
+        ui->groupBoxEventCounter->setEnabled(true);
+    }
 }
 
 // Initializes the GPIO controls
@@ -555,6 +569,7 @@ void DeviceWindow::initializeView()
 {
     initializeSetClockDividerAction();
     initializeGPIOControls();
+    initializeEventCounterControls();
     initializeSPIControls();
     viewEnabled_ = true;
 }
@@ -683,32 +698,63 @@ void DeviceWindow::resetDevice()
             initializeView();  // Reinitialize device window
             timer_->start();  // Restart the timer
         } else {  // Failed to reopen device
-            disableView();  // Since version 3.0, the window will not close itself after a failed reset, so it should only be disabled partially
+            this->setEnabled(false);
+            ui->checkBoxGPIO0->setStyleSheet("");
+            ui->checkBoxGPIO1->setStyleSheet("");
+            ui->checkBoxGPIO2->setStyleSheet("");
+            ui->checkBoxGPIO3->setStyleSheet("");
+            ui->checkBoxGPIO4->setStyleSheet("");
+            ui->checkBoxGPIO5->setStyleSheet("");
+            ui->checkBoxGPIO6->setStyleSheet("");
+            ui->checkBoxGPIO7->setStyleSheet("");
+            ui->checkBoxGPIO8->setStyleSheet("");
+            ui->checkBoxGPIO9->setStyleSheet("");
+            ui->checkBoxGPIO10->setStyleSheet("");
+            ui->lcdNumberEventCount->setStyleSheet("");
             if (err == CP2130::ERROR_INIT) {  // Failed to initialize libusb
                 QMessageBox::critical(this, tr("Critical Error"), tr("Could not reinitialize libusb.\n\nThis is a critical error and execution will be aborted."));
                 exit(EXIT_FAILURE);  // This error is critical because libusb failed to initialize
             } else if (err == CP2130::ERROR_NOT_FOUND) {  // Failed to find device
                 QMessageBox::critical(this, tr("Error"), tr("Device disconnected.\n\nPlease reconnect it and try again."));
+                this->close();  // Close window
             } else if (err == CP2130::ERROR_BUSY) {  // Failed to claim interface
                 QMessageBox::critical(this, tr("Error"), tr("Device ceased to be available.\n\nPlease verify that the device is not in use by another application."));
+                this->close();  // Close window
             }
-            // In order to avoid confusion, and for consistency, a failed reset will no longer lead to a closed window (change implemented in version 3.0)
         }
     }
 }
 
-// Updates the view
-void DeviceWindow::updateView(bool gpio0, bool gpio1, bool gpio2, bool gpio3, bool gpio4, bool gpio5, bool gpio6, bool gpio7, bool gpio8, bool gpio9, bool gpio10)
+// Sets (and zeroes) the event counter according to the currently selected trigger mode (implemented in version 3.0)
+void DeviceWindow::setEventCounter()
 {
-    ui->checkBoxGPIO0->setChecked(gpio0);
-    ui->checkBoxGPIO1->setChecked(gpio1);
-    ui->checkBoxGPIO2->setChecked(gpio2);
-    ui->checkBoxGPIO3->setChecked(gpio3);
-    ui->checkBoxGPIO4->setChecked(gpio4);
-    ui->checkBoxGPIO5->setChecked(gpio5);
-    ui->checkBoxGPIO6->setChecked(gpio6);
-    ui->checkBoxGPIO7->setChecked(gpio7);
-    ui->checkBoxGPIO8->setChecked(gpio8);
-    ui->checkBoxGPIO9->setChecked(gpio9);
-    ui->checkBoxGPIO10->setChecked(gpio10);
+    CP2130::EventCounter evtcntr;
+    evtcntr.overflow = false;
+    evtcntr.mode = static_cast<quint8>(ui->comboBoxTriggerMode->currentIndex() + CP2130::PCEVTCNTRRE);
+    evtcntr.value = 0;  // This effectively zeroes the event count
+    int errcnt = 0;
+    QString errstr;
+    cp2130_.setEventCounter(evtcntr, errcnt, errstr);
+    opCheck(tr("event-counter-setting-op"), errcnt, errstr);  // The string "event-counter-setting-op" should be translated to "Event counter setting"
+}
+
+// Updates the view (simplified and expanded in version 3.0)
+void DeviceWindow::updateView(quint16 gpios, CP2130::EventCounter evtcntr)
+{
+    ui->checkBoxGPIO0->setChecked((CP2130::BMGPIO0 & gpios) != 0x0000);
+    ui->checkBoxGPIO1->setChecked((CP2130::BMGPIO1 & gpios) != 0x0000);
+    ui->checkBoxGPIO2->setChecked((CP2130::BMGPIO2 & gpios) != 0x0000);
+    ui->checkBoxGPIO3->setChecked((CP2130::BMGPIO3 & gpios) != 0x0000);
+    ui->checkBoxGPIO4->setChecked((CP2130::BMGPIO4 & gpios) != 0x0000);
+    ui->checkBoxGPIO5->setChecked((CP2130::BMGPIO5 & gpios) != 0x0000);
+    ui->checkBoxGPIO6->setChecked((CP2130::BMGPIO6 & gpios) != 0x0000);
+    ui->checkBoxGPIO7->setChecked((CP2130::BMGPIO7 & gpios) != 0x0000);
+    ui->checkBoxGPIO8->setChecked((CP2130::BMGPIO8 & gpios) != 0x0000);
+    ui->checkBoxGPIO9->setChecked((CP2130::BMGPIO9 & gpios) != 0x0000);
+    ui->checkBoxGPIO10->setChecked((CP2130::BMGPIO10 & gpios) != 0x0000);
+    if (pinConfig_.gpio5 == CP2130::PCEVTCNTRRE || pinConfig_.gpio5 == CP2130::PCEVTCNTRFE || pinConfig_.gpio5 == CP2130::PCEVTCNTRNP || pinConfig_.gpio5 == CP2130::PCEVTCNTRPP) {
+        ui->comboBoxTriggerMode->setCurrentIndex(evtcntr.mode - CP2130::PCEVTCNTRRE);
+        ui->lcdNumberEventCount->setStyleSheet(evtcntr.overflow ? "color: darkred;" : "");
+        ui->lcdNumberEventCount->display(evtcntr.value);
+    }
 }

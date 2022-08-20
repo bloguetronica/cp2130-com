@@ -64,6 +64,7 @@ private slots:
     void on_comboBoxChannel_activated();
     void on_comboBoxCSPinMode_activated();
     void on_comboBoxFrequency_activated();
+    void on_comboBoxTriggerMode_activated();
     void on_lineEditWrite_editingFinished();
     void on_lineEditWrite_textChanged();
     void on_lineEditWrite_textEdited();
@@ -71,6 +72,7 @@ private slots:
     void on_pushButtonRead_clicked();
     void on_pushButtonWrite_clicked();
     void on_pushButtonWriteRead_clicked();
+    void on_pushButtonZeroCounter_clicked();
     void on_spinBoxCPHA_valueChanged();
     void on_spinBoxCPOL_valueChanged();
     void on_spinBoxBytesToRead_valueChanged(int i);
@@ -94,6 +96,7 @@ private:
     void disableView();
     void displaySPIMode();
     size_t evaluateSizeLimit();
+    void initializeEventCounterControls();
     void initializeGPIOControls();
     void initializeSetClockDividerAction();
     void initializeSPIControls();
@@ -101,7 +104,8 @@ private:
     bool opCheck(const QString &op, int errcnt, QString errstr);
     void readConfiguration();
     void resetDevice();
-    void updateView(bool gpio0, bool gpio1, bool gpio2, bool gpio3, bool gpio4, bool gpio5, bool gpio6, bool gpio7, bool gpio8, bool gpio9, bool gpio10);
+    void setEventCounter();
+    void updateView(quint16 gpios, CP2130::EventCounter evtcntr);
 };
 
 #endif  // DEVICEWINDOW_H
