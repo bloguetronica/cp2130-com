@@ -597,7 +597,7 @@
     <property name="title">
      <string>Event Counter</string>
     </property>
-    <widget class="QPushButton" name="pushButtonZeroCounter">
+    <widget class="QPushButton" name="pushButtonZero">
      <property name="geometry">
       <rect>
        <x>560</x>
@@ -610,7 +610,7 @@
       <string>Zero</string>
      </property>
     </widget>
-    <widget class="QLCDNumber" name="lcdNumberEventCount">
+    <widget class="QLCDNumber" name="lcdNumberCount">
      <property name="geometry">
       <rect>
        <x>451</x>
@@ -632,7 +632,7 @@
       <number>0</number>
      </property>
     </widget>
-    <widget class="QLabel" name="labelEventCount">
+    <widget class="QLabel" name="labelCount">
      <property name="geometry">
       <rect>
        <x>340</x>
@@ -642,7 +642,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Event count</string>
+      <string>Count</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -776,7 +776,7 @@
   <tabstop>checkBoxGPIO9</tabstop>
   <tabstop>checkBoxGPIO10</tabstop>
   <tabstop>comboBoxTriggerMode</tabstop>
-  <tabstop>pushButtonZeroCounter</tabstop>
+  <tabstop>pushButtonZero</tabstop>
   <tabstop>comboBoxChannel</tabstop>
   <tabstop>pushButtonConfigureSPIDelays</tabstop>
   <tabstop>comboBoxCSPinMode</tabstop>

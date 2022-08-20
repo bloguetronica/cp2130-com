@@ -415,7 +415,7 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
 }
 
 // Implemented in version 3.0
-void DeviceWindow::on_pushButtonZeroCounter_clicked()
+void DeviceWindow::on_pushButtonZero_clicked()
 {
     setEventCounter();
 }
@@ -464,7 +464,7 @@ void DeviceWindow::clearStyles()
     ui->checkBoxGPIO8->setStyleSheet("");
     ui->checkBoxGPIO9->setStyleSheet("");
     ui->checkBoxGPIO10->setStyleSheet("");
-    ui->lcdNumberEventCount->setStyleSheet("");
+    ui->lcdNumberCount->setStyleSheet("");
 }
 
 // Configures the SPI mode for the currently selected channel
@@ -749,7 +749,7 @@ void DeviceWindow::updateView(quint16 gpios, CP2130::EventCounter evtcntr)
     ui->checkBoxGPIO10->setChecked((CP2130::BMGPIO10 & gpios) != 0x0000);
     if (pinConfig_.gpio5 == CP2130::PCEVTCNTRRE || pinConfig_.gpio5 == CP2130::PCEVTCNTRFE || pinConfig_.gpio5 == CP2130::PCEVTCNTRNP || pinConfig_.gpio5 == CP2130::PCEVTCNTRPP) {
         ui->comboBoxTriggerMode->setCurrentIndex(evtcntr.mode - CP2130::PCEVTCNTRRE);
-        ui->lcdNumberEventCount->setStyleSheet(evtcntr.overflow ? "color: darkred;" : "");
-        ui->lcdNumberEventCount->display(evtcntr.value);
+        ui->lcdNumberCount->setStyleSheet(evtcntr.overflow ? "color: darkred;" : "");
+        ui->lcdNumberCount->display(evtcntr.value);
     }
 }
