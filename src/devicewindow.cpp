@@ -696,7 +696,7 @@ void DeviceWindow::readConfiguration()
     epin_ = cp2130_.getEndpointInAddr(errcnt, errstr);  // Implemented in version 3.0
     epout_ = cp2130_.getEndpointOutAddr(errcnt, errstr);  // Implemented in version 3.0
     if (errcnt > 0) {
-        this->hide();  // Hide the window, if applicable, to let the user know that the device will be closed (implemented in version 3.0)
+        this->hide();  // Hide the window, if applicable, to let the user know that the device is practically closed (implemented in version 3.0)
         if (cp2130_.disconnected()) {
             cp2130_.close();
             QMessageBox::critical(this, tr("Error"), tr("Device disconnected.\n\nPlease reconnect it and try again."));
