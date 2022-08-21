@@ -1,4 +1,4 @@
-/* CP2130 class for Qt - Version 2.2.3
+/* CP2130 class for Qt - Version 2.2.5
    Copyright (c) 2021-2022 Samuel Lourenço
 
    This library is free software: you can redistribute it and/or modify it
@@ -587,7 +587,7 @@ CP2130::SPIDelays CP2130::getSPIDelays(quint8 channel, int &errcnt, QString &err
         delays = {false, false, false, false, 0x0000, 0x0000, 0x0000};
     } else {
         unsigned char controlBufferIn[GET_SPI_DELAY_WLEN];
-        controlTransfer(GET, GET_SPI_DELAY, 0x0000, 0x0000, controlBufferIn, GET_SPI_DELAY_WLEN, errcnt, errstr);
+        controlTransfer(GET, GET_SPI_DELAY, 0x0000, channel, controlBufferIn, GET_SPI_DELAY_WLEN, errcnt, errstr);  // The value of "channel" is now passed to "wIndex" in controlTransfer(), as it should (fixed in version 2.2.5)
         delays.cstglen = (0x08 & controlBufferIn[1]) != 0x00;                                   // CS toggle enable corresponds to bit 3 of byte 1
         delays.prdasten = (0x04 & controlBufferIn[1]) != 0x00;                                  // Pre-deassert delay enable corresponds to bit 2 of byte 1
         delays.pstasten = (0x02 & controlBufferIn[1]) != 0x00;                                  // Post-assert delay enable to bit 1 of byte 1
@@ -909,7 +909,8 @@ QVector<quint8> CP2130::spiWriteRead(const QVector<quint8> &data, quint8 endpoin
     size_t bytesToWriteRead = static_cast<size_t>(data.size());
     size_t bytesProcessed = 0;  // Loop control variable implemented in version 2.2.3, to replace "bytesLeft"
     QVector<quint8> retdata;
-    while (bytesProcessed < bytesToWriteRead) {
+    int preverrcnt = errcnt;
+    while (bytesProcessed < bytesToWriteRead && preverrcnt == errcnt) {  // The extra condition breaks the loop in case of error (added in version 2.2.4)
         size_t bytesRemaining = bytesToWriteRead - bytesProcessed;  // Equivalent to the variable "bytesLeft" found in version 2.2.2, except that it is no longer used for control
         quint32 payload = static_cast<quint32>(bytesRemaining > 56 ? 56 : bytesRemaining);
         int bufSize = payload + 8;

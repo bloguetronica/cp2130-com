@@ -18,37 +18,36 @@
    Please feel free to contact me via e-mail: samuel.fmlourenco@gmail.com */
 
 
-#ifndef INFORMATIONDIALOG_H
-#define INFORMATIONDIALOG_H
+#ifndef DIVIDERDIALOG_H
+#define DIVIDERDIALOG_H
 
 // Includes
 #include <QDialog>
-#include <QString>
+#include <QLocale>
 
 namespace Ui {
-class InformationDialog;
+class DividerDialog;
 }
 
-class InformationDialog : public QDialog
+class DividerDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit InformationDialog(QWidget *parent = nullptr);
-    ~InformationDialog();
+    explicit DividerDialog(QWidget *parent = nullptr);
+    ~DividerDialog();
 
-    void setManufacturerValueLabelText(const QString &manufacturerstr);
-    void setMaxPowerValueLabelText(quint8 maxpower);
-    void setPIDValueLabelText(quint16 pid);
-    void setPowerModeValueLabelText(quint8 powmode);
-    void setProductValueLabelText(const QString &productstr);
-    void setReleaseVersionValueLabelText(quint8 majrelease, quint8 minrelease);
-    void setVIDValueLabelText(quint16 vid);
-    void setSerialValueLabelText(const QString &serialstr);
-    void setSiliconVersionValueLabelText(quint8 majver, quint8 minver);
+    quint8 clockDividerSpinBoxValue();
+    void setClockDividerSpinBoxValue(quint8 divider);
+
+private slots:
+    void on_spinBoxClockDivider_valueChanged(int i);
 
 private:
-    Ui::InformationDialog *ui;
+    Ui::DividerDialog *ui;
+    QLocale locale_ = QLocale::system();
+
+    void setExpectedFrequencyValueLabelText(quint8 divider);
 };
 
-#endif  // INFORMATIONDIALOG_H
+#endif  // DIVIDERDIALOG_H

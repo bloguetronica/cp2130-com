@@ -18,37 +18,41 @@
    Please feel free to contact me via e-mail: samuel.fmlourenco@gmail.com */
 
 
-#ifndef INFORMATIONDIALOG_H
-#define INFORMATIONDIALOG_H
+#ifndef PINFUNCTIONSDIALOG_H
+#define PINFUNCTIONSDIALOG_H
 
 // Includes
 #include <QDialog>
 #include <QString>
 
 namespace Ui {
-class InformationDialog;
+class PinFunctionsDialog;
 }
 
-class InformationDialog : public QDialog
+class PinFunctionsDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit InformationDialog(QWidget *parent = nullptr);
-    ~InformationDialog();
+    explicit PinFunctionsDialog(QWidget *parent = nullptr);
+    ~PinFunctionsDialog();
 
-    void setManufacturerValueLabelText(const QString &manufacturerstr);
-    void setMaxPowerValueLabelText(quint8 maxpower);
-    void setPIDValueLabelText(quint16 pid);
-    void setPowerModeValueLabelText(quint8 powmode);
-    void setProductValueLabelText(const QString &productstr);
-    void setReleaseVersionValueLabelText(quint8 majrelease, quint8 minrelease);
-    void setVIDValueLabelText(quint16 vid);
-    void setSerialValueLabelText(const QString &serialstr);
-    void setSiliconVersionValueLabelText(quint8 majver, quint8 minver);
+    void setGPIO0ValueLabelText(quint8 gpio0);
+    void setGPIO1ValueLabelText(quint8 gpio1);
+    void setGPIO2ValueLabelText(quint8 gpio2);
+    void setGPIO3ValueLabelText(quint8 gpio3);
+    void setGPIO4ValueLabelText(quint8 gpio4);
+    void setGPIO5ValueLabelText(quint8 gpio5);
+    void setGPIO6ValueLabelText(quint8 gpio6);
+    void setGPIO7ValueLabelText(quint8 gpio7);
+    void setGPIO8ValueLabelText(quint8 gpio8);
+    void setGPIO9ValueLabelText(quint8 gpio9);
+    void setGPIO10ValueLabelText(quint8 gpio10);
 
 private:
-    Ui::InformationDialog *ui;
+    Ui::PinFunctionsDialog *ui;
+
+    QString genericGPIOValue(quint8 gpio);
 };
 
-#endif  // INFORMATIONDIALOG_H
+#endif  // PINFUNCTIONSDIALOG_H

@@ -14,6 +14,9 @@ Commander. A list of relevant files follows:
 – devicewindow.cpp;
 – devicewindow.h;
 – devicewindow.ui;
+– dividerdialog.cpp;
+– dividerdialog.h;
+– dividerdialog.ui;
 – icons/active64.png;
 – icons/cp2130-com.png;
 – icons/greyed64.png;
@@ -29,6 +32,9 @@ Commander. A list of relevant files follows:
 – mainwindow.h;
 – mainwindow.ui;
 – misc/cp2130-com.desktop;
+– pinfunctionsdialog.cpp;
+– pinfunctionsdialog.h;
+– pinfunctionsdialog.ui;
 – resources.qrc;
 – translations/cp2130-com_en.qm;
 – translations/cp2130-com_en.ts;

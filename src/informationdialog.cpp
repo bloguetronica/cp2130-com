@@ -1,4 +1,4 @@
-/* CP2130 Commander - Version 2.1 for Debian Linux
+/* CP2130 Commander - Version 3.0 for Debian Linux
    Copyright (c) 2022 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
@@ -35,81 +35,85 @@ InformationDialog::~InformationDialog()
     delete ui;
 }
 
-// Sets the labelManufacturer text
-void InformationDialog::setManufacturerLabelText(const QString &manufacturerstr)
+// Sets the text of "labelManufacturerValue"
+void InformationDialog::setManufacturerValueLabelText(const QString &manufacturerstr)
 {
     QString manufacturer = manufacturerstr;
     if (manufacturerstr.size() > 26) {
         manufacturer.truncate(24);
         manufacturer += "...";
     }
-    ui->labelManufacturer->setText(manufacturer);
+    ui->labelManufacturerValue->setText(manufacturer);
 }
 
-// Sets the labelMaxPower text
-void InformationDialog::setMaxPowerLabelText(quint8 maxpower)
+// Sets the text of "labelMaxPowerValue"
+void InformationDialog::setMaxPowerValueLabelText(quint8 maxpower)
 {
-    ui->labelMaxPower->setText(QString("%1 [0x%2]").arg(2 * maxpower).arg(maxpower, 2, 16, QChar('0')));
+    ui->labelMaxPowerValue->setText(QString("%1 mA [0x%2]").arg(2 * maxpower).arg(maxpower, 2, 16, QChar('0')));
 }
 
-// Sets the labelPID text
-void InformationDialog::setPIDLabelText(quint16 pid)
+// Sets the text of "labelPIDValue"
+void InformationDialog::setPIDValueLabelText(quint16 pid)
 {
-    ui->labelPID->setText(QString("0x%1").arg(pid, 2, 16, QChar('0')));
+    ui->labelPIDValue->setText(QString("0x%1").arg(pid, 4, 16, QChar('0')));
 }
 
-// Sets the labelPowerMode text
-void InformationDialog::setPowerModeLabelText(quint8 powmode)
+// Sets the text of "labelPowerModeValue" (fixed in version 3.0)
+void InformationDialog::setPowerModeValueLabelText(quint8 powmode)
 {
     QString powerMode;
-    if (powmode == CP2130::PMBUSREGEN) {
-        powerMode = tr("Bus-powered (regulator enabled)");
-    } else if (powmode == CP2130::PMBUSREGEN) {
-        powerMode = tr("Bus-powered (regulator disabled)");
-    } else if (powmode == CP2130::PMBUSREGEN) {
-        powerMode = tr("Self-powered");
-    } else {
-        powerMode = tr("Unknown");
+    switch (powmode) {
+        case CP2130::PMBUSREGEN:
+            powerMode = tr("Bus-powered (regulator enabled)");
+            break;
+        case CP2130::PMBUSREGDIS:
+            powerMode = tr("Bus-powered (regulator disabled)");
+            break;
+        case CP2130::PMSELFREGEN:
+            powerMode = tr("Self-powered");
+            break;
+        default:
+            powerMode = tr("Unknown");
     }
-    ui->labelPowerMode->setText(powerMode);
+    ui->labelPowerModeValue->setText(powerMode);
 }
 
-// Sets the labelProduct text
-void InformationDialog::setProductLabelText(const QString &productstr)
+// Sets the text of "labelProductValue"
+void InformationDialog::setProductValueLabelText(const QString &productstr)
 {
     QString product = productstr;
     if (productstr.size() > 26) {
         product.truncate(24);
         product += "...";
     }
-    ui->labelProduct->setText(product);
+    ui->labelProductValue->setText(product);
 }
 
-// Sets the labelReleaseVersion text
-void InformationDialog::setReleaseVersionLabelText(quint8 majrelease, quint8 minrelease)
+// Sets the text of "labelReleaseVersionValue"
+void InformationDialog::setReleaseVersionValueLabelText(quint8 majrelease, quint8 minrelease)
 {
-    ui->labelReleaseVersion->setText(QString("%1.%2 [0x%3]").arg(majrelease).arg(minrelease).arg(majrelease << 8 | minrelease, 4, 16, QChar('0')));
+    ui->labelReleaseVersionValue->setText(QString("%1.%2 [0x%3]").arg(majrelease).arg(minrelease).arg(majrelease << 8 | minrelease, 4, 16, QChar('0')));
 }
 
-// Sets the labelSerial text
-void InformationDialog::setSerialLabelText(const QString &serialstr)
+// Sets the text of "labelSerialValue"
+void InformationDialog::setSerialValueLabelText(const QString &serialstr)
 {
     QString serial = serialstr;
     if (serialstr.size() > 26) {
         serial.truncate(24);
         serial += "...";
     }
-    ui->labelSerial->setText(serial);
+    ui->labelSerialValue->setText(serial);
 }
 
-// Sets the labelSiliconVersion text
-void InformationDialog::setSiliconVersionLabelText(quint8 majver, quint8 minver)
+// Sets the text of "labelSiliconVersionValue"
+void InformationDialog::setSiliconVersionValueLabelText(quint8 majver, quint8 minver)
 {
-    ui->labelSiliconVersion->setText(QString("%1.%2 [0x%3]").arg(majver).arg(minver).arg(majver << 8 | minver, 4, 16, QChar('0')));
+    ui->labelSiliconVersionValue->setText(QString("%1.%2 [0x%3]").arg(majver).arg(minver).arg(majver << 8 | minver, 4, 16, QChar('0')));
 }
 
-// Sets the labelVID text
-void InformationDialog::setVIDLabelText(quint16 vid)
+// Sets the text of "labelVIDValue"
+void InformationDialog::setVIDValueLabelText(quint16 vid)
 {
-    ui->labelVID->setText(QString("0x%1").arg(vid, 2, 16, QChar('0')));
+    ui->labelVIDValue->setText(QString("0x%1").arg(vid, 4, 16, QChar('0')));
 }

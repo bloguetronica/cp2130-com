@@ -1,4 +1,4 @@
-/* CP2130 Commander - Version 2.1 for Debian Linux
+/* CP2130 Commander - Version 3.0 for Debian Linux
    Copyright (c) 2022 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
@@ -22,11 +22,9 @@
 #include <QMessageBox>
 #include <QRegExp>
 #include <QRegExpValidator>
-#include <QString>
 #include <QStringList>
 #include "aboutdialog.h"
 #include "cp2130.h"
-#include "devicewindow.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -72,13 +70,22 @@ void MainWindow::on_lineEditVID_textEdited()
     validateInput();
 }
 
+// This function was expanded in version 3.0, so that when the user tries to open a device that is already open in the current instance of the application, it will bring the corresponding window to the top
 void MainWindow::on_pushButtonOpen_clicked()
 {
     QString serialstr = ui->comboBoxDevices->currentText();  // Extract the serial number from the chosen item in the combo box
-    DeviceWindow *devWindow = new DeviceWindow(this);  // Create a new window that will close when its parent window closes
-    devWindow->setAttribute(Qt::WA_DeleteOnClose);  // This will not only free the allocated memory once the window is closed, but will also automatically call the destructor of the respective device, which in turn closes it
-    devWindow->openDevice(vid_, pid_, serialstr);  // Access the selected device and prepare its view
-    devWindow->show();  // Then open the corresponding window
+    QString usbidstr = QString("%1%2%3").arg(vid_, 4, 16, QChar('0')).arg(pid_, 4, 16, QChar('0')).arg(serialstr);  // Unique identifier string for the USB device
+    DeviceWindow *devWindow;
+    if (devWindowMap_.contains(usbidstr) && !devWindowMap_[usbidstr].isNull() && (devWindow = devWindowMap_[usbidstr].data())->isViewEnabled()) {  // If the device is already mapped, and its window is open but not disabled
+        devWindow->showNormal();  // Required if the corresponding device window is minimized
+        devWindow->activateWindow();  // Set focus on the device window (window is raised and selected)
+    } else {
+        devWindow = new DeviceWindow(this);  // Create a new window that will close when its parent window closes
+        devWindow->setAttribute(Qt::WA_DeleteOnClose);  // This will not only free the allocated memory once the window is closed, but will also automatically call the destructor of the respective device, which in turn closes it
+        devWindow->openDevice(vid_, pid_, serialstr);  // Access the selected device and prepare its view
+        devWindow->show();  // Then open the corresponding window
+        devWindowMap_[usbidstr] = devWindow;  // Map the device window, via a QPointer, to the unique identifier string of the device
+    }
 }
 
 void MainWindow::on_pushButtonRefresh_clicked()

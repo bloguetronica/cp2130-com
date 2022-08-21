@@ -1,4 +1,4 @@
-/* CP2130 Commander - Version 2.1 for Debian Linux
+/* CP2130 Commander - Version 3.0 for Debian Linux
    Copyright (c) 2022 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
@@ -22,6 +22,8 @@
 #define DEVICEWINDOW_H
 
 // Includes
+#include <QLabel>
+#include <QLocale>
 #include <QMainWindow>
 #include <QMap>
 #include <QString>
@@ -41,12 +43,15 @@ public:
     explicit DeviceWindow(QWidget *parent = nullptr);
     ~DeviceWindow();
 
+    bool isViewEnabled();
     void openDevice(quint16 vid, quint16 pid, const QString &serialstr);
 
 private slots:
     void on_actionAbout_triggered();
+    void on_actionGPIOPinFunctions_triggered();
     void on_actionInformation_triggered();
     void on_actionReset_triggered();
+    void on_actionSetClockDivider_triggered();
     void on_checkBoxGPIO0_clicked();
     void on_checkBoxGPIO1_clicked();
     void on_checkBoxGPIO2_clicked();
@@ -61,6 +66,7 @@ private slots:
     void on_comboBoxChannel_activated();
     void on_comboBoxCSPinMode_activated();
     void on_comboBoxFrequency_activated();
+    void on_comboBoxTriggerMode_activated();
     void on_lineEditWrite_editingFinished();
     void on_lineEditWrite_textChanged();
     void on_lineEditWrite_textEdited();
@@ -68,6 +74,7 @@ private slots:
     void on_pushButtonRead_clicked();
     void on_pushButtonWrite_clicked();
     void on_pushButtonWriteRead_clicked();
+    void on_pushButtonZero_clicked();
     void on_spinBoxCPHA_valueChanged();
     void on_spinBoxCPOL_valueChanged();
     void on_spinBoxBytesToRead_valueChanged(int i);
@@ -78,22 +85,31 @@ private:
     CP2130 cp2130_;
     CP2130::PinConfig pinConfig_;
     Data write_;
+    QLabel *labelStatus_;
+    QLocale locale_ = QLocale::system();
+    QMap<QString, CP2130::SPIDelays> spiDelaysMap_;
     QMap<QString, CP2130::SPIMode> spiModeMap_;
     QString serialstr_;
-    quint16 pid_, vid_;
     QTimer *timer_;
+    quint8 epin_, epout_;
+    quint16 pid_, vid_;
+    bool viewEnabled_ = false;
     int erracc_ = 0;
 
     void configureSPIMode();
     void disableView();
     void displaySPIMode();
+    size_t evaluateSizeLimit();
+    void initializeEventCounterControls();
     void initializeGPIOControls();
+    void initializeSetClockDividerAction();
     void initializeSPIControls();
     void initializeView();
     bool opCheck(const QString &op, int errcnt, QString errstr);
     void readConfiguration();
     void resetDevice();
-    void updateView(bool gpio0, bool gpio1, bool gpio2, bool gpio3, bool gpio4, bool gpio5, bool gpio6, bool gpio7, bool gpio8, bool gpio9, bool gpio10);
+    void setEventCounter();
+    void updateView(quint16 gpios, CP2130::EventCounter evtcntr);
 };
 
 #endif  // DEVICEWINDOW_H

@@ -24,6 +24,9 @@ cp -f src/delaysdialog.ui /usr/local/src/cp2130-com/.
 cp -f src/devicewindow.cpp /usr/local/src/cp2130-com/.
 cp -f src/devicewindow.h /usr/local/src/cp2130-com/.
 cp -f src/devicewindow.ui /usr/local/src/cp2130-com/.
+cp -f src/dividerdialog.cpp /usr/local/src/cp2130-com/.
+cp -f src/dividerdialog.h /usr/local/src/cp2130-com/.
+cp -f src/dividerdialog.ui /usr/local/src/cp2130-com/.
 cp -f src/GPL.txt /usr/local/src/cp2130-com/.
 cp -f src/icons/active64.png /usr/local/src/cp2130-com/icons/.
 cp -f src/icons/cp2130-com.png /usr/local/src/cp2130-com/icons/.
@@ -41,6 +44,9 @@ cp -f src/mainwindow.cpp /usr/local/src/cp2130-com/.
 cp -f src/mainwindow.h /usr/local/src/cp2130-com/.
 cp -f src/mainwindow.ui /usr/local/src/cp2130-com/.
 cp -f src/misc/cp2130-com.desktop /usr/local/src/cp2130-com/misc/.
+cp -f src/pinfunctionsdialog.cpp /usr/local/src/cp2130-com/.
+cp -f src/pinfunctionsdialog.h /usr/local/src/cp2130-com/.
+cp -f src/pinfunctionsdialog.ui /usr/local/src/cp2130-com/.
 cp -f src/README.txt /usr/local/src/cp2130-com/.
 cp -f src/resources.qrc /usr/local/src/cp2130-com/.
 cp -f src/translations/cp2130-com_en.qm /usr/local/src/cp2130-com/translations/.

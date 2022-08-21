@@ -1,4 +1,4 @@
-/* CP2130 Commander - Version 2.1 for Debian Linux
+/* CP2130 Commander - Version 3.0 for Debian Linux
    Copyright (c) 2022 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
@@ -29,7 +29,9 @@ struct Data
 {
     QVector<quint8> vector;
 
+    QVector<quint8> fragment(size_t index, size_t size) const;
     QString toHexadecimal() const;
+
     void fromHexadecimal(const QString &hexadecimal);
 };
 

@@ -1,4 +1,4 @@
-/* CP2130 Commander - Version 2.1 for Debian Linux
+/* CP2130 Commander - Version 3.0 for Debian Linux
    Copyright (c) 2022 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
@@ -23,6 +23,10 @@
 
 // Includes
 #include <QMainWindow>
+#include <QMap>
+#include <QPointer>
+#include <QString>
+#include "devicewindow.h"
 
 namespace Ui {
 class MainWindow;
@@ -46,6 +50,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QMap<QString, QPointer<DeviceWindow>> devWindowMap_;
     quint16 pid_, vid_;
 
     void refresh();
