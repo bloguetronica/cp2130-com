@@ -354,7 +354,7 @@ void DeviceWindow::on_pushButtonRead_clicked()
     } else if (elapsedTime < 1000) {
         labelStatus_->setText(tr("SPI read completed in %1 ms.").arg(elapsedTime));
     } else {
-        labelStatus_->setText(tr("SPI read completed in %1 s.").arg(elapsedTime / 1000.0, 0, 'f', 3));
+        labelStatus_->setText(tr("SPI read completed in %1 s.").arg(locale_.toString(elapsedTime / 1000.0, 'f', 3)));
     }
     opCheck(tr("spi-read-op"), errcnt, errstr);  // The string "spi-read-op" should be translated to "SPI read"
 }
@@ -400,7 +400,7 @@ void DeviceWindow::on_pushButtonWrite_clicked()
     } else if (elapsedTime < 1000) {
         labelStatus_->setText(tr("SPI write completed in %1 ms.").arg(elapsedTime));
     } else {
-        labelStatus_->setText(tr("SPI write completed in %1 s.").arg(elapsedTime / 1000.0, 0, 'f', 3));
+        labelStatus_->setText(tr("SPI write completed in %1 s.").arg(locale_.toString(elapsedTime / 1000.0, 'f', 3)));
     }
     opCheck(tr("spi-write-op"), errcnt, errstr);  // The string "spi-write-op" should be translated to "SPI write"
 }
@@ -448,7 +448,7 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
     } else if (elapsedTime < 1000) {
         labelStatus_->setText(tr("SPI write and read completed in %1 ms.").arg(elapsedTime));
     } else {
-        labelStatus_->setText(tr("SPI write and read completed in %1 s.").arg(elapsedTime / 1000.0, 0, 'f', 3));
+        labelStatus_->setText(tr("SPI write and read completed in %1 s.").arg(locale_.toString(elapsedTime / 1000.0, 'f', 3)));
     }
     opCheck(tr("spi-write-read-op"), errcnt, errstr);  // The string "spi-write-read-op" should be translated to "SPI write and read"
 }

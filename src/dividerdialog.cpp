@@ -60,8 +60,8 @@ void DividerDialog::setExpectedFrequencyValueLabelText(quint8 divider)
 {
     float frequency = MCLK / (divider == 0 ? 256 : divider);  // Frequency in kHz
     if (frequency < 1000) {
-        ui->labelExpectedFrequencyValue->setText(QString("%1 kHz").arg(frequency, 0, 'f', 2));
+        ui->labelExpectedFrequencyValue->setText(QString("%1 kHz").arg(locale_.toString(frequency, 'f', 2)));
     } else {
-        ui->labelExpectedFrequencyValue->setText(QString("%1 MHz").arg(frequency / 1000, 0, 'f', 2));
+        ui->labelExpectedFrequencyValue->setText(QString("%1 MHz").arg(locale_.toString(frequency / 1000, 'f', 2)));
     }
 }

@@ -23,6 +23,7 @@
 
 // Includes
 #include <QDialog>
+#include <QLocale>
 
 namespace Ui {
 class DividerDialog;
@@ -44,6 +45,7 @@ private slots:
 
 private:
     Ui::DividerDialog *ui;
+    QLocale locale_ = QLocale::system();
 
     void setExpectedFrequencyValueLabelText(quint8 divider);
 };
