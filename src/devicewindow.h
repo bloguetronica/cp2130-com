@@ -22,6 +22,7 @@
 #define DEVICEWINDOW_H
 
 // Includes
+#include <QLabel>
 #include <QMainWindow>
 #include <QMap>
 #include <QString>
@@ -83,6 +84,7 @@ private:
     CP2130 cp2130_;
     CP2130::PinConfig pinConfig_;
     Data write_;
+    QLabel *labelStatus_;
     QMap<QString, CP2130::SPIDelays> spiDelaysMap_;
     QMap<QString, CP2130::SPIMode> spiModeMap_;
     QString serialstr_;
@@ -92,7 +94,6 @@ private:
     bool viewEnabled_ = false;
     int erracc_ = 0;
 
-    void clearStyles();
     void configureSPIMode();
     void disableView();
     void displaySPIMode();

@@ -19,6 +19,7 @@
 
 
 // Includes
+#include <QElapsedTimer>
 #include <QMessageBox>
 #include <QProgressDialog>
 #include <QRegExp>
@@ -45,6 +46,8 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->lineEditWrite->setValidator(new QRegExpValidator(QRegExp("[A-Fa-f\\d\\s]+"), this));  // Spaces are allowed since version 2.0
+    labelStatus_ = new QLabel(this);
+    this->statusBar()->addWidget(labelStatus_);
 }
 
 DeviceWindow::~DeviceWindow()
@@ -318,8 +321,10 @@ void DeviceWindow::on_pushButtonRead_clicked()
     QProgressDialog spiReadProgress(tr("Performing SPI read..."), tr("Abort"), 0, static_cast<int>(bytesToRead), this);  // Progress dialog implemented in version 3.0
     spiReadProgress.setWindowTitle(tr("SPI Read"));
     spiReadProgress.setWindowModality(Qt::WindowModal);
-    spiReadProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500ms
+    spiReadProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500 ms
     Data read;
+    QElapsedTimer time;
+    time.start();
     int errcnt = 0;
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
@@ -338,9 +343,19 @@ void DeviceWindow::on_pushButtonRead_clicked()
         bytesProcessed += fragmentSize;
         spiReadProgress.setValue(static_cast<int>(bytesProcessed));
     }
-    usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
+    usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
+    int elapsedTime = static_cast<int>(time.elapsed());  // Elapsed time in milliseconds
     ui->lineEditRead->setText(read.toHexadecimal());  // At least, a partial result should be shown in case of error
+    if (errcnt > 0) {  // Update status bar
+        labelStatus_->setText(tr("SPI read failed."));
+    } else if (spiReadProgress.wasCanceled()){
+        labelStatus_->setText(tr("SPI read aborted by the user."));
+    } else if (elapsedTime < 1000) {
+        labelStatus_->setText(tr("SPI read completed in %1 ms.").arg(elapsedTime));
+    } else {
+        labelStatus_->setText(tr("SPI read completed in %1 s.").arg(elapsedTime / 1000.0, 0, 'f', 3));
+    }
     opCheck(tr("spi-read-op"), errcnt, errstr);  // The string "spi-read-op" should be translated to "SPI read"
 }
 
@@ -354,7 +369,9 @@ void DeviceWindow::on_pushButtonWrite_clicked()
     QProgressDialog spiWriteProgress(tr("Performing SPI write..."), tr("Abort"), 0, static_cast<int>(bytesToWrite), this);  // Progress dialog implemented in version 3.0
     spiWriteProgress.setWindowTitle(tr("SPI Write"));
     spiWriteProgress.setWindowModality(Qt::WindowModal);
-    spiWriteProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500ms
+    spiWriteProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500 ms
+    QElapsedTimer time;
+    time.start();
     int errcnt = 0;
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
@@ -372,9 +389,19 @@ void DeviceWindow::on_pushButtonWrite_clicked()
         bytesProcessed += fragmentSize;
         spiWriteProgress.setValue(static_cast<int>(bytesProcessed));
     }
-    usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
+    usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
+    int elapsedTime = static_cast<int>(time.elapsed());  // Elapsed time in milliseconds
     ui->lineEditRead->clear();
+    if (errcnt > 0) {  // Update status bar
+        labelStatus_->setText(tr("SPI write failed."));
+    } else if (spiWriteProgress.wasCanceled()){
+        labelStatus_->setText(tr("SPI write aborted by the user."));
+    } else if (elapsedTime < 1000) {
+        labelStatus_->setText(tr("SPI write completed in %1 ms.").arg(elapsedTime));
+    } else {
+        labelStatus_->setText(tr("SPI write completed in %1 s.").arg(elapsedTime / 1000.0, 0, 'f', 3));
+    }
     opCheck(tr("spi-write-op"), errcnt, errstr);  // The string "spi-write-op" should be translated to "SPI write"
 }
 
@@ -385,11 +412,13 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
     size_t fragmentSizeLimit = evaluateSizeLimit();
     size_t bytesToWriteRead = write_.vector.size();
     size_t bytesProcessed = 0;
-    QProgressDialog spiWriteReadProgress(tr("Performing SPI write/read..."), tr("Abort"), 0, static_cast<int>(bytesToWriteRead), this);  // Progress dialog implemented in version 3.0
+    QProgressDialog spiWriteReadProgress(tr("Performing SPI write and read..."), tr("Abort"), 0, static_cast<int>(bytesToWriteRead), this);  // Progress dialog implemented in version 3.0
     spiWriteReadProgress.setWindowTitle(tr("SPI Write/Read"));
     spiWriteReadProgress.setWindowModality(Qt::WindowModal);
-    spiWriteReadProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500ms
+    spiWriteReadProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500 ms
     Data read;
+    QElapsedTimer time;
+    time.start();
     int errcnt = 0;
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
@@ -408,9 +437,19 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
         bytesProcessed += fragmentSize;
         spiWriteReadProgress.setValue(static_cast<int>(bytesProcessed));
     }
-    usleep(100);  // Wait 100us, in order to prevent possible errors while disabling the chip select (workaround)
+    usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
+    int elapsedTime = static_cast<int>(time.elapsed());  // Elapsed time in milliseconds
     ui->lineEditRead->setText(read.toHexadecimal());  // At least, a partial result should be shown if an error occurs
+    if (errcnt > 0) {  // Update status bar
+        labelStatus_->setText(tr("SPI write and read failed."));
+    } else if (spiWriteReadProgress.wasCanceled()){
+        labelStatus_->setText(tr("SPI write and read aborted by the user."));
+    } else if (elapsedTime < 1000) {
+        labelStatus_->setText(tr("SPI write and read completed in %1 ms.").arg(elapsedTime));
+    } else {
+        labelStatus_->setText(tr("SPI write and read completed in %1 s.").arg(elapsedTime / 1000.0, 0, 'f', 3));
+    }
     opCheck(tr("spi-write-read-op"), errcnt, errstr);  // The string "spi-write-read-op" should be translated to "SPI write and read"
 }
 
@@ -450,23 +489,6 @@ void DeviceWindow::update()
     }
 }
 
-// Removes all previously applied styles (implemented in version 3.0)
-void DeviceWindow::clearStyles()
-{
-    ui->checkBoxGPIO0->setStyleSheet("");
-    ui->checkBoxGPIO1->setStyleSheet("");
-    ui->checkBoxGPIO2->setStyleSheet("");
-    ui->checkBoxGPIO3->setStyleSheet("");
-    ui->checkBoxGPIO4->setStyleSheet("");
-    ui->checkBoxGPIO5->setStyleSheet("");
-    ui->checkBoxGPIO6->setStyleSheet("");
-    ui->checkBoxGPIO7->setStyleSheet("");
-    ui->checkBoxGPIO8->setStyleSheet("");
-    ui->checkBoxGPIO9->setStyleSheet("");
-    ui->checkBoxGPIO10->setStyleSheet("");
-    ui->lcdNumberCount->setStyleSheet("");
-}
-
 // Configures the SPI mode for the currently selected channel
 void DeviceWindow::configureSPIMode()
 {
@@ -493,7 +515,19 @@ void DeviceWindow::disableView()
     ui->actionReset->setEnabled(false);
     ui->actionClose->setText(tr("&Close Window"));  // Implemented in version 3.0, to hint the user that the device is effectively closed and only its window remains open
     ui->centralWidget->setEnabled(false);
-    clearStyles();
+    ui->checkBoxGPIO0->setStyleSheet("");
+    ui->checkBoxGPIO1->setStyleSheet("");
+    ui->checkBoxGPIO2->setStyleSheet("");
+    ui->checkBoxGPIO3->setStyleSheet("");
+    ui->checkBoxGPIO4->setStyleSheet("");
+    ui->checkBoxGPIO5->setStyleSheet("");
+    ui->checkBoxGPIO6->setStyleSheet("");
+    ui->checkBoxGPIO7->setStyleSheet("");
+    ui->checkBoxGPIO8->setStyleSheet("");
+    ui->checkBoxGPIO9->setStyleSheet("");
+    ui->checkBoxGPIO10->setStyleSheet("");
+    ui->lcdNumberCount->setStyleSheet("");
+    ui->statusBar->setEnabled(false);
     viewEnabled_ = false;
 }
 
@@ -516,9 +550,7 @@ size_t DeviceWindow::evaluateSizeLimit()
 // Initializes the event counter controls (implemented in version 3.0)
 void DeviceWindow::initializeEventCounterControls()
 {
-    if (pinConfig_.gpio5 == CP2130::PCEVTCNTRRE || pinConfig_.gpio5 == CP2130::PCEVTCNTRFE || pinConfig_.gpio5 == CP2130::PCEVTCNTRNP || pinConfig_.gpio5 == CP2130::PCEVTCNTRPP) {
-        ui->groupBoxEventCounter->setEnabled(true);
-    }
+    ui->groupBoxEventCounter->setEnabled(pinConfig_.gpio5 == CP2130::PCEVTCNTRRE || pinConfig_.gpio5 == CP2130::PCEVTCNTRFE || pinConfig_.gpio5 == CP2130::PCEVTCNTRNP || pinConfig_.gpio5 == CP2130::PCEVTCNTRPP);
 }
 
 // Initializes the GPIO controls
@@ -558,19 +590,19 @@ void DeviceWindow::initializeSetClockDividerAction()
 // Initializes the SPI controls
 void DeviceWindow::initializeSPIControls()
 {
+    ui->comboBoxChannel->clear();  // The combo box is always cleared (revised in version 3.0)
     if (spiModeMap_.size() != 0) {  // In order for the SPI controls (including transfers) to be enabled, at least one pin should be configured to work as a chip select
-        ui->comboBoxChannel->clear();
         QList<QString> keys = spiModeMap_.keys();
         for (QString key : keys) {
             ui->comboBoxChannel->addItem(key);
         }
         displaySPIMode();
-        ui->groupBoxSPIConfiguration->setEnabled(true);
-        ui->groupBoxSPITransfers->setEnabled(true);
     }
+    ui->groupBoxSPIConfiguration->setEnabled(spiModeMap_.size() != 0);  // It may be desirable to either enable or disable both group boxes, just in case the device configuration changes (revised in version 3.0)
+    ui->groupBoxSPITransfers->setEnabled(spiModeMap_.size() != 0);
 }
 
-// This is the routine that is used to initialize the device window
+// This is the routine that is used to initialize (or reinitialize) the device window
 void DeviceWindow::initializeView()
 {
     initializeSetClockDividerAction();
@@ -598,8 +630,8 @@ bool DeviceWindow::opCheck(const QString &op, int errcnt, QString errstr)
                 timer_->stop();  // Again, this prevents further errors
                 disableView();  // Disable device window
                 cp2130_.reset(errcnt, errstr);  // Try to reset the device for sanity purposes, but don't check if it was successful
-                cp2130_.close();  // Ensure that the device is freed, even if the previous device reset is not effective (device_.reset() also frees the device interface, as an effect of re-enumeration)
-                // It is essential that device_.close() is called, since some important checks rely on device_.isOpen() to retrieve a proper status
+                cp2130_.close();  // Ensure that the device is freed, even if the previous device reset is not effective (cp2130_.reset() also frees the device interface, as an effect of re-enumeration)
+                // It is essential that cp2130_.close() is called, since some important checks rely on cp2130_.isOpen() to retrieve a proper status
                 QMessageBox::critical(this, tr("Error"), tr("Detected too many errors."));
             }
         }
@@ -664,6 +696,7 @@ void DeviceWindow::readConfiguration()
     epin_ = cp2130_.getEndpointInAddr(errcnt, errstr);  // Implemented in version 3.0
     epout_ = cp2130_.getEndpointOutAddr(errcnt, errstr);  // Implemented in version 3.0
     if (errcnt > 0) {
+        this->hide();  // Hide the window, if applicable, to let the user know that the device will be closed (implemented in version 3.0)
         if (cp2130_.disconnected()) {
             cp2130_.close();
             QMessageBox::critical(this, tr("Error"), tr("Device disconnected.\n\nPlease reconnect it and try again."));
@@ -673,7 +706,7 @@ void DeviceWindow::readConfiguration()
             errstr.chop(1);  // Remove the last character, which is always a newline
             QMessageBox::critical(this, tr("Error"), tr("Read configuration operation returned the following error(s):\n– %1\n\nPlease try accessing the device again.", "", errcnt).arg(errstr.replace("\n", "\n– ")));
         }
-        this->deleteLater();  // In a context where the window is already visible, it has the same effect as this->close()
+        this->deleteLater();  // This is a severe error that requires the window to be closed, because the state of the device is not known, and therefore it is not safe to proceed
     }
 }
 
@@ -681,9 +714,6 @@ void DeviceWindow::readConfiguration()
 void DeviceWindow::resetDevice()
 {
     timer_->stop();  // Stop the update timer momentarily, in order to avoid recurrent errors if the device gets disconnected during a reset, or other unexpected behavior
-    ui->lineEditWrite->clear();
-    ui->lineEditRead->clear();
-    ui->spinBoxBytesToRead->setValue(0);
     int errcnt = 0;
     QString errstr;
     cp2130_.reset(errcnt, errstr);
@@ -692,30 +722,34 @@ void DeviceWindow::resetDevice()
         cp2130_.close();  // Important! - This should be done always, even if the previous reset operation shows an error, because an error doesn't mean that a device reset was not effected
         int err;
         for (int i = 0; i < ENUM_RETRIES; ++i) {  // Verify enumeration according to the number of times set by "ENUM_RETRIES" [10]
-            QThread::msleep(500);  // Wait 500ms each time
+            QThread::msleep(500);  // Wait 500 ms each time
             err = cp2130_.open(vid_, pid_, serialstr_);
             if (err != CP2130::ERROR_NOT_FOUND) {  // Retry only if the device was not found yet (as it may take some time to enumerate)
                 break;
             }
         }
         if (err == CP2130::SUCCESS) {  // Device was successfully reopened
+            spiModeMap_.clear();  // Implemented in version 3.0 (this is not required, unless the device configuration somehow changes)
+            spiDelaysMap_.clear();
             readConfiguration();  // Reread device configuration
             erracc_ = 0;  // Zero the error count accumulator, since a new session gets started once the reset is done
+            ui->lineEditWrite->clear();
+            ui->lineEditRead->clear();
+            ui->spinBoxBytesToRead->setValue(0);
+            labelStatus_->clear();
             initializeView();  // Reinitialize device window
             timer_->start();  // Restart the timer
         } else {  // Failed to reopen device
-            this->setEnabled(false);
-            clearStyles();
+            disableView();
             if (err == CP2130::ERROR_INIT) {  // Failed to initialize libusb
                 QMessageBox::critical(this, tr("Critical Error"), tr("Could not reinitialize libusb.\n\nThis is a critical error and execution will be aborted."));
                 exit(EXIT_FAILURE);  // This error is critical because libusb failed to initialize
             } else if (err == CP2130::ERROR_NOT_FOUND) {  // Failed to find device
                 QMessageBox::critical(this, tr("Error"), tr("Device disconnected.\n\nPlease reconnect it and try again."));
-                this->close();  // Close window
             } else if (err == CP2130::ERROR_BUSY) {  // Failed to claim interface
                 QMessageBox::critical(this, tr("Error"), tr("Device ceased to be available.\n\nPlease verify that the device is not in use by another application."));
-                this->close();  // Close window
             }
+            // Since version 3.0, the window will no longer close automatically if the device fails to reopen (this will give the user a chance to see the last state)
         }
     }
 }
