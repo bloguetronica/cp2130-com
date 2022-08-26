@@ -1,4 +1,4 @@
-/* CP2130 Commander - Version 3.0 for Debian Linux
+/* CP2130 Commander - Version 3.1 for Debian Linux
    Copyright (c) 2022 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
@@ -48,6 +48,8 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     ui->lineEditWrite->setValidator(new QRegExpValidator(QRegExp("[A-Fa-f\\d\\s]+"), this));  // Spaces are allowed since version 2.0
     labelStatus_ = new QLabel(this);
     this->statusBar()->addWidget(labelStatus_);
+    timer_ = new QTimer(this);  // The timer is initialized in the constructor since version 3.1
+    QObject::connect(timer_, SIGNAL(timeout()), this, SLOT(update()));
 }
 
 DeviceWindow::~DeviceWindow()
@@ -72,8 +74,6 @@ void DeviceWindow::openDevice(quint16 vid, quint16 pid, const QString &serialstr
         readConfiguration();  // Read device configuration
         this->setWindowTitle(tr("CP2130 Device (S/N: %1)").arg(serialstr_));
         initializeView();  // Initialize device window
-        timer_ = new QTimer(this);  // Create a timer
-        QObject::connect(timer_, SIGNAL(timeout()), this, SLOT(update()));
         timer_->start(100);  // Start the timer
     } else if (err == CP2130::ERROR_INIT) {  // Failed to initialize libusb
         QMessageBox::critical(this, tr("Critical Error"), tr("Could not initialize libusb.\n\nThis is a critical error and execution will be aborted."));
