@@ -523,7 +523,7 @@ Por favor, confirme que o mesmo não está a ser utilizado.</translation>
     <message>
         <location filename="../devicewindow.cpp" line="416"/>
         <source>SPI Write/Read</source>
-        <translation>Leitura/Escrita SPI</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../devicewindow.cpp" line="445"/>
