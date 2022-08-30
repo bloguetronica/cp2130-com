@@ -323,7 +323,7 @@ void DeviceWindow::on_pushButtonRead_clicked()
     spiReadProgress.setWindowModality(Qt::WindowModal);
     spiReadProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500 ms
     Data read;
-    timer_->stop();  // The update timer is now stopped during SPI transfers (version 3.1 bug fix)
+    timer_->stop();  // The update timer is now stopped during SPI transfers (fix implemented in version 3.1)
     QElapsedTimer time;
     time.start();
     int errcnt = 0;
@@ -373,7 +373,7 @@ void DeviceWindow::on_pushButtonWrite_clicked()
     spiWriteProgress.setWindowTitle(tr("SPI Write"));
     spiWriteProgress.setWindowModality(Qt::WindowModal);
     spiWriteProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500 ms
-    timer_->stop();  // The update timer is now stopped during SPI transfers (version 3.1 bug fix)
+    timer_->stop();  // The update timer is now stopped during SPI transfers (fix implemented in version 3.1)
     QElapsedTimer time;
     time.start();
     int errcnt = 0;
@@ -423,7 +423,7 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
     spiWriteReadProgress.setWindowModality(Qt::WindowModal);
     spiWriteReadProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500 ms
     Data read;
-    timer_->stop();  // The update timer is now stopped during SPI transfers (version 3.1 bug fix)
+    timer_->stop();  // The update timer is now stopped during SPI transfers (fix implemented in version 3.1)
     QElapsedTimer time;
     time.start();
     int errcnt = 0;
