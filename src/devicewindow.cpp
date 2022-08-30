@@ -323,11 +323,13 @@ void DeviceWindow::on_pushButtonRead_clicked()
     spiReadProgress.setWindowModality(Qt::WindowModal);
     spiReadProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500 ms
     Data read;
+    timer_->stop();  // The update timer is now stopped during SPI transfers (version 3.1 bug fix)
     QElapsedTimer time;
     time.start();
     int errcnt = 0;
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
+    usleep(100);  // Wait 100 us, in order to prevent possible errors after enabling the chip select (workaround implemented in version 3.1)
     while (bytesProcessed < bytesToRead) {
         if (spiReadProgress.wasCanceled()) {  // If the user clicks "Abort"
             break;  // Abort the SPI read operation
@@ -346,6 +348,7 @@ void DeviceWindow::on_pushButtonRead_clicked()
     usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     int elapsedTime = static_cast<int>(time.elapsed());  // Elapsed time in milliseconds
+    timer_->start();  // Restart the timer
     ui->lineEditRead->setText(read.toHexadecimal());  // At least, a partial result should be shown in case of error
     if (errcnt > 0) {  // Update status bar
         labelStatus_->setText(tr("SPI read failed."));
@@ -370,11 +373,13 @@ void DeviceWindow::on_pushButtonWrite_clicked()
     spiWriteProgress.setWindowTitle(tr("SPI Write"));
     spiWriteProgress.setWindowModality(Qt::WindowModal);
     spiWriteProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500 ms
+    timer_->stop();  // The update timer is now stopped during SPI transfers (version 3.1 bug fix)
     QElapsedTimer time;
     time.start();
     int errcnt = 0;
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
+    usleep(100);  // Wait 100 us, in order to prevent possible errors after enabling the chip select (workaround implemented in version 3.1)
     while (bytesProcessed < bytesToWrite) {
         if (spiWriteProgress.wasCanceled()) {  // If the user clicks "Abort"
             break;  // Abort the SPI write operation
@@ -392,6 +397,7 @@ void DeviceWindow::on_pushButtonWrite_clicked()
     usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     int elapsedTime = static_cast<int>(time.elapsed());  // Elapsed time in milliseconds
+    timer_->start();  // Restart the timer
     ui->lineEditRead->clear();
     if (errcnt > 0) {  // Update status bar
         labelStatus_->setText(tr("SPI write failed."));
@@ -417,11 +423,13 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
     spiWriteReadProgress.setWindowModality(Qt::WindowModal);
     spiWriteReadProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500 ms
     Data read;
+    timer_->stop();  // The update timer is now stopped during SPI transfers (version 3.1 bug fix)
     QElapsedTimer time;
     time.start();
     int errcnt = 0;
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
+    usleep(100);  // Wait 100 us, in order to prevent possible errors after enabling the chip select (workaround implemented in version 3.1)
     while (bytesProcessed < bytesToWriteRead) {
         if (spiWriteReadProgress.wasCanceled()) {  // If the user clicks "Abort"
             break;  // Abort the SPI write and read operation
@@ -440,6 +448,7 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
     usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     int elapsedTime = static_cast<int>(time.elapsed());  // Elapsed time in milliseconds
+    timer_->start();  // Restart the timer
     ui->lineEditRead->setText(read.toHexadecimal());  // At least, a partial result should be shown if an error occurs
     if (errcnt > 0) {  // Update status bar
         labelStatus_->setText(tr("SPI write and read failed."));
