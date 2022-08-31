@@ -19,6 +19,7 @@
 
 
 // Includes
+#include <cmath>
 #include <QElapsedTimer>
 #include <QMessageBox>
 #include <QProgressDialog>
@@ -35,10 +36,9 @@
 #include "ui_devicewindow.h"
 
 // Definitions
-const int ENUM_RETRIES = 10;                                                         // Number of enumeration retries
-const int ERR_LIMIT = 10;                                                            // Error limit
-const size_t SIZE_LIMITS[8] = {65536, 32768, 32768, 16384, 8192, 4096, 2048, 1024};  // Fragment size limits (from 12MHz to 93.8KHz)
-const size_t SIZE_LIMITS_MAXIDX = sizeof(SIZE_LIMITS) / sizeof(SIZE_LIMITS[0]) - 1;  // Maximum index of the previous array [7]
+const int ENUM_RETRIES = 10;   // Number of enumeration retries
+const int ERR_LIMIT = 10;      // Error limit
+const float TIME_LIMIT = 100;  // Soft time limit per partial transfer, in milliseconds
 
 DeviceWindow::DeviceWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -315,7 +315,7 @@ void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
 void DeviceWindow::on_pushButtonRead_clicked()
 {
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
-    size_t fragmentSizeLimit = evaluateSizeLimit();
+    size_t fragmentSizeLimit = calculateSizeLimit();
     size_t bytesToRead = static_cast<size_t>(ui->spinBoxBytesToRead->value());
     size_t bytesProcessed = 0;
     QProgressDialog spiReadProgress(tr("Performing SPI read..."), tr("Abort"), 0, static_cast<int>(bytesToRead), this);  // Progress dialog implemented in version 3.0
@@ -366,7 +366,7 @@ void DeviceWindow::on_pushButtonRead_clicked()
 void DeviceWindow::on_pushButtonWrite_clicked()
 {
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
-    size_t fragmentSizeLimit = evaluateSizeLimit();
+    size_t fragmentSizeLimit = calculateSizeLimit();
     size_t bytesToWrite = write_.vector.size();
     size_t bytesProcessed = 0;
     QProgressDialog spiWriteProgress(tr("Performing SPI write..."), tr("Abort"), 0, static_cast<int>(bytesToWrite), this);  // Progress dialog implemented in version 3.0
@@ -415,7 +415,7 @@ void DeviceWindow::on_pushButtonWrite_clicked()
 void DeviceWindow::on_pushButtonWriteRead_clicked()
 {
     quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
-    size_t fragmentSizeLimit = evaluateSizeLimit();
+    size_t fragmentSizeLimit = calculateSizeLimit();
     size_t bytesToWriteRead = write_.vector.size();
     size_t bytesProcessed = 0;
     QProgressDialog spiWriteReadProgress(tr("Performing SPI write and read..."), tr("Abort"), 0, static_cast<int>(bytesToWriteRead), this);  // Progress dialog implemented in version 3.0
@@ -498,6 +498,18 @@ void DeviceWindow::update()
     }
 }
 
+// Calculates the optimal fragment size limit based on the parameters of the currently selected channel (implemented in version 3.1, to replace evaluateSizeLimit())
+size_t DeviceWindow::calculateSizeLimit()
+{
+    QString channelName = ui->comboBoxChannel->currentText();
+    float preDeassertDelay = spiDelaysMap_[channelName].prdasten == true ? spiDelaysMap_[channelName].prdastdly / 100.0 : 0;  // Pre-deassert delay in milliseconds
+    float postAssertDelay = spiDelaysMap_[channelName].pstasten == true ? spiDelaysMap_[channelName].pstastdly / 100.0 : 0;  // Post-assert delay in milliseconds
+    float interByteDelay = spiDelaysMap_[channelName].itbyten == true ? spiDelaysMap_[channelName].itbytdly / 100.0 : 0;  // Inter-byte delay in milliseconds
+    float timePerByte = std::pow(2, ui->comboBoxFrequency->currentIndex()) / 1500;  // Time duration for each byte, in milliseconds
+    size_t sizeLimit = static_cast<size_t>((TIME_LIMIT + interByteDelay - preDeassertDelay - postAssertDelay) / (timePerByte + interByteDelay));
+    return sizeLimit == 0 ? 1 : sizeLimit;  // The size limit cannot be zero
+}
+
 // Configures the SPI mode for the currently selected channel
 void DeviceWindow::configureSPIMode()
 {
@@ -548,12 +560,6 @@ void DeviceWindow::displaySPIMode()
     ui->comboBoxFrequency->setCurrentIndex(spiMode.cfrq);
     ui->spinBoxCPOL->setValue(spiMode.cpol);
     ui->spinBoxCPHA->setValue(spiMode.cpha);
-}
-
-// Evaluates the optimal fragment size limit based on some parameters of the currently selected channel
-size_t DeviceWindow::evaluateSizeLimit()
-{
-    return SIZE_LIMITS[spiDelaysMap_[ui->comboBoxChannel->currentText()].itbyten == true ? SIZE_LIMITS_MAXIDX : ui->comboBoxFrequency->currentIndex()];
 }
 
 // Initializes the event counter controls (implemented in version 3.0)

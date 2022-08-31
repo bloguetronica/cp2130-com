@@ -96,10 +96,10 @@ private:
     bool viewEnabled_ = false;
     int erracc_ = 0;
 
+    size_t calculateSizeLimit();
     void configureSPIMode();
     void disableView();
     void displaySPIMode();
-    size_t evaluateSizeLimit();
     void initializeEventCounterControls();
     void initializeGPIOControls();
     void initializeSetClockDividerAction();
