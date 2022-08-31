@@ -347,7 +347,7 @@ void DeviceWindow::on_pushButtonRead_clicked()
     }
     usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
-    int elapsedTime = static_cast<int>(time.elapsed());  // Elapsed time in milliseconds
+    qint64 elapsedTime = time.elapsed();  // Elapsed time in milliseconds
     timer_->start();  // Restart the timer
     ui->lineEditRead->setText(read.toHexadecimal());  // At least, a partial result should be shown in case of error
     if (errcnt > 0) {  // Update status bar
@@ -396,7 +396,7 @@ void DeviceWindow::on_pushButtonWrite_clicked()
     }
     usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
-    int elapsedTime = static_cast<int>(time.elapsed());  // Elapsed time in milliseconds
+    qint64 elapsedTime = time.elapsed();  // Elapsed time in milliseconds
     timer_->start();  // Restart the timer
     ui->lineEditRead->clear();
     if (errcnt > 0) {  // Update status bar
@@ -447,7 +447,7 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
     }
     usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
-    int elapsedTime = static_cast<int>(time.elapsed());  // Elapsed time in milliseconds
+    qint64 elapsedTime = time.elapsed();  // Elapsed time in milliseconds
     timer_->start();  // Restart the timer
     ui->lineEditRead->setText(read.toHexadecimal());  // At least, a partial result should be shown if an error occurs
     if (errcnt > 0) {  // Update status bar
