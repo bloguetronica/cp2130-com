@@ -26,10 +26,13 @@
 #include <QLocale>
 #include <QMainWindow>
 #include <QMap>
+#include <QPointer>
 #include <QString>
 #include <QTimer>
 #include "cp2130.h"
 #include "data.h"
+#include "informationdialog.h"
+#include "pinfunctionsdialog.h"
 
 namespace Ui {
 class DeviceWindow;
@@ -89,6 +92,8 @@ private:
     QLocale locale_ = QLocale::system();
     QMap<QString, CP2130::SPIDelays> spiDelaysMap_;
     QMap<QString, CP2130::SPIMode> spiModeMap_;
+    QPointer<InformationDialog> informationDialog_;
+    QPointer<PinFunctionsDialog> pinFunctionsDialog_;
     QString serialstr_;
     QTimer *timer_;
     quint8 epin_, epout_;

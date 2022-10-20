@@ -45,7 +45,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    AboutDialog aboutDialog;
+    AboutDialog aboutDialog;  // Note that the about dialog doesn't have a parent (it is, therefore, modal to the application)
     aboutDialog.exec();
 }
 

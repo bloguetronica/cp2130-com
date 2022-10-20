@@ -30,8 +30,6 @@
 #include "aboutdialog.h"
 #include "delaysdialog.h"
 #include "dividerdialog.h"
-#include "informationdialog.h"
-#include "pinfunctionsdialog.h"
 #include "devicewindow.h"
 #include "ui_devicewindow.h"
 
@@ -90,46 +88,60 @@ void DeviceWindow::openDevice(quint16 vid, quint16 pid, const QString &serialstr
 
 void DeviceWindow::on_actionAbout_triggered()
 {
-    AboutDialog aboutDialog;
+    AboutDialog aboutDialog;  // Note that the about dialog doesn't have a parent (it is, therefore, modal to the application)
     aboutDialog.exec();
 }
 
 // Implemented in version 3.0
 void DeviceWindow::on_actionGPIOPinFunctions_triggered()
 {
-    PinFunctionsDialog pinFunctionsDialog;
-    pinFunctionsDialog.setGPIO0ValueLabelText(pinConfig_.gpio0);
-    pinFunctionsDialog.setGPIO1ValueLabelText(pinConfig_.gpio1);
-    pinFunctionsDialog.setGPIO2ValueLabelText(pinConfig_.gpio2);
-    pinFunctionsDialog.setGPIO3ValueLabelText(pinConfig_.gpio3);
-    pinFunctionsDialog.setGPIO4ValueLabelText(pinConfig_.gpio4);
-    pinFunctionsDialog.setGPIO5ValueLabelText(pinConfig_.gpio5);
-    pinFunctionsDialog.setGPIO6ValueLabelText(pinConfig_.gpio6);
-    pinFunctionsDialog.setGPIO7ValueLabelText(pinConfig_.gpio7);
-    pinFunctionsDialog.setGPIO8ValueLabelText(pinConfig_.gpio8);
-    pinFunctionsDialog.setGPIO9ValueLabelText(pinConfig_.gpio9);
-    pinFunctionsDialog.setGPIO10ValueLabelText(pinConfig_.gpio10);
-    pinFunctionsDialog.exec();
+    if (pinFunctionsDialog_.isNull()) {  // If the dialog wasn't previously open (implemented in version 4.0, because the pin functions dialog is now modeless)
+        pinFunctionsDialog_ = new PinFunctionsDialog(this);  // The dialog is no longer modal (version 4.0 feature)
+        pinFunctionsDialog_->setAttribute(Qt::WA_DeleteOnClose);  // It is important to delete the dialog in memory once closed, in order to force the application to retrieve information about the device if the window is opened again
+        pinFunctionsDialog_->setWindowTitle(tr("GPIO Pin Functions (S/N: %1)").arg(serialstr_));
+        pinFunctionsDialog_->setGPIO0ValueLabelText(pinConfig_.gpio0);
+        pinFunctionsDialog_->setGPIO1ValueLabelText(pinConfig_.gpio1);
+        pinFunctionsDialog_->setGPIO2ValueLabelText(pinConfig_.gpio2);
+        pinFunctionsDialog_->setGPIO3ValueLabelText(pinConfig_.gpio3);
+        pinFunctionsDialog_->setGPIO4ValueLabelText(pinConfig_.gpio4);
+        pinFunctionsDialog_->setGPIO5ValueLabelText(pinConfig_.gpio5);
+        pinFunctionsDialog_->setGPIO6ValueLabelText(pinConfig_.gpio6);
+        pinFunctionsDialog_->setGPIO7ValueLabelText(pinConfig_.gpio7);
+        pinFunctionsDialog_->setGPIO8ValueLabelText(pinConfig_.gpio8);
+        pinFunctionsDialog_->setGPIO9ValueLabelText(pinConfig_.gpio9);
+        pinFunctionsDialog_->setGPIO10ValueLabelText(pinConfig_.gpio10);
+        pinFunctionsDialog_->show();
+    } else {
+        pinFunctionsDialog_->showNormal();  // Required if the dialog is minimized
+        pinFunctionsDialog_->activateWindow();  // Set focus on the previous dialog (dialog is raised and selected)
+    }
 }
 
 void DeviceWindow::on_actionInformation_triggered()
 {
-    int errcnt = 0;
-    QString errstr;
-    InformationDialog informationDialog;
-    informationDialog.setManufacturerValueLabelText(cp2130_.getManufacturerDesc(errcnt, errstr));
-    informationDialog.setProductValueLabelText(cp2130_.getProductDesc(errcnt, errstr));
-    informationDialog.setSerialValueLabelText(cp2130_.getSerialDesc(errcnt, errstr));  // It is important to read the serial number from the OTP ROM, instead of just passing the value of serialstr_
-    CP2130::USBConfig config = cp2130_.getUSBConfig(errcnt, errstr);
-    informationDialog.setVIDValueLabelText(config.vid);
-    informationDialog.setPIDValueLabelText(config.pid);
-    informationDialog.setReleaseVersionValueLabelText(config.majrel, config.minrel);
-    informationDialog.setPowerModeValueLabelText(config.powmode);
-    informationDialog.setMaxPowerValueLabelText(config.maxpow);
-    CP2130::SiliconVersion siversion = cp2130_.getSiliconVersion(errcnt, errstr);
-    informationDialog.setSiliconVersionValueLabelText(siversion.maj, siversion.min);
-    if (opCheck(tr("device-information-retrieval-op"), errcnt, errstr)) {  // If error check passes (the string "device-information-retrieval-op" should be translated to "Device information retrieval")
-        informationDialog.exec();
+    if (informationDialog_.isNull()) {  // If the dialog wasn't previously open (implemented in version 4.0, because the device information dialog is now modeless)
+        int errcnt = 0;
+        QString errstr;
+        informationDialog_ = new InformationDialog(this);  // The dialog is no longer modal (version 4.0 feature)
+        informationDialog_->setAttribute(Qt::WA_DeleteOnClose);  // It is important to delete the dialog in memory once closed, in order to force the application to retrieve information about the device if the window is opened again
+        informationDialog_->setWindowTitle(tr("Device Information (S/N: %1)").arg(serialstr_));
+        informationDialog_->setManufacturerValueLabelText(cp2130_.getManufacturerDesc(errcnt, errstr));
+        informationDialog_->setProductValueLabelText(cp2130_.getProductDesc(errcnt, errstr));
+        informationDialog_->setSerialValueLabelText(cp2130_.getSerialDesc(errcnt, errstr));  // It is important to read the serial number from the OTP ROM, instead of just passing the value of serialstr_
+        CP2130::USBConfig config = cp2130_.getUSBConfig(errcnt, errstr);
+        informationDialog_->setVIDValueLabelText(config.vid);
+        informationDialog_->setPIDValueLabelText(config.pid);
+        informationDialog_->setReleaseVersionValueLabelText(config.majrel, config.minrel);
+        informationDialog_->setPowerModeValueLabelText(config.powmode);
+        informationDialog_->setMaxPowerValueLabelText(config.maxpow);
+        CP2130::SiliconVersion siversion = cp2130_.getSiliconVersion(errcnt, errstr);
+        informationDialog_->setSiliconVersionValueLabelText(siversion.maj, siversion.min);
+        if (opCheck(tr("device-information-retrieval-op"), errcnt, errstr)) {  // If error check passes (the string "device-information-retrieval-op" should be translated to "Device information retrieval")
+            informationDialog_->show();
+        }
+    } else {
+        informationDialog_->showNormal();  // Required if the dialog is minimized
+        informationDialog_->activateWindow();  // Set focus on the previous dialog (dialog is raised and selected)
     }
 }
 
@@ -143,7 +155,7 @@ void DeviceWindow::on_actionSetClockDivider_triggered()
 {
     int errcnt = 0;
     QString errstr;
-    DividerDialog dividerDialog;
+    DividerDialog dividerDialog(this);  // The clock divider dialog is now a child of the device window, as it should (fixed in version 4.0)
     dividerDialog.setClockDividerSpinBoxValue(cp2130_.getClockDivider(errcnt, errstr));
     if (opCheck(tr("clock-divider-retrieval-op"), errcnt, errstr) && dividerDialog.exec() == QDialog::Accepted) {  // If error check passes (the string "clock-divider-retrieval-op" should be translated to "Clock divider retrieval") and if the user click "OK" on the dialog that opens after that, the new clock divider setting is applied
         cp2130_.setClockDivider(dividerDialog.clockDividerSpinBoxValue(), errcnt, errstr);
@@ -286,7 +298,7 @@ void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
 {
     QString channelName = ui->comboBoxChannel->currentText();
     CP2130::SPIDelays spiDelays = spiDelaysMap_[channelName];
-    DelaysDialog delaysDialog;
+    DelaysDialog delaysDialog(this);  // The SPI delays dialog is now a child of the device window, as it should (fixed in version 4.0)
     delaysDialog.setCSToggleCheckBox(spiDelays.cstglen);
     delaysDialog.setPostAssertDelaySpinBoxValue(spiDelays.pstastdly);
     delaysDialog.setPostAssertDelayCheckBox(spiDelays.pstasten);
