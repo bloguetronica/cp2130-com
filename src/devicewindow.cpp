@@ -88,7 +88,7 @@ void DeviceWindow::openDevice(quint16 vid, quint16 pid, const QString &serialstr
 
 void DeviceWindow::on_actionAbout_triggered()
 {
-    if (aboutDialog.isNull()) {  // If the dialog wasn't previously open (implemented in version 2.0, because the about dialog is now modeless)
+    if (aboutDialog.isNull()) {  // If the dialog wasn't previously open (implemented in version 4.0, because the about dialog is now modeless)
         aboutDialog = new AboutDialog;  // Note that the about dialog doesn't have a parent
         aboutDialog->show();
     } else {
