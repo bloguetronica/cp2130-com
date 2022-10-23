@@ -25,12 +25,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     aboutdialog.cpp \
+    common.cpp \
     data.cpp \
     delaysdialog.cpp \
     devicewindow.cpp \
     cp2130.cpp \
     dividerdialog.cpp \
-    global.cpp \
     informationdialog.cpp \
     libusb-extra.c \
     main.cpp \
@@ -39,12 +39,12 @@ SOURCES += \
 
 HEADERS += \
     aboutdialog.h \
+    common.h \
     data.h \
     delaysdialog.h \
     devicewindow.h \
     cp2130.h \
     dividerdialog.h \
-    global.h \
     informationdialog.h \
     libusb-extra.h \
     mainwindow.h \

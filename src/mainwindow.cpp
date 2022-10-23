@@ -23,8 +23,8 @@
 #include <QRegExp>
 #include <QRegExpValidator>
 #include <QStringList>
+#include "common.h"
 #include "cp2130.h"
-#include "global.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -45,20 +45,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if (!aboutDialog.isNull()) {
-        aboutDialog->close();  // Close the about dialog if open
-    }
+    closeAboutDialog();  // See "common.h" and "common.cpp"
 }
 
 void MainWindow::on_actionAbout_triggered()
 {
-    if (aboutDialog.isNull()) {  // If the dialog wasn't previously open (implemented in version 4.0, because the about dialog is now modeless)
-        aboutDialog = new AboutDialog;  // Note that the about dialog doesn't have a parent
-        aboutDialog->show();
-    } else {
-        aboutDialog->showNormal();  // Required if the dialog is minimized
-        aboutDialog->activateWindow();  // Set focus on the previous dialog (dialog is raised and selected)
-    }
+    showAboutDialog();  // Implemented in "common.h" and "common.cpp" since version 4.0
 }
 
 void MainWindow::on_comboBoxDevices_currentIndexChanged(int index)
