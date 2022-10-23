@@ -27,9 +27,9 @@
 #include <QThread>
 #include <QVector>
 #include <unistd.h>
-#include "aboutdialog.h"
 #include "delaysdialog.h"
 #include "dividerdialog.h"
+#include "global.h"
 #include "devicewindow.h"
 #include "ui_devicewindow.h"
 
@@ -88,8 +88,13 @@ void DeviceWindow::openDevice(quint16 vid, quint16 pid, const QString &serialstr
 
 void DeviceWindow::on_actionAbout_triggered()
 {
-    AboutDialog aboutDialog;  // Note that the about dialog doesn't have a parent (it is, therefore, modal to the application)
-    aboutDialog.exec();
+    if (aboutDialog.isNull()) {  // If the dialog wasn't previously open (implemented in version 2.0, because the about dialog is now modeless)
+        aboutDialog = new AboutDialog;  // Note that the about dialog doesn't have a parent
+        aboutDialog->show();
+    } else {
+        aboutDialog->showNormal();  // Required if the dialog is minimized
+        aboutDialog->activateWindow();  // Set focus on the previous dialog (dialog is raised and selected)
+    }
 }
 
 // Implemented in version 3.0
