@@ -100,7 +100,7 @@ void DeviceWindow::on_actionAbout_triggered()
 // Implemented in version 3.0
 void DeviceWindow::on_actionGPIOPinFunctions_triggered()
 {
-    if (pinFunctionsDialog_.isNull()) {  // If the dialog wasn't previously open (implemented in version 4.0, because the pin functions dialog is now modeless)
+    if (pinFunctionsDialog_.isNull()) {  // If the dialog is not open (implemented in version 4.0, because the pin functions dialog is now modeless)
         pinFunctionsDialog_ = new PinFunctionsDialog(this);  // The dialog is no longer modal (version 4.0 feature)
         pinFunctionsDialog_->setAttribute(Qt::WA_DeleteOnClose);  // It is important to delete the dialog in memory once closed, in order to force the application to retrieve information about the device if the window is opened again
         pinFunctionsDialog_->setWindowTitle(tr("GPIO Pin Functions (S/N: %1)").arg(serialstr_));
@@ -124,7 +124,7 @@ void DeviceWindow::on_actionGPIOPinFunctions_triggered()
 
 void DeviceWindow::on_actionInformation_triggered()
 {
-    if (informationDialog_.isNull()) {  // If the dialog wasn't previously open (implemented in version 4.0, because the device information dialog is now modeless)
+    if (informationDialog_.isNull()) {  // If the dialog is not open (implemented in version 4.0, because the device information dialog is now modeless)
         int errcnt = 0;
         QString errstr;
         informationDialog_ = new InformationDialog(this);  // The dialog is no longer modal (version 4.0 feature)
