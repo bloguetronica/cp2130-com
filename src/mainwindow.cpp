@@ -45,6 +45,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+    Q_UNUSED(event);
     closeAboutDialog();  // See "common.h" and "common.cpp"
 }
 
