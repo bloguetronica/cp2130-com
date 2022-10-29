@@ -10,4 +10,7 @@
         <file>translations/cp2130-com_en.qm</file>
         <file>translations/cp2130-com_pt.qm</file>
     </qresource>
+    <qresource prefix="/images">
+        <file>images/banner.png</file>
+    </qresource>
 </RCC>
