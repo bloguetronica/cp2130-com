@@ -323,12 +323,14 @@ void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
     }
 }
 
+// Implemented in version 4.0
 void DeviceWindow::on_pushButtonClipboardRead_clicked()
 {
     QClipboard *clipboard = QGuiApplication::clipboard();
     clipboard->setText(ui->lineEditRead->text());
 }
 
+// Implemented in version 4.0
 void DeviceWindow::on_pushButtonClipboardWrite_clicked()
 {
     QClipboard *clipboard = QGuiApplication::clipboard();
@@ -379,9 +381,9 @@ void DeviceWindow::on_pushButtonRead_clicked()
     } else if (spiReadProgress.wasCanceled()){
         labelStatus_->setText(tr("SPI read aborted by the user."));
     } else if (elapsedTime < 1000) {
-        labelStatus_->setText(tr("SPI read completed in %1 ms.").arg(elapsedTime));
+        labelStatus_->setText(tr("SPI read completed. %1 bytes transferred in %2 ms.").arg(bytesProcessed).arg(elapsedTime));  // The number of transferred bytes is now reported (implemented in version 4.0)
     } else {
-        labelStatus_->setText(tr("SPI read completed in %1 s.").arg(locale_.toString(elapsedTime / 1000.0, 'f', 3)));
+        labelStatus_->setText(tr("SPI read completed. %1 bytes transferred in %2 s.").arg(bytesProcessed).arg(locale_.toString(elapsedTime / 1000.0, 'f', 3)));
     }
     opCheck(tr("spi-read-op"), errcnt, errstr);  // The string "spi-read-op" should be translated to "SPI read"
 }
@@ -428,9 +430,9 @@ void DeviceWindow::on_pushButtonWrite_clicked()
     } else if (spiWriteProgress.wasCanceled()){
         labelStatus_->setText(tr("SPI write aborted by the user."));
     } else if (elapsedTime < 1000) {
-        labelStatus_->setText(tr("SPI write completed in %1 ms.").arg(elapsedTime));
+        labelStatus_->setText(tr("SPI write completed. %1 bytes transferred in %2 ms.").arg(bytesProcessed).arg(elapsedTime));  // The number of transferred bytes is now reported (implemented in version 4.0)
     } else {
-        labelStatus_->setText(tr("SPI write completed in %1 s.").arg(locale_.toString(elapsedTime / 1000.0, 'f', 3)));
+        labelStatus_->setText(tr("SPI write completed. %1 bytes transferred in %2 s.").arg(bytesProcessed).arg(locale_.toString(elapsedTime / 1000.0, 'f', 3)));
     }
     opCheck(tr("spi-write-op"), errcnt, errstr);  // The string "spi-write-op" should be translated to "SPI write"
 }
@@ -479,9 +481,9 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
     } else if (spiWriteReadProgress.wasCanceled()){
         labelStatus_->setText(tr("SPI write and read aborted by the user."));
     } else if (elapsedTime < 1000) {
-        labelStatus_->setText(tr("SPI write and read completed in %1 ms.").arg(elapsedTime));
+        labelStatus_->setText(tr("SPI write and read completed. %1 bytes transferred in %2 ms.").arg(2 * bytesProcessed).arg(elapsedTime));  // The number of transferred bytes is now reported (implemented in version 4.0)
     } else {
-        labelStatus_->setText(tr("SPI write and read completed in %1 s.").arg(locale_.toString(elapsedTime / 1000.0, 'f', 3)));
+        labelStatus_->setText(tr("SPI write and read completed. %1 bytes transferred in %2 s.").arg(2 * bytesProcessed).arg(locale_.toString(elapsedTime / 1000.0, 'f', 3)));
     }
     opCheck(tr("spi-write-read-op"), errcnt, errstr);  // The string "spi-write-read-op" should be translated to "SPI write and read"
 }
