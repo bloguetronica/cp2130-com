@@ -47,7 +47,7 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     labelStatus_ = new QLabel(this);
     this->statusBar()->addWidget(labelStatus_);
     timer_ = new QTimer(this);  // The timer is initialized in the constructor since version 3.1
-    connect(timer_, SIGNAL(timeout()), this, SLOT(update()));
+    connect(timer_, SIGNAL(timeout()), this, SLOT(update()));  // This call doesn't need to be scoped (fixed in version 4.0)
 }
 
 DeviceWindow::~DeviceWindow()
