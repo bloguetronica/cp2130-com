@@ -20,6 +20,7 @@
 
 // Includes
 #include <cmath>
+#include <QClipboard>
 #include <QElapsedTimer>
 #include <QMessageBox>
 #include <QProgressDialog>
@@ -320,6 +321,18 @@ void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
             spiDelaysMap_[channelName] = spiDelays;  // Update "spiDelaysMap_" regarding the current channel
         }
     }
+}
+
+void DeviceWindow::on_pushButtonClipboardRead_clicked()
+{
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    clipboard->setText(ui->lineEditRead->text());
+}
+
+void DeviceWindow::on_pushButtonClipboardWrite_clicked()
+{
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    clipboard->setText(ui->lineEditWrite->text());
 }
 
 // This function was expanded in version 3.0, in order to support transfers greater than 4096 bytes
