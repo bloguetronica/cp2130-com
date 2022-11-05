@@ -333,8 +333,13 @@ void DeviceWindow::on_pushButtonClipboardRead_clicked()
 // Implemented in version 4.0
 void DeviceWindow::on_pushButtonClipboardWrite_clicked()
 {
-    QClipboard *clipboard = QGuiApplication::clipboard();
-    clipboard->setText(ui->lineEditWrite->text());
+    if (ui->lineEditWrite->text().isEmpty()) {  // If the line edit is empty, then it makes more sense to place the clipboard contents in it
+        ui->lineEditWrite->paste();  // Instead of just setting the text directly, paste() is used here because it filters the clipboard contents through the validator
+        ui->lineEditWrite->setFocus();  // This ensures that on_lineEditWrite_editingFinished() is triggered once the user clicks elsewhere
+    } else {
+        QClipboard *clipboard = QGuiApplication::clipboard();
+        clipboard->setText(ui->lineEditWrite->text());
+    }
 }
 
 // This function was expanded in version 3.0, in order to support transfers greater than 4096 bytes
