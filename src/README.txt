@@ -3,6 +3,8 @@ Commander. A list of relevant files follows:
 – aboutdialog.cpp;
 – aboutdialog.h;
 – aboutdialog.ui;
+– common.cpp;
+– common.h;
 – cp2130-com.pro;
 – cp2130.cpp;
 – cp2130.h;
@@ -18,10 +20,14 @@ Commander. A list of relevant files follows:
 – dividerdialog.h;
 – dividerdialog.ui;
 – icons/active64.png;
+– icons/buttons/clipboard.png;
+– icons/buttons/clipboard.svg;
 – icons/cp2130-com.png;
 – icons/greyed64.png;
 – icons/icon.svg;
 – icons/selected64.png;
+– images/banner.png;
+– images/banner.svg;
 – informationdialog.cpp;
 – informationdialog.h;
 – informationdialog.ui;
