@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     aboutdialog.cpp \
+    common.cpp \
     data.cpp \
     delaysdialog.cpp \
     devicewindow.cpp \
@@ -38,6 +39,7 @@ SOURCES += \
 
 HEADERS += \
     aboutdialog.h \
+    common.h \
     data.h \
     delaysdialog.h \
     devicewindow.h \

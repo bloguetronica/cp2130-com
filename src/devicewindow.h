@@ -1,4 +1,4 @@
-/* CP2130 Commander - Version 3.1 for Debian Linux
+/* CP2130 Commander - Version 4.0 for Debian Linux
    Copyright (c) 2022 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
@@ -26,10 +26,13 @@
 #include <QLocale>
 #include <QMainWindow>
 #include <QMap>
+#include <QPointer>
 #include <QString>
 #include <QTimer>
 #include "cp2130.h"
 #include "data.h"
+#include "informationdialog.h"
+#include "pinfunctionsdialog.h"
 
 namespace Ui {
 class DeviceWindow;
@@ -71,6 +74,8 @@ private slots:
     void on_lineEditWrite_textChanged();
     void on_lineEditWrite_textEdited();
     void on_pushButtonConfigureSPIDelays_clicked();
+    void on_pushButtonClipboardRead_clicked();
+    void on_pushButtonClipboardWrite_clicked();
     void on_pushButtonRead_clicked();
     void on_pushButtonWrite_clicked();
     void on_pushButtonWriteRead_clicked();
@@ -89,6 +94,8 @@ private:
     QLocale locale_ = QLocale::system();
     QMap<QString, CP2130::SPIDelays> spiDelaysMap_;
     QMap<QString, CP2130::SPIMode> spiModeMap_;
+    QPointer<InformationDialog> informationDialog_;
+    QPointer<PinFunctionsDialog> pinFunctionsDialog_;
     QString serialstr_;
     QTimer *timer_;
     quint8 epin_, epout_;

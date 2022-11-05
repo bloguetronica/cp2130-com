@@ -1,4 +1,4 @@
-/* CP2130 Commander - Version 3.1 for Debian Linux
+/* CP2130 Commander - Version 4.0 for Debian Linux
    Copyright (c) 2022 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
@@ -20,6 +20,7 @@
 
 // Includes
 #include <cmath>
+#include <QClipboard>
 #include <QElapsedTimer>
 #include <QMessageBox>
 #include <QProgressDialog>
@@ -27,11 +28,9 @@
 #include <QThread>
 #include <QVector>
 #include <unistd.h>
-#include "aboutdialog.h"
+#include "common.h"
 #include "delaysdialog.h"
 #include "dividerdialog.h"
-#include "informationdialog.h"
-#include "pinfunctionsdialog.h"
 #include "devicewindow.h"
 #include "ui_devicewindow.h"
 
@@ -49,7 +48,7 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     labelStatus_ = new QLabel(this);
     this->statusBar()->addWidget(labelStatus_);
     timer_ = new QTimer(this);  // The timer is initialized in the constructor since version 3.1
-    QObject::connect(timer_, SIGNAL(timeout()), this, SLOT(update()));
+    connect(timer_, SIGNAL(timeout()), this, SLOT(update()));  // This call doesn't need to be scoped (fixed in version 4.0)
 }
 
 DeviceWindow::~DeviceWindow()
@@ -90,46 +89,59 @@ void DeviceWindow::openDevice(quint16 vid, quint16 pid, const QString &serialstr
 
 void DeviceWindow::on_actionAbout_triggered()
 {
-    AboutDialog aboutDialog;
-    aboutDialog.exec();
+    showAboutDialog();  // Implemented in "common.h" and "common.cpp" since version 4.0
 }
 
 // Implemented in version 3.0
 void DeviceWindow::on_actionGPIOPinFunctions_triggered()
 {
-    PinFunctionsDialog pinFunctionsDialog;
-    pinFunctionsDialog.setGPIO0ValueLabelText(pinConfig_.gpio0);
-    pinFunctionsDialog.setGPIO1ValueLabelText(pinConfig_.gpio1);
-    pinFunctionsDialog.setGPIO2ValueLabelText(pinConfig_.gpio2);
-    pinFunctionsDialog.setGPIO3ValueLabelText(pinConfig_.gpio3);
-    pinFunctionsDialog.setGPIO4ValueLabelText(pinConfig_.gpio4);
-    pinFunctionsDialog.setGPIO5ValueLabelText(pinConfig_.gpio5);
-    pinFunctionsDialog.setGPIO6ValueLabelText(pinConfig_.gpio6);
-    pinFunctionsDialog.setGPIO7ValueLabelText(pinConfig_.gpio7);
-    pinFunctionsDialog.setGPIO8ValueLabelText(pinConfig_.gpio8);
-    pinFunctionsDialog.setGPIO9ValueLabelText(pinConfig_.gpio9);
-    pinFunctionsDialog.setGPIO10ValueLabelText(pinConfig_.gpio10);
-    pinFunctionsDialog.exec();
+    if (pinFunctionsDialog_.isNull()) {  // If the dialog is not open (implemented in version 4.0, because the pin functions dialog is now modeless)
+        pinFunctionsDialog_ = new PinFunctionsDialog(this);  // The dialog is no longer modal (version 4.0 feature)
+        pinFunctionsDialog_->setAttribute(Qt::WA_DeleteOnClose);  // It is important to delete the dialog in memory once closed, in order to force the application to retrieve information about the device if the window is opened again
+        pinFunctionsDialog_->setWindowTitle(tr("GPIO Pin Functions (S/N: %1)").arg(serialstr_));
+        pinFunctionsDialog_->setGPIO0ValueLabelText(pinConfig_.gpio0);
+        pinFunctionsDialog_->setGPIO1ValueLabelText(pinConfig_.gpio1);
+        pinFunctionsDialog_->setGPIO2ValueLabelText(pinConfig_.gpio2);
+        pinFunctionsDialog_->setGPIO3ValueLabelText(pinConfig_.gpio3);
+        pinFunctionsDialog_->setGPIO4ValueLabelText(pinConfig_.gpio4);
+        pinFunctionsDialog_->setGPIO5ValueLabelText(pinConfig_.gpio5);
+        pinFunctionsDialog_->setGPIO6ValueLabelText(pinConfig_.gpio6);
+        pinFunctionsDialog_->setGPIO7ValueLabelText(pinConfig_.gpio7);
+        pinFunctionsDialog_->setGPIO8ValueLabelText(pinConfig_.gpio8);
+        pinFunctionsDialog_->setGPIO9ValueLabelText(pinConfig_.gpio9);
+        pinFunctionsDialog_->setGPIO10ValueLabelText(pinConfig_.gpio10);
+        pinFunctionsDialog_->show();
+    } else {
+        pinFunctionsDialog_->showNormal();  // Required if the dialog is minimized
+        pinFunctionsDialog_->activateWindow();  // Set focus on the previous dialog (dialog is raised and selected)
+    }
 }
 
 void DeviceWindow::on_actionInformation_triggered()
 {
-    int errcnt = 0;
-    QString errstr;
-    InformationDialog informationDialog;
-    informationDialog.setManufacturerValueLabelText(cp2130_.getManufacturerDesc(errcnt, errstr));
-    informationDialog.setProductValueLabelText(cp2130_.getProductDesc(errcnt, errstr));
-    informationDialog.setSerialValueLabelText(cp2130_.getSerialDesc(errcnt, errstr));  // It is important to read the serial number from the OTP ROM, instead of just passing the value of serialstr_
-    CP2130::USBConfig config = cp2130_.getUSBConfig(errcnt, errstr);
-    informationDialog.setVIDValueLabelText(config.vid);
-    informationDialog.setPIDValueLabelText(config.pid);
-    informationDialog.setReleaseVersionValueLabelText(config.majrel, config.minrel);
-    informationDialog.setPowerModeValueLabelText(config.powmode);
-    informationDialog.setMaxPowerValueLabelText(config.maxpow);
-    CP2130::SiliconVersion siversion = cp2130_.getSiliconVersion(errcnt, errstr);
-    informationDialog.setSiliconVersionValueLabelText(siversion.maj, siversion.min);
-    if (opCheck(tr("device-information-retrieval-op"), errcnt, errstr)) {  // If error check passes (the string "device-information-retrieval-op" should be translated to "Device information retrieval")
-        informationDialog.exec();
+    if (informationDialog_.isNull()) {  // If the dialog is not open (implemented in version 4.0, because the device information dialog is now modeless)
+        int errcnt = 0;
+        QString errstr;
+        informationDialog_ = new InformationDialog(this);  // The dialog is no longer modal (version 4.0 feature)
+        informationDialog_->setAttribute(Qt::WA_DeleteOnClose);  // It is important to delete the dialog in memory once closed, in order to force the application to retrieve information about the device if the window is opened again
+        informationDialog_->setWindowTitle(tr("Device Information (S/N: %1)").arg(serialstr_));
+        informationDialog_->setManufacturerValueLabelText(cp2130_.getManufacturerDesc(errcnt, errstr));
+        informationDialog_->setProductValueLabelText(cp2130_.getProductDesc(errcnt, errstr));
+        informationDialog_->setSerialValueLabelText(cp2130_.getSerialDesc(errcnt, errstr));  // It is important to read the serial number from the OTP ROM, instead of just passing the value of serialstr_
+        CP2130::USBConfig config = cp2130_.getUSBConfig(errcnt, errstr);
+        informationDialog_->setVIDValueLabelText(config.vid);
+        informationDialog_->setPIDValueLabelText(config.pid);
+        informationDialog_->setReleaseVersionValueLabelText(config.majrel, config.minrel);
+        informationDialog_->setPowerModeValueLabelText(config.powmode);
+        informationDialog_->setMaxPowerValueLabelText(config.maxpow);
+        CP2130::SiliconVersion siversion = cp2130_.getSiliconVersion(errcnt, errstr);
+        informationDialog_->setSiliconVersionValueLabelText(siversion.maj, siversion.min);
+        if (opCheck(tr("device-information-retrieval-op"), errcnt, errstr)) {  // If error check passes (the string "device-information-retrieval-op" should be translated to "Device information retrieval")
+            informationDialog_->show();
+        }
+    } else {
+        informationDialog_->showNormal();  // Required if the dialog is minimized
+        informationDialog_->activateWindow();  // Set focus on the previous dialog (dialog is raised and selected)
     }
 }
 
@@ -143,7 +155,7 @@ void DeviceWindow::on_actionSetClockDivider_triggered()
 {
     int errcnt = 0;
     QString errstr;
-    DividerDialog dividerDialog;
+    DividerDialog dividerDialog(this);  // The clock divider dialog is now a child of the device window, as it should (fixed in version 4.0)
     dividerDialog.setClockDividerSpinBoxValue(cp2130_.getClockDivider(errcnt, errstr));
     if (opCheck(tr("clock-divider-retrieval-op"), errcnt, errstr) && dividerDialog.exec() == QDialog::Accepted) {  // If error check passes (the string "clock-divider-retrieval-op" should be translated to "Clock divider retrieval") and if the user click "OK" on the dialog that opens after that, the new clock divider setting is applied
         cp2130_.setClockDivider(dividerDialog.clockDividerSpinBoxValue(), errcnt, errstr);
@@ -286,7 +298,7 @@ void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
 {
     QString channelName = ui->comboBoxChannel->currentText();
     CP2130::SPIDelays spiDelays = spiDelaysMap_[channelName];
-    DelaysDialog delaysDialog;
+    DelaysDialog delaysDialog(this);  // The SPI delays dialog is now a child of the device window, as it should (fixed in version 4.0)
     delaysDialog.setCSToggleCheckBox(spiDelays.cstglen);
     delaysDialog.setPostAssertDelaySpinBoxValue(spiDelays.pstastdly);
     delaysDialog.setPostAssertDelayCheckBox(spiDelays.pstasten);
@@ -308,6 +320,25 @@ void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
         if (opCheck(tr("spi-delays-configuration-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-delays-configuration-op" should be translated to "SPI delays configuration")
             spiDelaysMap_[channelName] = spiDelays;  // Update "spiDelaysMap_" regarding the current channel
         }
+    }
+}
+
+// Implemented in version 4.0
+void DeviceWindow::on_pushButtonClipboardRead_clicked()
+{
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    clipboard->setText(ui->lineEditRead->text());
+}
+
+// Implemented in version 4.0
+void DeviceWindow::on_pushButtonClipboardWrite_clicked()
+{
+    if (ui->lineEditWrite->text().isEmpty()) {  // If the line edit is empty, then it makes more sense to place the clipboard contents in it
+        ui->lineEditWrite->paste();  // Instead of just setting the text directly, paste() is used here because it filters the clipboard contents through the validator
+        ui->lineEditWrite->setFocus();  // This ensures that on_lineEditWrite_editingFinished() is triggered once the user clicks elsewhere
+    } else {
+        QClipboard *clipboard = QGuiApplication::clipboard();
+        clipboard->setText(ui->lineEditWrite->text());
     }
 }
 
@@ -355,9 +386,9 @@ void DeviceWindow::on_pushButtonRead_clicked()
     } else if (spiReadProgress.wasCanceled()){
         labelStatus_->setText(tr("SPI read aborted by the user."));
     } else if (elapsedTime < 1000) {
-        labelStatus_->setText(tr("SPI read completed in %1 ms.").arg(elapsedTime));
+        labelStatus_->setText(tr("SPI read completed. %1 bytes transferred in %2 ms.").arg(bytesProcessed).arg(elapsedTime));  // The number of transferred bytes is now reported (implemented in version 4.0)
     } else {
-        labelStatus_->setText(tr("SPI read completed in %1 s.").arg(locale_.toString(elapsedTime / 1000.0, 'f', 3)));
+        labelStatus_->setText(tr("SPI read completed. %1 bytes transferred in %2 s.").arg(bytesProcessed).arg(locale_.toString(elapsedTime / 1000.0, 'f', 3)));
     }
     opCheck(tr("spi-read-op"), errcnt, errstr);  // The string "spi-read-op" should be translated to "SPI read"
 }
@@ -404,9 +435,9 @@ void DeviceWindow::on_pushButtonWrite_clicked()
     } else if (spiWriteProgress.wasCanceled()){
         labelStatus_->setText(tr("SPI write aborted by the user."));
     } else if (elapsedTime < 1000) {
-        labelStatus_->setText(tr("SPI write completed in %1 ms.").arg(elapsedTime));
+        labelStatus_->setText(tr("SPI write completed. %1 bytes transferred in %2 ms.").arg(bytesProcessed).arg(elapsedTime));  // The number of transferred bytes is now reported (implemented in version 4.0)
     } else {
-        labelStatus_->setText(tr("SPI write completed in %1 s.").arg(locale_.toString(elapsedTime / 1000.0, 'f', 3)));
+        labelStatus_->setText(tr("SPI write completed. %1 bytes transferred in %2 s.").arg(bytesProcessed).arg(locale_.toString(elapsedTime / 1000.0, 'f', 3)));
     }
     opCheck(tr("spi-write-op"), errcnt, errstr);  // The string "spi-write-op" should be translated to "SPI write"
 }
@@ -455,9 +486,9 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
     } else if (spiWriteReadProgress.wasCanceled()){
         labelStatus_->setText(tr("SPI write and read aborted by the user."));
     } else if (elapsedTime < 1000) {
-        labelStatus_->setText(tr("SPI write and read completed in %1 ms.").arg(elapsedTime));
+        labelStatus_->setText(tr("SPI write and read completed. %1 bytes transferred in %2 ms.").arg(2 * bytesProcessed).arg(elapsedTime));  // The number of transferred bytes is now reported (implemented in version 4.0)
     } else {
-        labelStatus_->setText(tr("SPI write and read completed in %1 s.").arg(locale_.toString(elapsedTime / 1000.0, 'f', 3)));
+        labelStatus_->setText(tr("SPI write and read completed. %1 bytes transferred in %2 s.").arg(2 * bytesProcessed).arg(locale_.toString(elapsedTime / 1000.0, 'f', 3)));
     }
     opCheck(tr("spi-write-read-op"), errcnt, errstr);  // The string "spi-write-read-op" should be translated to "SPI write and read"
 }

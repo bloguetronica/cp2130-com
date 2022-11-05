@@ -18,36 +18,11 @@
    Please feel free to contact me via e-mail: samuel.fmlourenco@gmail.com */
 
 
-#ifndef DIVIDERDIALOG_H
-#define DIVIDERDIALOG_H
+#ifndef COMMON_H
+#define COMMON_H
 
-// Includes
-#include <QDialog>
-#include <QLocale>
+// Function prototypes
+void closeAboutDialog();
+void showAboutDialog();
 
-namespace Ui {
-class DividerDialog;
-}
-
-class DividerDialog : public QDialog
-{
-    Q_OBJECT
-
-public:
-    explicit DividerDialog(QWidget *parent = nullptr);
-    ~DividerDialog();
-
-    quint8 clockDividerSpinBoxValue();
-    void setClockDividerSpinBoxValue(quint8 divider);
-
-private slots:
-    void on_spinBoxClockDivider_valueChanged(int i);
-
-private:
-    Ui::DividerDialog *ui;
-    QLocale locale_ = QLocale::system();
-
-    void setExpectedFrequencyValueLabelText(quint8 divider);
-};
-
-#endif  // DIVIDERDIALOG_H
+#endif  // COMMON_H

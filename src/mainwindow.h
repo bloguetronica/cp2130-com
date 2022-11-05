@@ -1,4 +1,4 @@
-/* CP2130 Commander - Version 3.1 for Debian Linux
+/* CP2130 Commander - Version 4.0 for Debian Linux
    Copyright (c) 2022 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
@@ -39,6 +39,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+protected:
+    void closeEvent(QCloseEvent *event);
 
 private slots:
     void on_actionAbout_triggered();

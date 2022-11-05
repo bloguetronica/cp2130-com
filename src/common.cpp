@@ -18,36 +18,30 @@
    Please feel free to contact me via e-mail: samuel.fmlourenco@gmail.com */
 
 
-#ifndef DIVIDERDIALOG_H
-#define DIVIDERDIALOG_H
-
 // Includes
-#include <QDialog>
-#include <QLocale>
+#include <QPointer>
+#include "aboutdialog.h"
+#include "common.h"
 
-namespace Ui {
-class DividerDialog;
+// Definitions
+QPointer<AboutDialog> aboutDialog_;
+
+// Closes the about dialog
+void closeAboutDialog()
+{
+    if (!aboutDialog_.isNull()) {
+        aboutDialog_->close();  // Close the about dialog if open
+    }
 }
 
-class DividerDialog : public QDialog
+// Shows the about dialog
+void showAboutDialog()
 {
-    Q_OBJECT
-
-public:
-    explicit DividerDialog(QWidget *parent = nullptr);
-    ~DividerDialog();
-
-    quint8 clockDividerSpinBoxValue();
-    void setClockDividerSpinBoxValue(quint8 divider);
-
-private slots:
-    void on_spinBoxClockDivider_valueChanged(int i);
-
-private:
-    Ui::DividerDialog *ui;
-    QLocale locale_ = QLocale::system();
-
-    void setExpectedFrequencyValueLabelText(quint8 divider);
-};
-
-#endif  // DIVIDERDIALOG_H
+    if (aboutDialog_.isNull()) {  // If the dialog wasn't previously open
+        aboutDialog_ = new AboutDialog;  // Note that the about dialog doesn't have a parent
+        aboutDialog_->show();
+    } else {
+        aboutDialog_->showNormal();  // Required if the dialog is minimized
+        aboutDialog_->activateWindow();  // Set focus on the previous dialog (dialog is raised and selected)
+    }
+}

@@ -512,7 +512,7 @@
       <rect>
        <x>10</x>
        <y>30</y>
-       <width>651</width>
+       <width>611</width>
        <height>31</height>
       </rect>
      </property>
@@ -536,7 +536,7 @@
       <rect>
        <x>10</x>
        <y>70</y>
-       <width>651</width>
+       <width>611</width>
        <height>31</height>
       </rect>
      </property>
@@ -579,6 +579,40 @@
      </property>
      <property name="maximum">
       <number>262144</number>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButtonClipboardWrite">
+     <property name="geometry">
+      <rect>
+       <x>630</x>
+       <y>30</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/icons/buttons/icons/buttons/clipboard.png</normaloff>:/icons/buttons/icons/buttons/clipboard.png</iconset>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButtonClipboardRead">
+     <property name="geometry">
+      <rect>
+       <x>630</x>
+       <y>70</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/icons/buttons/icons/buttons/clipboard.png</normaloff>:/icons/buttons/icons/buttons/clipboard.png</iconset>
      </property>
     </widget>
    </widget>
