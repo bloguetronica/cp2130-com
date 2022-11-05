@@ -7,12 +7,15 @@ apt-get -qq install libusb-1.0-0-dev
 apt-get -qq install qt5-default
 apt-get -qq install qtbase5-dev
 echo Copying source code files...
-mkdir -p /usr/local/src/cp2130-com/icons
+mkdir -p /usr/local/src/cp2130-com/icons/buttons
+mkdir -p /usr/local/src/cp2130-com/images
 mkdir -p /usr/local/src/cp2130-com/misc
 mkdir -p /usr/local/src/cp2130-com/translations
 cp -f src/aboutdialog.cpp /usr/local/src/cp2130-com/.
 cp -f src/aboutdialog.h /usr/local/src/cp2130-com/.
 cp -f src/aboutdialog.ui /usr/local/src/cp2130-com/.
+cp -f src/common.cpp /usr/local/src/cp2130-com/.
+cp -f src/common.h /usr/local/src/cp2130-com/.
 cp -f src/cp2130-com.pro /usr/local/src/cp2130-com/.
 cp -f src/cp2130.cpp /usr/local/src/cp2130-com/.
 cp -f src/cp2130.h /usr/local/src/cp2130-com/.
@@ -29,10 +32,14 @@ cp -f src/dividerdialog.h /usr/local/src/cp2130-com/.
 cp -f src/dividerdialog.ui /usr/local/src/cp2130-com/.
 cp -f src/GPL.txt /usr/local/src/cp2130-com/.
 cp -f src/icons/active64.png /usr/local/src/cp2130-com/icons/.
+cp -f src/icons/buttons/clipboard.png /usr/local/src/cp2130-com/icons/buttons/.
+cp -f src/icons/buttons/clipboard.svg /usr/local/src/cp2130-com/icons/buttons/.
 cp -f src/icons/cp2130-com.png /usr/local/src/cp2130-com/icons/.
 cp -f src/icons/greyed64.png /usr/local/src/cp2130-com/icons/.
 cp -f src/icons/icon.svg /usr/local/src/cp2130-com/icons/.
 cp -f src/icons/selected64.png /usr/local/src/cp2130-com/icons/.
+cp -f src/images/banner.png /usr/local/src/cp2130-com/images/.
+cp -f src/images/banner.svg /usr/local/src/cp2130-com/images/.
 cp -f src/informationdialog.cpp /usr/local/src/cp2130-com/.
 cp -f src/informationdialog.h /usr/local/src/cp2130-com/.
 cp -f src/informationdialog.ui /usr/local/src/cp2130-com/.
