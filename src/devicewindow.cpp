@@ -272,6 +272,12 @@ void DeviceWindow::on_comboBoxTriggerMode_activated()
     setEventCounter();
 }
 
+// Implemented in version 4.1
+void DeviceWindow::on_lineEditRead_textChanged()
+{
+    ui->pushButtonClipboardRead->setEnabled(!ui->lineEditRead->text().isEmpty());
+}
+
 void DeviceWindow::on_lineEditWrite_editingFinished()
 {
     ui->lineEditWrite->setText(write_.toHexadecimal());  // Required to reformat the hexadecimal string

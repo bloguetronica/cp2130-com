@@ -70,6 +70,7 @@ private slots:
     void on_comboBoxCSPinMode_activated();
     void on_comboBoxFrequency_activated();
     void on_comboBoxTriggerMode_activated();
+    void on_lineEditRead_textChanged();
     void on_lineEditWrite_editingFinished();
     void on_lineEditWrite_textChanged();
     void on_lineEditWrite_textEdited();
