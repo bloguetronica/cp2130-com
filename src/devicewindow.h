@@ -74,9 +74,9 @@ private slots:
     void on_lineEditWrite_editingFinished();
     void on_lineEditWrite_textChanged();
     void on_lineEditWrite_textEdited();
-    void on_pushButtonConfigureSPIDelays_clicked();
     void on_pushButtonClipboardRead_clicked();
     void on_pushButtonClipboardWrite_clicked();
+    void on_pushButtonConfigureSPIDelays_clicked();
     void on_pushButtonRead_clicked();
     void on_pushButtonWrite_clicked();
     void on_pushButtonWriteRead_clicked();

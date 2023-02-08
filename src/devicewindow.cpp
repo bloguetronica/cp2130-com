@@ -22,9 +22,11 @@
 #include <cmath>
 #include <QClipboard>
 #include <QElapsedTimer>
+#include <QGuiApplication>
 #include <QMessageBox>
 #include <QProgressDialog>
 #include <QRegExp>
+#include <QRegExpValidator>
 #include <QThread>
 #include <QVector>
 #include <unistd.h>
@@ -299,6 +301,25 @@ void DeviceWindow::on_lineEditWrite_textEdited()
     ui->lineEditWrite->setCursorPosition(curPosition);
 }
 
+// Implemented in version 4.0
+void DeviceWindow::on_pushButtonClipboardRead_clicked()
+{
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    clipboard->setText(ui->lineEditRead->text());
+}
+
+// Implemented in version 4.0
+void DeviceWindow::on_pushButtonClipboardWrite_clicked()
+{
+    if (ui->lineEditWrite->text().isEmpty()) {  // If the line edit is empty, then it makes more sense to place the clipboard contents in it
+        ui->lineEditWrite->paste();  // Instead of just setting the text directly, paste() is used here because it filters the clipboard contents through the validator
+        ui->lineEditWrite->setFocus();  // This ensures that on_lineEditWrite_editingFinished() is triggered once the user clicks elsewhere
+    } else {
+        QClipboard *clipboard = QGuiApplication::clipboard();
+        clipboard->setText(ui->lineEditWrite->text());
+    }
+}
+
 // This function no longer reads SPI delays directly (changed in version 3.0)
 void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
 {
@@ -326,25 +347,6 @@ void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
         if (opCheck(tr("spi-delays-configuration-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-delays-configuration-op" should be translated to "SPI delays configuration")
             spiDelaysMap_[channelName] = spiDelays;  // Update "spiDelaysMap_" regarding the current channel
         }
-    }
-}
-
-// Implemented in version 4.0
-void DeviceWindow::on_pushButtonClipboardRead_clicked()
-{
-    QClipboard *clipboard = QGuiApplication::clipboard();
-    clipboard->setText(ui->lineEditRead->text());
-}
-
-// Implemented in version 4.0
-void DeviceWindow::on_pushButtonClipboardWrite_clicked()
-{
-    if (ui->lineEditWrite->text().isEmpty()) {  // If the line edit is empty, then it makes more sense to place the clipboard contents in it
-        ui->lineEditWrite->paste();  // Instead of just setting the text directly, paste() is used here because it filters the clipboard contents through the validator
-        ui->lineEditWrite->setFocus();  // This ensures that on_lineEditWrite_editingFinished() is triggered once the user clicks elsewhere
-    } else {
-        QClipboard *clipboard = QGuiApplication::clipboard();
-        clipboard->setText(ui->lineEditWrite->text());
     }
 }
 
