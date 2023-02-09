@@ -85,6 +85,7 @@ private slots:
     void on_spinBoxCPOL_valueChanged();
     void on_spinBoxBytesToRead_valueChanged(int i);
     void update();
+    void updatePushButtonClipboardWrite();
 
 private:
     Ui::DeviceWindow *ui;
@@ -113,6 +114,7 @@ private:
     void initializeSetClockDividerAction();
     void initializeSPIControls();
     void initializeView();
+    bool isClipboardTextValid();
     bool opCheck(const QString &op, int errcnt, QString errstr);
     void readConfiguration();
     void resetDevice();
