@@ -647,7 +647,7 @@ void DeviceWindow::initializeSPIControls()
     ui->comboBoxChannel->clear();  // The combo box is always cleared (revised in version 3.0)
     if (spiModeMap_.size() != 0) {  // In order for the SPI controls (including transfers) to be enabled, at least one pin should be configured to work as a chip select
         QList<QString> keys = spiModeMap_.keys();
-        for (QString key : keys) {
+        for (const QString &key : qAsConst(keys)) {  // Fixed in version 4.1, in order to clear Clazy warnings
             ui->comboBoxChannel->addItem(key);
         }
         displaySPIMode();
