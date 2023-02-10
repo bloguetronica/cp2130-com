@@ -57,7 +57,7 @@ QString Data::toHexadecimal() const
 void Data::fromHexadecimal(const QString &hexadecimal)
 {
     QString strippedHexadecimal(hexadecimal);
-    strippedHexadecimal.remove(QChar(' '));
+    strippedHexadecimal.remove(QChar(' ')).remove(QChar('\n'));  // Newline characters are also removed to prevent conversion errors (version 4.1 bug fix)
     int vecSize = strippedHexadecimal.size() / 2;
     vector.resize(vecSize);
     for (int i = 0; i < vecSize; ++i) {
