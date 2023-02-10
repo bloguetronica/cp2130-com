@@ -10,8 +10,8 @@
     </message>
     <message>
         <location filename="../aboutdialog.ui" line="68"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Version 4.0&lt;br/&gt;© 2022 Samuel Lourenço&lt;/p&gt;&lt;p&gt;This program is distributed under the terms of the &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0-standalone.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;GNU GPL v3&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Versão 4.0&lt;br/&gt;© 2022 Samuel Lourenço&lt;/p&gt;&lt;p&gt;Este programa é distribuido sob os termos da licença &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0-standalone.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;GNU GPL v3&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Version 4.1&lt;br/&gt;© 2022-2023 Samuel Lourenço&lt;/p&gt;&lt;p&gt;This program is distributed under the terms of the &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0-standalone.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;GNU GPL v3&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Versão 4.1&lt;br/&gt;© 2022-2023 Samuel Lourenço&lt;/p&gt;&lt;p&gt;Este programa é distribuido sob os termos da licença &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0-standalone.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;GNU GPL v3&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../aboutdialog.ui" line="90"/>
@@ -192,12 +192,12 @@
         <translation>93,8 kHz</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="796"/>
+        <location filename="../devicewindow.ui" line="802"/>
         <source>&amp;Set Clock Divider</source>
         <translation>&amp;Definir Divisor de Relógio</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="801"/>
+        <location filename="../devicewindow.ui" line="807"/>
         <source>&amp;GPIO Pin Functions</source>
         <translation>Funções dos Pinos &amp;GPIO</translation>
     </message>
@@ -247,88 +247,88 @@
         <translation>Bytes a ler:</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="632"/>
+        <location filename="../devicewindow.ui" line="638"/>
         <source>Event Counter</source>
         <translation>Contador de Eventos</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="644"/>
+        <location filename="../devicewindow.ui" line="650"/>
         <source>Zero</source>
         <translation>Zerar</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="679"/>
+        <location filename="../devicewindow.ui" line="685"/>
         <source>Count</source>
         <translation>Contagem</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="696"/>
+        <location filename="../devicewindow.ui" line="702"/>
         <source>Rising edge</source>
         <translation>Flanco asc.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="701"/>
+        <location filename="../devicewindow.ui" line="707"/>
         <source>Falling edge</source>
         <translation>Flanco desc.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="706"/>
+        <location filename="../devicewindow.ui" line="712"/>
         <source>Negative pulse</source>
         <translation>Pulso negativo</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="711"/>
+        <location filename="../devicewindow.ui" line="717"/>
         <source>Positive pulse</source>
         <translation>Pulso positivo</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="725"/>
+        <location filename="../devicewindow.ui" line="731"/>
         <source>Trigger mode:</source>
         <translation>Modo de disparo:</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="744"/>
+        <location filename="../devicewindow.ui" line="750"/>
         <source>&amp;Device</source>
         <translation>&amp;Dispositivo</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="756"/>
+        <location filename="../devicewindow.ui" line="762"/>
         <source>&amp;Help</source>
         <translation>&amp;Ajuda</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="770"/>
+        <location filename="../devicewindow.ui" line="776"/>
         <source>&amp;Close</source>
         <translation>&amp;Fechar</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="773"/>
+        <location filename="../devicewindow.ui" line="779"/>
         <source>Ctrl+W</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="778"/>
+        <location filename="../devicewindow.ui" line="784"/>
         <source>&amp;About CP2130 Commander</source>
         <translation>&amp;Acerca do CP2130 Commander</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="783"/>
+        <location filename="../devicewindow.ui" line="789"/>
         <source>&amp;Reset</source>
         <translation>&amp;Reiniciar</translation>
     </message>
     <message>
-        <location filename="../devicewindow.ui" line="788"/>
+        <location filename="../devicewindow.ui" line="794"/>
         <source>&amp;Information</source>
         <translation>&amp;Informações</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="78"/>
-        <location filename="../devicewindow.cpp" line="791"/>
+        <location filename="../devicewindow.cpp" line="81"/>
+        <location filename="../devicewindow.cpp" line="815"/>
         <source>Critical Error</source>
         <translation>Erro Crítico</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="78"/>
+        <location filename="../devicewindow.cpp" line="81"/>
         <source>Could not initialize libusb.
 
 This is a critical error and execution will be aborted.</source>
@@ -337,25 +337,25 @@ This is a critical error and execution will be aborted.</source>
 Este é um erro crítico e a execução será abortada.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="82"/>
-        <location filename="../devicewindow.cpp" line="84"/>
-        <location filename="../devicewindow.cpp" line="670"/>
-        <location filename="../devicewindow.cpp" line="673"/>
-        <location filename="../devicewindow.cpp" line="681"/>
-        <location filename="../devicewindow.cpp" line="748"/>
-        <location filename="../devicewindow.cpp" line="753"/>
-        <location filename="../devicewindow.cpp" line="794"/>
-        <location filename="../devicewindow.cpp" line="796"/>
+        <location filename="../devicewindow.cpp" line="85"/>
+        <location filename="../devicewindow.cpp" line="87"/>
+        <location filename="../devicewindow.cpp" line="694"/>
+        <location filename="../devicewindow.cpp" line="697"/>
+        <location filename="../devicewindow.cpp" line="705"/>
+        <location filename="../devicewindow.cpp" line="772"/>
+        <location filename="../devicewindow.cpp" line="777"/>
+        <location filename="../devicewindow.cpp" line="818"/>
+        <location filename="../devicewindow.cpp" line="820"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="82"/>
+        <location filename="../devicewindow.cpp" line="85"/>
         <source>Could not find device.</source>
         <translation>Dispositivo não encontrado.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="84"/>
+        <location filename="../devicewindow.cpp" line="87"/>
         <source>Device is currently unavailable.
 
 Please confirm that the device is not in use.</source>
@@ -364,226 +364,226 @@ Please confirm that the device is not in use.</source>
 Por favor, confirme que o mesmo não está a ser utilizado.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="74"/>
+        <location filename="../devicewindow.cpp" line="77"/>
         <source>CP2130 Device (S/N: %1)</source>
         <translation>Dispositivo CP2130 (NS: %1)</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="101"/>
+        <location filename="../devicewindow.cpp" line="104"/>
         <source>GPIO Pin Functions (S/N: %1)</source>
         <translation>Funções dos Pinos GPIO (NS: %1)</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="127"/>
+        <location filename="../devicewindow.cpp" line="130"/>
         <source>Device Information (S/N: %1)</source>
         <translation>Informações do Dispositivo (NS: %1)</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="139"/>
+        <location filename="../devicewindow.cpp" line="142"/>
         <source>device-information-retrieval-op</source>
         <translation>recolha de informações do dispositivo</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="160"/>
+        <location filename="../devicewindow.cpp" line="163"/>
         <source>clock-divider-retrieval-op</source>
         <translation>retorno do divisor de relógio</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="162"/>
+        <location filename="../devicewindow.cpp" line="165"/>
         <source>clock-divider-setting-op</source>
         <translation>definição do divisor de relógio</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="171"/>
+        <location filename="../devicewindow.cpp" line="174"/>
         <source>gpio0-switch-op</source>
         <translation>comutação do pino GPIO.0</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="179"/>
+        <location filename="../devicewindow.cpp" line="182"/>
         <source>gpio1-switch-op</source>
         <translation>comutação do pino GPIO.1</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="187"/>
+        <location filename="../devicewindow.cpp" line="190"/>
         <source>gpio2-switch-op</source>
         <translation>comutação do pino GPIO.2</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="195"/>
+        <location filename="../devicewindow.cpp" line="198"/>
         <source>gpio3-switch-op</source>
         <translation>comutação do pino GPIO.3</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="203"/>
+        <location filename="../devicewindow.cpp" line="206"/>
         <source>gpio4-switch-op</source>
         <translation>comutação do pino GPIO.4</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="211"/>
+        <location filename="../devicewindow.cpp" line="214"/>
         <source>gpio5-switch-op</source>
         <translation>comutação do pino GPIO.5</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="219"/>
+        <location filename="../devicewindow.cpp" line="222"/>
         <source>gpio6-switch-op</source>
         <translation>comutação do pino GPIO.6</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="227"/>
+        <location filename="../devicewindow.cpp" line="230"/>
         <source>gpio7-switch-op</source>
         <translation>comutação do pino GPIO.7</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="235"/>
+        <location filename="../devicewindow.cpp" line="238"/>
         <source>gpio8-switch-op</source>
         <translation>comutação do pino GPIO.8</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="243"/>
+        <location filename="../devicewindow.cpp" line="246"/>
         <source>gpio9-switch-op</source>
         <translation>comutação do pino GPIO.9</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="251"/>
+        <location filename="../devicewindow.cpp" line="254"/>
         <source>gpio10-switch-op</source>
         <translation>comutação do pino GPIO.10</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="320"/>
+        <location filename="../devicewindow.cpp" line="348"/>
         <source>spi-delays-configuration-op</source>
         <translation>configuração de latências SPI</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="352"/>
+        <location filename="../devicewindow.cpp" line="361"/>
         <source>Performing SPI read...</source>
         <translation>A executar leitura SPI...</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="352"/>
-        <location filename="../devicewindow.cpp" line="403"/>
-        <location filename="../devicewindow.cpp" line="452"/>
+        <location filename="../devicewindow.cpp" line="361"/>
+        <location filename="../devicewindow.cpp" line="412"/>
+        <location filename="../devicewindow.cpp" line="461"/>
         <source>Abort</source>
         <translation>Abortar</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="353"/>
+        <location filename="../devicewindow.cpp" line="362"/>
         <source>SPI Read</source>
         <translation>Leitura SPI</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="385"/>
+        <location filename="../devicewindow.cpp" line="394"/>
         <source>SPI read failed.</source>
         <translation>Leitura SPI falhou.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="387"/>
+        <location filename="../devicewindow.cpp" line="396"/>
         <source>SPI read aborted by the user.</source>
         <translation>Leitura SPI abortada pelo utilizador.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="389"/>
+        <location filename="../devicewindow.cpp" line="398"/>
         <source>SPI read completed. %1 bytes transferred in %2 ms.</source>
         <translation>Leitura SPI concluída. %1 bytes transferidos em %2 ms.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="391"/>
+        <location filename="../devicewindow.cpp" line="400"/>
         <source>SPI read completed. %1 bytes transferred in %2 s.</source>
         <translation>Leitura SPI concluída. %1 bytes transferidos em %2 s.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="438"/>
+        <location filename="../devicewindow.cpp" line="447"/>
         <source>SPI write completed. %1 bytes transferred in %2 ms.</source>
         <translation>Escrita SPI concluída. %1 bytes transferidos em %2 ms.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="440"/>
+        <location filename="../devicewindow.cpp" line="449"/>
         <source>SPI write completed. %1 bytes transferred in %2 s.</source>
         <translation>Escrita SPI concluída. %1 bytes transferidos em %2 s.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="489"/>
+        <location filename="../devicewindow.cpp" line="498"/>
         <source>SPI write and read completed. %1 bytes transferred in %2 ms.</source>
         <translation>Escrita e leitura SPI concluída. %1 bytes transferidos em %2 ms.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="491"/>
+        <location filename="../devicewindow.cpp" line="500"/>
         <source>SPI write and read completed. %1 bytes transferred in %2 s.</source>
         <translation>Escrita e leitura SPI concluída. %1 bytes transferidos em %2 s.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="393"/>
+        <location filename="../devicewindow.cpp" line="402"/>
         <source>spi-read-op</source>
         <translation>leitura SPI</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="403"/>
+        <location filename="../devicewindow.cpp" line="412"/>
         <source>Performing SPI write...</source>
         <translation>A executar escrita SPI...</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="404"/>
+        <location filename="../devicewindow.cpp" line="413"/>
         <source>SPI Write</source>
         <translation>Escrita SPI</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="434"/>
+        <location filename="../devicewindow.cpp" line="443"/>
         <source>SPI write failed.</source>
         <translation>Escrita SPI falhou.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="436"/>
+        <location filename="../devicewindow.cpp" line="445"/>
         <source>SPI write aborted by the user.</source>
         <translation>Escrita SPI abortada pelo utilizador.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="442"/>
+        <location filename="../devicewindow.cpp" line="451"/>
         <source>spi-write-op</source>
         <translation>escrita SPI</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="452"/>
+        <location filename="../devicewindow.cpp" line="461"/>
         <source>Performing SPI write and read...</source>
         <translation>A executar escrita e leitura SPI...</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="453"/>
+        <location filename="../devicewindow.cpp" line="462"/>
         <source>SPI Write/Read</source>
         <translation>Escrita/Leitura SPI</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="485"/>
+        <location filename="../devicewindow.cpp" line="494"/>
         <source>SPI write and read failed.</source>
         <translation>Escrita e leitura SPI falhou.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="487"/>
+        <location filename="../devicewindow.cpp" line="496"/>
         <source>SPI write and read aborted by the user.</source>
         <translation>Escrita e leitura SPI abortada pelo utilizador.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="493"/>
+        <location filename="../devicewindow.cpp" line="502"/>
         <source>spi-write-read-op</source>
         <translation>escrita e leitura SPI</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="527"/>
+        <location filename="../devicewindow.cpp" line="536"/>
         <source>update-op</source>
         <translation>actualização</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="556"/>
+        <location filename="../devicewindow.cpp" line="571"/>
         <source>spi-mode-configuration-op</source>
         <translation>configuração do modo SPI</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="568"/>
+        <location filename="../devicewindow.cpp" line="583"/>
         <source>&amp;Close Window</source>
         <translation>&amp;Fechar janela</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="670"/>
-        <location filename="../devicewindow.cpp" line="748"/>
-        <location filename="../devicewindow.cpp" line="794"/>
+        <location filename="../devicewindow.cpp" line="694"/>
+        <location filename="../devicewindow.cpp" line="772"/>
+        <location filename="../devicewindow.cpp" line="818"/>
         <source>Device disconnected.
 
 Please reconnect it and try again.</source>
@@ -592,7 +592,7 @@ Please reconnect it and try again.</source>
 Por favor, ligue-o e tente novamente.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../devicewindow.cpp" line="673"/>
+        <location filename="../devicewindow.cpp" line="697"/>
         <source>%1 operation returned the following error(s):
 – %2</source>
         <translation>
@@ -603,12 +603,12 @@ Por favor, ligue-o e tente novamente.</translation>
         </translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="681"/>
+        <location filename="../devicewindow.cpp" line="705"/>
         <source>Detected too many errors.</source>
         <translation>Demasiados erros detectados.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../devicewindow.cpp" line="753"/>
+        <location filename="../devicewindow.cpp" line="777"/>
         <source>Read configuration operation returned the following error(s):
 – %1
 
@@ -625,12 +625,12 @@ Por favor, tente aceder novamente ao dispositivo.</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="766"/>
+        <location filename="../devicewindow.cpp" line="790"/>
         <source>reset-op</source>
         <translation>reinício</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="791"/>
+        <location filename="../devicewindow.cpp" line="815"/>
         <source>Could not reinitialize libusb.
 
 This is a critical error and execution will be aborted.</source>
@@ -639,7 +639,7 @@ This is a critical error and execution will be aborted.</source>
 Este é um erro crítico e a execução será abortada.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="796"/>
+        <location filename="../devicewindow.cpp" line="820"/>
         <source>Device ceased to be available.
 
 Please verify that the device is not in use by another application.</source>
@@ -648,7 +648,7 @@ Please verify that the device is not in use by another application.</source>
 Por favor, verifique se o mesmo não está a ser utilizado por outra aplicação.</translation>
     </message>
     <message>
-        <location filename="../devicewindow.cpp" line="813"/>
+        <location filename="../devicewindow.cpp" line="837"/>
         <source>event-counter-setting-op</source>
         <translation>definição do contador de eventos</translation>
     </message>
