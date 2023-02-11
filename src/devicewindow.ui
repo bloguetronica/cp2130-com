@@ -582,6 +582,9 @@
      </property>
     </widget>
     <widget class="QPushButton" name="pushButtonClipboardWrite">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>630</x>
@@ -599,6 +602,9 @@
      </property>
     </widget>
     <widget class="QPushButton" name="pushButtonClipboardRead">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>630</x>

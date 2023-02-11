@@ -1,5 +1,5 @@
-/* CP2130 Commander - Version 4.0 for Debian Linux
-   Copyright (c) 2022 Samuel Lourenço
+/* CP2130 Commander - Version 4.1 for Debian Linux
+   Copyright (c) 2022-2023 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the Free
@@ -57,7 +57,7 @@ QString Data::toHexadecimal() const
 void Data::fromHexadecimal(const QString &hexadecimal)
 {
     QString strippedHexadecimal(hexadecimal);
-    strippedHexadecimal.remove(QChar(' '));
+    strippedHexadecimal.remove(QChar(' ')).remove(QChar('\n'));  // Newline characters are also removed to prevent conversion errors (version 4.1 bug fix)
     int vecSize = strippedHexadecimal.size() / 2;
     vector.resize(vecSize);
     for (int i = 0; i < vecSize; ++i) {

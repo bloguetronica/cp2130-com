@@ -1,5 +1,5 @@
-/* CP2130 Commander - Version 4.0 for Debian Linux
-   Copyright (c) 2022 Samuel Lourenço
+/* CP2130 Commander - Version 4.1 for Debian Linux
+   Copyright (c) 2022-2023 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the Free
@@ -70,12 +70,13 @@ private slots:
     void on_comboBoxCSPinMode_activated();
     void on_comboBoxFrequency_activated();
     void on_comboBoxTriggerMode_activated();
+    void on_lineEditRead_textChanged();
     void on_lineEditWrite_editingFinished();
     void on_lineEditWrite_textChanged();
     void on_lineEditWrite_textEdited();
-    void on_pushButtonConfigureSPIDelays_clicked();
     void on_pushButtonClipboardRead_clicked();
     void on_pushButtonClipboardWrite_clicked();
+    void on_pushButtonConfigureSPIDelays_clicked();
     void on_pushButtonRead_clicked();
     void on_pushButtonWrite_clicked();
     void on_pushButtonWriteRead_clicked();
@@ -84,6 +85,7 @@ private slots:
     void on_spinBoxCPOL_valueChanged();
     void on_spinBoxBytesToRead_valueChanged(int i);
     void update();
+    void updatePushButtonClipboardWrite();
 
 private:
     Ui::DeviceWindow *ui;
@@ -112,6 +114,7 @@ private:
     void initializeSetClockDividerAction();
     void initializeSPIControls();
     void initializeView();
+    bool isClipboardTextValid();
     bool opCheck(const QString &op, int errcnt, QString errstr);
     void readConfiguration();
     void resetDevice();
