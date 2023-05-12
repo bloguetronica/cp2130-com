@@ -829,7 +829,9 @@
   <tabstop>spinBoxCPOL</tabstop>
   <tabstop>spinBoxCPHA</tabstop>
   <tabstop>lineEditWrite</tabstop>
+  <tabstop>pushButtonClipboardWrite</tabstop>
   <tabstop>lineEditRead</tabstop>
+  <tabstop>pushButtonClipboardRead</tabstop>
   <tabstop>spinBoxBytesToRead</tabstop>
   <tabstop>pushButtonWrite</tabstop>
   <tabstop>pushButtonRead</tabstop>

@@ -1,4 +1,4 @@
-/* CP2130 Commander - Version 4.1 for Debian Linux
+/* CP2130 Commander - Version 4.2 for Debian Linux
    Copyright (c) 2022-2023 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
