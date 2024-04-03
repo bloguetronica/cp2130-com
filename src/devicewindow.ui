@@ -640,7 +640,7 @@
     <widget class="QPushButton" name="pushButtonZero">
      <property name="geometry">
       <rect>
-       <x>560</x>
+       <x>340</x>
        <y>30</y>
        <width>101</width>
        <height>31</height>
@@ -653,9 +653,9 @@
     <widget class="QLCDNumber" name="lcdNumberCount">
      <property name="geometry">
       <rect>
-       <x>121</x>
+       <x>561</x>
        <y>31</y>
-       <width>89</width>
+       <width>99</width>
        <height>29</height>
       </rect>
      </property>
@@ -675,7 +675,7 @@
     <widget class="QLabel" name="labelCount">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>450</x>
        <y>37</y>
        <width>105</width>
        <height>17</height>
@@ -691,7 +691,7 @@
     <widget class="QComboBox" name="comboBoxTriggerMode">
      <property name="geometry">
       <rect>
-       <x>410</x>
+       <x>190</x>
        <y>30</y>
        <width>141</width>
        <height>31</height>
@@ -721,9 +721,9 @@
     <widget class="QLabel" name="labelTriggerMode">
      <property name="geometry">
       <rect>
-       <x>220</x>
+       <x>10</x>
        <y>37</y>
-       <width>185</width>
+       <width>175</width>
        <height>17</height>
       </rect>
      </property>
