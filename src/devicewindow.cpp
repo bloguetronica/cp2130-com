@@ -50,7 +50,7 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     labelStatus_ = new QLabel(this);
     this->statusBar()->addWidget(labelStatus_);
     timer_ = new QTimer(this);  // The timer is initialized in the constructor since version 3.1
-    connect(QGuiApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(updatePushButtonClipboardWritePaste()));  // Added in version 5.0
+    connect(QGuiApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(updatePushButtonClipboardWritePaste()));  // Modified in version 5.0
     connect(timer_, SIGNAL(timeout()), this, SLOT(update()));  // This call doesn't need to be scoped (fixed in version 4.0)
 }
 
@@ -288,7 +288,7 @@ void DeviceWindow::on_lineEditWrite_editingFinished()
 
 void DeviceWindow::on_lineEditWrite_textChanged()
 {
-    ui->pushButtonClipboardWriteCopy->setEnabled(!ui->lineEditWrite->text().isEmpty());  // Added in version 5.0
+    ui->pushButtonClipboardWriteCopy->setEnabled(!ui->lineEditWrite->text().isEmpty());  // Modified in version 5.0
     write_.fromHexadecimal(ui->lineEditWrite->text());  //This also forces a retrim whenever on_lineEditWrite_editingFinished() is triggered, which is useful case the reformatted hexadecimal string does not fit the line edit box (required in order to follow the WYSIWYG principle)
     int size = write_.vector.size();
     bool enableWrite = size != 0;  // The buttons "Write" and "Write/Read" are enabled if the string is valid, that is, its conversion leads to a non-empty QVector (method changed in version 2.0)
