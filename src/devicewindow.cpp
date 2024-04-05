@@ -278,7 +278,7 @@ void DeviceWindow::on_comboBoxTriggerMode_activated()
 // Implemented in version 4.1
 void DeviceWindow::on_lineEditRead_textChanged()
 {
-    ui->pushButtonClipboardRead->setEnabled(!ui->lineEditRead->text().isEmpty());
+    ui->pushButtonClipboardReadCopy->setEnabled(!ui->lineEditRead->text().isEmpty());
 }
 
 void DeviceWindow::on_lineEditWrite_editingFinished()
@@ -541,7 +541,7 @@ void DeviceWindow::update()
 // This is executed when the clipboard contents change (implemented in version 4.1)
 void DeviceWindow::updatePushButtonClipboardWrite()
 {
-    ui->pushButtonClipboardWrite->setEnabled(!ui->lineEditWrite->text().isEmpty() || isClipboardTextValid());
+    ui->pushButtonClipboardWriteCopy->setEnabled(!ui->lineEditWrite->text().isEmpty() || isClipboardTextValid());
 }
 
 // Calculates the optimal fragment size limit based on the parameters of the currently selected channel (implemented in version 3.1, to replace evaluateSizeLimit())
@@ -661,7 +661,7 @@ void DeviceWindow::initializeSPIControls()
     }
     ui->groupBoxSPIConfiguration->setEnabled(spiModeMap_.size() != 0);  // It may be desirable to either enable or disable both group boxes, just in case the device configuration changes (revised in version 3.0)
     ui->groupBoxSPITransfers->setEnabled(spiModeMap_.size() != 0);
-    ui->pushButtonClipboardWrite->setEnabled(isClipboardTextValid());  // Added in version 4.1
+    ui->pushButtonClipboardWriteCopy->setEnabled(isClipboardTextValid());  // Added in version 4.1
 }
 
 // This is the routine that is used to initialize (or reinitialize) the device window
