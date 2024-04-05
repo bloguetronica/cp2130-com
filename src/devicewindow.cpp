@@ -306,24 +306,20 @@ void DeviceWindow::on_lineEditWrite_textEdited()
 // Implemented in version 5.0
 void DeviceWindow::on_pushButtonClipboardReadCopy_clicked()
 {
-    QGuiApplication::clipboard()->setText(ui->lineEditRead->text());  // Simplified in version 4.1
+    QGuiApplication::clipboard()->setText(ui->lineEditRead->text());
 }
 
 // Implemented in version 5.0
 void DeviceWindow::on_pushButtonClipboardWriteCopy_clicked()
 {
-    QClipboard *clipboard = QGuiApplication::clipboard();
-    if (ui->lineEditWrite->text().isEmpty()) {  // If the line edit is empty, then it makes more sense to place the clipboard contents in it
-        ui->lineEditWrite->setText(clipboard->text());  // No need to filter the clipboard contents through the validator since version 4.1
-        ui->lineEditWrite->setFocus();  // This ensures that on_lineEditWrite_editingFinished() is triggered once the user clicks elsewhere
-    } else {
-        clipboard->setText(ui->lineEditWrite->text());
-    }
+    QGuiApplication::clipboard()->setText(ui->lineEditWrite->text());
 }
 
 // Implemented in version 5.0
 void DeviceWindow::on_pushButtonClipboardWritePaste_clicked()
 {
+    ui->lineEditWrite->setText(ui->lineEditWrite->text() + QGuiApplication::clipboard()->text());  // No need to filter the clipboard contents
+    ui->lineEditWrite->setFocus();  // This ensures that on_lineEditWrite_editingFinished() is triggered once the user clicks elsewhere
 }
 
 // This function no longer reads SPI delays directly (changed in version 3.0)
