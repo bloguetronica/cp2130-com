@@ -74,8 +74,9 @@ private slots:
     void on_lineEditWrite_editingFinished();
     void on_lineEditWrite_textChanged();
     void on_lineEditWrite_textEdited();
-    void on_pushButtonClipboardRead_clicked();
-    void on_pushButtonClipboardWrite_clicked();
+    void on_pushButtonClipboardReadCopy_clicked();
+    void on_pushButtonClipboardWriteCopy_clicked();
+    void on_pushButtonClipboardWritePaste_clicked();
     void on_pushButtonConfigureSPIDelays_clicked();
     void on_pushButtonRead_clicked();
     void on_pushButtonWrite_clicked();
@@ -85,7 +86,7 @@ private slots:
     void on_spinBoxCPOL_valueChanged();
     void on_spinBoxBytesToRead_valueChanged(int i);
     void update();
-    void updatePushButtonClipboardWrite();
+    void updatePushButtonClipboardWritePaste();
 
 private:
     Ui::DeviceWindow *ui;

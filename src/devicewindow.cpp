@@ -50,7 +50,7 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     labelStatus_ = new QLabel(this);
     this->statusBar()->addWidget(labelStatus_);
     timer_ = new QTimer(this);  // The timer is initialized in the constructor since version 3.1
-    connect(QGuiApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(updatePushButtonClipboardWrite()));  // Added in version 4.1
+    connect(QGuiApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(updatePushButtonClipboardWritePaste()));  // Added in version 5.0
     connect(timer_, SIGNAL(timeout()), this, SLOT(update()));  // This call doesn't need to be scoped (fixed in version 4.0)
 }
 
@@ -288,7 +288,7 @@ void DeviceWindow::on_lineEditWrite_editingFinished()
 
 void DeviceWindow::on_lineEditWrite_textChanged()
 {
-    updatePushButtonClipboardWrite();  // Added in version 4.1
+    ui->pushButtonClipboardWriteCopy->setEnabled(!ui->lineEditWrite->text().isEmpty());  // Added in version 5.0
     write_.fromHexadecimal(ui->lineEditWrite->text());  //This also forces a retrim whenever on_lineEditWrite_editingFinished() is triggered, which is useful case the reformatted hexadecimal string does not fit the line edit box (required in order to follow the WYSIWYG principle)
     int size = write_.vector.size();
     bool enableWrite = size != 0;  // The buttons "Write" and "Write/Read" are enabled if the string is valid, that is, its conversion leads to a non-empty QVector (method changed in version 2.0)
@@ -303,14 +303,14 @@ void DeviceWindow::on_lineEditWrite_textEdited()
     ui->lineEditWrite->setCursorPosition(curPosition);
 }
 
-// Implemented in version 4.0
-void DeviceWindow::on_pushButtonClipboardRead_clicked()
+// Implemented in version 5.0
+void DeviceWindow::on_pushButtonClipboardReadCopy_clicked()
 {
     QGuiApplication::clipboard()->setText(ui->lineEditRead->text());  // Simplified in version 4.1
 }
 
-// Implemented in version 4.0
-void DeviceWindow::on_pushButtonClipboardWrite_clicked()
+// Implemented in version 5.0
+void DeviceWindow::on_pushButtonClipboardWriteCopy_clicked()
 {
     QClipboard *clipboard = QGuiApplication::clipboard();
     if (ui->lineEditWrite->text().isEmpty()) {  // If the line edit is empty, then it makes more sense to place the clipboard contents in it
@@ -319,6 +319,11 @@ void DeviceWindow::on_pushButtonClipboardWrite_clicked()
     } else {
         clipboard->setText(ui->lineEditWrite->text());
     }
+}
+
+// Implemented in version 5.0
+void DeviceWindow::on_pushButtonClipboardWritePaste_clicked()
+{
 }
 
 // This function no longer reads SPI delays directly (changed in version 3.0)
@@ -538,10 +543,10 @@ void DeviceWindow::update()
     }
 }
 
-// This is executed when the clipboard contents change (implemented in version 4.1)
-void DeviceWindow::updatePushButtonClipboardWrite()
+// This is executed when the clipboard contents change (implemented in version 5.0)
+void DeviceWindow::updatePushButtonClipboardWritePaste()
 {
-    ui->pushButtonClipboardWriteCopy->setEnabled(!ui->lineEditWrite->text().isEmpty() || isClipboardTextValid());
+    ui->pushButtonClipboardWritePaste->setEnabled(isClipboardTextValid());
 }
 
 // Calculates the optimal fragment size limit based on the parameters of the currently selected channel (implemented in version 3.1, to replace evaluateSizeLimit())
@@ -661,7 +666,7 @@ void DeviceWindow::initializeSPIControls()
     }
     ui->groupBoxSPIConfiguration->setEnabled(spiModeMap_.size() != 0);  // It may be desirable to either enable or disable both group boxes, just in case the device configuration changes (revised in version 3.0)
     ui->groupBoxSPITransfers->setEnabled(spiModeMap_.size() != 0);
-    ui->pushButtonClipboardWriteCopy->setEnabled(isClipboardTextValid());  // Added in version 4.1
+    ui->pushButtonClipboardWritePaste->setEnabled(isClipboardTextValid());  // Added in version 5.0
 }
 
 // This is the routine that is used to initialize (or reinitialize) the device window
