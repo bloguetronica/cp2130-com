@@ -581,7 +581,7 @@
       <number>262144</number>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButtonClipboardWriteCopy">
+    <widget class="QPushButton" name="pushButtonClipboardCopyWrite">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -598,10 +598,10 @@
      </property>
      <property name="icon">
       <iconset resource="resources.qrc">
-       <normaloff>:/icons/buttons/icons/buttons/clipboard.png</normaloff>:/icons/buttons/icons/buttons/clipboard.png</iconset>
+       <normaloff>:/icons/buttons/icons/buttons/clipboard-copy.png</normaloff>:/icons/buttons/icons/buttons/clipboard-copy.png</iconset>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButtonClipboardReadCopy">
+    <widget class="QPushButton" name="pushButtonClipboardCopyRead">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -618,10 +618,10 @@
      </property>
      <property name="icon">
       <iconset resource="resources.qrc">
-       <normaloff>:/icons/buttons/icons/buttons/clipboard.png</normaloff>:/icons/buttons/icons/buttons/clipboard.png</iconset>
+       <normaloff>:/icons/buttons/icons/buttons/clipboard-copy.png</normaloff>:/icons/buttons/icons/buttons/clipboard-copy.png</iconset>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButtonClipboardWritePaste">
+    <widget class="QPushButton" name="pushButtonClipboardPasteWrite">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -638,7 +638,7 @@
      </property>
      <property name="icon">
       <iconset resource="resources.qrc">
-       <normaloff>:/icons/buttons/icons/buttons/clipboard.png</normaloff>:/icons/buttons/icons/buttons/clipboard.png</iconset>
+       <normaloff>:/icons/buttons/icons/buttons/clipboard-paste.png</normaloff>:/icons/buttons/icons/buttons/clipboard-paste.png</iconset>
      </property>
     </widget>
    </widget>
@@ -849,9 +849,9 @@
   <tabstop>spinBoxCPOL</tabstop>
   <tabstop>spinBoxCPHA</tabstop>
   <tabstop>lineEditWrite</tabstop>
-  <tabstop>pushButtonClipboardWriteCopy</tabstop>
+  <tabstop>pushButtonClipboardCopyWrite</tabstop>
   <tabstop>lineEditRead</tabstop>
-  <tabstop>pushButtonClipboardReadCopy</tabstop>
+  <tabstop>pushButtonClipboardCopyRead</tabstop>
   <tabstop>spinBoxBytesToRead</tabstop>
   <tabstop>pushButtonWrite</tabstop>
   <tabstop>pushButtonRead</tabstop>

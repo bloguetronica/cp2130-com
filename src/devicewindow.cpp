@@ -50,7 +50,7 @@ DeviceWindow::DeviceWindow(QWidget *parent) :
     labelStatus_ = new QLabel(this);
     this->statusBar()->addWidget(labelStatus_);
     timer_ = new QTimer(this);  // The timer is initialized in the constructor since version 3.1
-    connect(QGuiApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(updatePushButtonClipboardWritePaste()));  // Added in version 4.1 and modified in version 5.0
+    connect(QGuiApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(updatePushButtonClipboardPasteWrite()));  // Added in version 4.1 and modified in version 5.0
     connect(timer_, SIGNAL(timeout()), this, SLOT(update()));  // This call doesn't need to be scoped (fixed in version 4.0)
 }
 
@@ -278,7 +278,7 @@ void DeviceWindow::on_comboBoxTriggerMode_activated()
 // Implemented in version 4.1
 void DeviceWindow::on_lineEditRead_textChanged()
 {
-    ui->pushButtonClipboardReadCopy->setEnabled(!ui->lineEditRead->text().isEmpty());
+    ui->pushButtonClipboardCopyRead->setEnabled(!ui->lineEditRead->text().isEmpty());
 }
 
 void DeviceWindow::on_lineEditWrite_editingFinished()
@@ -288,7 +288,7 @@ void DeviceWindow::on_lineEditWrite_editingFinished()
 
 void DeviceWindow::on_lineEditWrite_textChanged()
 {
-    ui->pushButtonClipboardWriteCopy->setEnabled(!ui->lineEditWrite->text().isEmpty());  // Added in version 4.1 and modified in version 5.0
+    ui->pushButtonClipboardCopyWrite->setEnabled(!ui->lineEditWrite->text().isEmpty());  // Added in version 4.1 and modified in version 5.0
     write_.fromHexadecimal(ui->lineEditWrite->text());  //This also forces a retrim whenever on_lineEditWrite_editingFinished() is triggered, which is useful case the reformatted hexadecimal string does not fit the line edit box (required in order to follow the WYSIWYG principle)
     int size = write_.vector.size();
     bool enableWrite = size != 0;  // The buttons "Write" and "Write/Read" are enabled if the string is valid, that is, its conversion leads to a non-empty QVector (method changed in version 2.0)
@@ -304,19 +304,19 @@ void DeviceWindow::on_lineEditWrite_textEdited()
 }
 
 // Implemented in version 5.0
-void DeviceWindow::on_pushButtonClipboardReadCopy_clicked()
+void DeviceWindow::on_pushButtonClipboardCopyRead_clicked()
 {
     QGuiApplication::clipboard()->setText(ui->lineEditRead->text());
 }
 
 // Implemented in version 5.0
-void DeviceWindow::on_pushButtonClipboardWriteCopy_clicked()
+void DeviceWindow::on_pushButtonClipboardCopyWrite_clicked()
 {
     QGuiApplication::clipboard()->setText(ui->lineEditWrite->text());
 }
 
 // Implemented in version 5.0
-void DeviceWindow::on_pushButtonClipboardWritePaste_clicked()
+void DeviceWindow::on_pushButtonClipboardPasteWrite_clicked()
 {
     ui->lineEditWrite->setText(QGuiApplication::clipboard()->text().toLower());  // No need to filter the clipboard contents
     ui->lineEditWrite->setFocus();  // This ensures that on_lineEditWrite_editingFinished() is triggered once the user clicks elsewhere
@@ -540,9 +540,9 @@ void DeviceWindow::update()
 }
 
 // This is executed when the clipboard contents change (implemented in version 5.0)
-void DeviceWindow::updatePushButtonClipboardWritePaste()
+void DeviceWindow::updatePushButtonClipboardPasteWrite()
 {
-    ui->pushButtonClipboardWritePaste->setEnabled(isClipboardTextValid());
+    ui->pushButtonClipboardPasteWrite->setEnabled(isClipboardTextValid());
 }
 
 // Calculates the optimal fragment size limit based on the parameters of the currently selected channel (implemented in version 3.1, to replace evaluateSizeLimit())
@@ -662,7 +662,7 @@ void DeviceWindow::initializeSPIControls()
     }
     ui->groupBoxSPIConfiguration->setEnabled(spiModeMap_.size() != 0);  // It may be desirable to either enable or disable both group boxes, just in case the device configuration changes (revised in version 3.0)
     ui->groupBoxSPITransfers->setEnabled(spiModeMap_.size() != 0);
-    ui->pushButtonClipboardWritePaste->setEnabled(isClipboardTextValid());  // Added in version 4.1 and modified in version 5.0
+    ui->pushButtonClipboardPasteWrite->setEnabled(isClipboardTextValid());  // Added in version 4.1 and modified in version 5.0
 }
 
 // This is the routine that is used to initialize (or reinitialize) the device window
