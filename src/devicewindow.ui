@@ -850,6 +850,7 @@
   <tabstop>spinBoxCPHA</tabstop>
   <tabstop>lineEditWrite</tabstop>
   <tabstop>pushButtonClipboardCopyWrite</tabstop>
+  <tabstop>pushButtonClipboardPasteWrite</tabstop>
   <tabstop>lineEditRead</tabstop>
   <tabstop>pushButtonClipboardCopyRead</tabstop>
   <tabstop>spinBoxBytesToRead</tabstop>
