@@ -20,8 +20,10 @@ Commander. A list of relevant files follows:
 – dividerdialog.h;
 – dividerdialog.ui;
 – icons/active64.png;
-– icons/buttons/clipboard.png;
-– icons/buttons/clipboard.svg;
+– icons/buttons/clipboard-copy.png;
+– icons/buttons/clipboard-copy.svg;
+– icons/buttons/clipboard-paste.png;
+– icons/buttons/clipboard-paste.svg;
 – icons/cp2130-com.png;
 – icons/greyed64.png;
 – icons/icon.svg;
