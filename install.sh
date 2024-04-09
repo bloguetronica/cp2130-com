@@ -32,8 +32,10 @@ cp -f src/dividerdialog.h /usr/local/src/cp2130-com/.
 cp -f src/dividerdialog.ui /usr/local/src/cp2130-com/.
 cp -f src/GPL.txt /usr/local/src/cp2130-com/.
 cp -f src/icons/active64.png /usr/local/src/cp2130-com/icons/.
-cp -f src/icons/buttons/clipboard.png /usr/local/src/cp2130-com/icons/buttons/.
-cp -f src/icons/buttons/clipboard.svg /usr/local/src/cp2130-com/icons/buttons/.
+cp -f src/icons/buttons/clipboard-copy.png /usr/local/src/cp2130-com/icons/buttons/.
+cp -f src/icons/buttons/clipboard-copy.svg /usr/local/src/cp2130-com/icons/buttons/.
+cp -f src/icons/buttons/clipboard-paste.png /usr/local/src/cp2130-com/icons/buttons/.
+cp -f src/icons/buttons/clipboard-paste.svg /usr/local/src/cp2130-com/icons/buttons/.
 cp -f src/icons/cp2130-com.png /usr/local/src/cp2130-com/icons/.
 cp -f src/icons/greyed64.png /usr/local/src/cp2130-com/icons/.
 cp -f src/icons/icon.svg /usr/local/src/cp2130-com/icons/.
