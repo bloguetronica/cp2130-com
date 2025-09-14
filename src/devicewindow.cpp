@@ -1,5 +1,5 @@
-/* CP2130 Commander - Version 5.0 for Debian Linux
-   Copyright (c) 2022-2024 Samuel Lourenço
+/* CP2130 Commander - Version 1.5.1 for Debian Linux
+   Copyright (c) 2022-2025 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the Free
@@ -289,7 +289,7 @@ void DeviceWindow::on_lineEditWrite_editingFinished()
 void DeviceWindow::on_lineEditWrite_textChanged()
 {
     ui->pushButtonClipboardCopyWrite->setEnabled(!ui->lineEditWrite->text().isEmpty());  // Added in version 4.1 and modified in version 5.0
-    write_.fromHexadecimal(ui->lineEditWrite->text());  //This also forces a retrim whenever on_lineEditWrite_editingFinished() is triggered, which is useful case the reformatted hexadecimal string does not fit the line edit box (required in order to follow the WYSIWYG principle)
+    write_.fromHexadecimal(ui->lineEditWrite->text());  // This also forces a retrim whenever on_lineEditWrite_editingFinished() is triggered, which is useful case the reformatted hexadecimal string does not fit the line edit box (required in order to follow the WYSIWYG principle)
     int size = write_.vector.size();
     bool enableWrite = size != 0;  // The buttons "Write" and "Write/Read" are enabled if the string is valid, that is, its conversion leads to a non-empty QVector (method changed in version 2.0)
     ui->pushButtonWrite->setEnabled(enableWrite);
@@ -493,7 +493,7 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
     ui->lineEditRead->setText(read.toHexadecimal());  // At least, a partial result should be shown if an error occurs
     if (errcnt > 0) {  // Update status bar
         labelStatus_->setText(tr("SPI write and read failed."));
-    } else if (spiWriteReadProgress.wasCanceled()){
+    } else if (spiWriteReadProgress.wasCanceled()) {
         labelStatus_->setText(tr("SPI write and read aborted by the user."));
     } else if (elapsedTime < 1000) {
         labelStatus_->setText(tr("SPI write and read completed. %1 bytes transferred in %2 ms.").arg(2 * bytesProcessed).arg(elapsedTime));  // The number of transferred bytes is now reported (implemented in version 4.0)
