@@ -22,6 +22,7 @@
 #define MAINWINDOW_H
 
 // Includes
+#include <QCloseEvent>
 #include <QMainWindow>
 #include <QMap>
 #include <QPointer>

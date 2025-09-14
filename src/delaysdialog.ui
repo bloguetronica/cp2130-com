@@ -165,7 +165,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Pre-deassert delay (10μs):</string>
+    <string>Pre-deassert delay (10 μs):</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -181,7 +181,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Post-assert delay (10μs):</string>
+    <string>Post-assert delay (10 μs):</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -197,7 +197,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Inter-byte delay (10μs):</string>
+    <string>Inter-byte delay (10 μs):</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
