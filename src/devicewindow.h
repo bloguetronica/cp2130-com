@@ -99,9 +99,9 @@ private:
     QMap<QString, CP2130::SPIMode> spiModeMap_;
     QPointer<InformationDialog> informationDialog_;
     QPointer<PinFunctionsDialog> pinFunctionsDialog_;
-    QString serialstr_;
+    QString serialString_;
     QTimer *timer_;
-    quint8 epin_, epout_;
+    quint8 endpointInAddr_, endpointOutAddr_;
     quint16 pid_, vid_;
     bool viewEnabled_ = false;
     int erracc_ = 0;

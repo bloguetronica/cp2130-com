@@ -72,9 +72,9 @@ void DeviceWindow::openDevice(quint16 vid, quint16 pid, const QString &serialstr
     if (err == CP2130::SUCCESS) {  // Device was successfully opened
         vid_ = vid;  // Pass VID
         pid_ = pid;  // and PID
-        serialstr_ = serialstr;  // and the serial number as well
+        serialString_ = serialstr;  // and the serial number as well
         readConfiguration();  // Read device configuration
-        this->setWindowTitle(tr("CP2130 Device (S/N: %1)").arg(serialstr_));
+        this->setWindowTitle(tr("CP2130 Device (S/N: %1)").arg(serialString_));
         initializeView();  // Initialize device window
         timer_->start(100);  // Start the timer
     } else if (err == CP2130::ERROR_INIT) {  // Failed to initialize libusb
@@ -101,7 +101,7 @@ void DeviceWindow::on_actionGPIOPinFunctions_triggered()
     if (pinFunctionsDialog_.isNull()) {  // If the dialog is not open (implemented in version 4.0, because the pin functions dialog is now modeless)
         pinFunctionsDialog_ = new PinFunctionsDialog(this);  // The dialog is no longer modal (version 4.0 feature)
         pinFunctionsDialog_->setAttribute(Qt::WA_DeleteOnClose);  // It is important to delete the dialog in memory once closed, in order to force the application to retrieve information about the device if the window is opened again
-        pinFunctionsDialog_->setWindowTitle(tr("GPIO Pin Functions (S/N: %1)").arg(serialstr_));
+        pinFunctionsDialog_->setWindowTitle(tr("GPIO Pin Functions (S/N: %1)").arg(serialString_));
         pinFunctionsDialog_->setGPIO0ValueLabelText(pinConfig_.gpio0);
         pinFunctionsDialog_->setGPIO1ValueLabelText(pinConfig_.gpio1);
         pinFunctionsDialog_->setGPIO2ValueLabelText(pinConfig_.gpio2);
@@ -127,7 +127,7 @@ void DeviceWindow::on_actionInformation_triggered()
         QString errstr;
         informationDialog_ = new InformationDialog(this);  // The dialog is no longer modal (version 4.0 feature)
         informationDialog_->setAttribute(Qt::WA_DeleteOnClose);  // It is important to delete the dialog in memory once closed, in order to force the application to retrieve information about the device if the window is opened again
-        informationDialog_->setWindowTitle(tr("Device Information (S/N: %1)").arg(serialstr_));
+        informationDialog_->setWindowTitle(tr("Device Information (S/N: %1)").arg(serialString_));
         informationDialog_->setManufacturerValueLabelText(cp2130_.getManufacturerDesc(errcnt, errstr));
         informationDialog_->setProductValueLabelText(cp2130_.getProductDesc(errcnt, errstr));
         informationDialog_->setSerialValueLabelText(cp2130_.getSerialDesc(errcnt, errstr));  // It is important to read the serial number from the OTP ROM, instead of just passing the value of serialstr_
@@ -377,7 +377,7 @@ void DeviceWindow::on_pushButtonRead_clicked()
         }
         size_t bytesRemaining = bytesToRead - bytesProcessed;
         size_t fragmentSize = bytesRemaining > fragmentSizeLimit ? fragmentSizeLimit : bytesRemaining;
-        QVector<quint8> readFragment = cp2130_.spiRead(static_cast<quint32>(fragmentSize), epin_, epout_, errcnt, errstr);  // Read from the SPI bus
+        QVector<quint8> readFragment = cp2130_.spiRead(static_cast<quint32>(fragmentSize), endpointInAddr_, endpointOutAddr_, errcnt, errstr);  // Read from the SPI bus
         if (errcnt > 0) {  // In case of error
             spiReadProgress.cancel();  // Important!
             break;  // Abort the SPI read operation
@@ -427,7 +427,7 @@ void DeviceWindow::on_pushButtonWrite_clicked()
         }
         size_t bytesRemaining = bytesToWrite - bytesProcessed;
         size_t fragmentSize = bytesRemaining > fragmentSizeLimit ? fragmentSizeLimit : bytesRemaining;
-        cp2130_.spiWrite(write_.fragment(bytesProcessed, fragmentSize), epout_, errcnt, errstr);  // Write to the SPI bus
+        cp2130_.spiWrite(write_.fragment(bytesProcessed, fragmentSize), endpointOutAddr_, errcnt, errstr);  // Write to the SPI bus
         if (errcnt > 0) {  // In case of error
             spiWriteProgress.cancel();  // Important!
             break;  // Abort the SPI write operation
@@ -477,7 +477,7 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
         }
         size_t bytesRemaining = bytesToWriteRead - bytesProcessed;
         size_t fragmentSize = bytesRemaining > fragmentSizeLimit ? fragmentSizeLimit : bytesRemaining;
-        QVector<quint8> readFragment = cp2130_.spiWriteRead(write_.fragment(bytesProcessed, fragmentSize), epin_, epout_, errcnt, errstr);  // Write to and read from the SPI bus, simultaneously
+        QVector<quint8> readFragment = cp2130_.spiWriteRead(write_.fragment(bytesProcessed, fragmentSize), endpointInAddr_, endpointOutAddr_, errcnt, errstr);  // Write to and read from the SPI bus, simultaneously
         if (errcnt > 0) {  // In case of error
             spiWriteReadProgress.cancel();  // Important!
             break;  // Abort the SPI write and read operation
@@ -764,8 +764,8 @@ void DeviceWindow::readConfiguration()
         spiDelaysMap_["10"] = cp2130_.getSPIDelays(10, errcnt, errstr);  // Implemented in version 3.0
     }
     // Note that both "spiModeMap_" and "spiDelaysMap_" are populated in relation to pins that are configured as chip select pins
-    epin_ = cp2130_.getEndpointInAddr(errcnt, errstr);  // Implemented in version 3.0
-    epout_ = cp2130_.getEndpointOutAddr(errcnt, errstr);  // Implemented in version 3.0
+    endpointInAddr_ = cp2130_.getEndpointInAddr(errcnt, errstr);  // Implemented in version 3.0
+    endpointOutAddr_ = cp2130_.getEndpointOutAddr(errcnt, errstr);  // Implemented in version 3.0
     if (errcnt > 0) {
         this->hide();  // Hide the window, if applicable, to let the user know that the device is practically closed (implemented in version 3.0)
         if (cp2130_.disconnected()) {
@@ -794,7 +794,7 @@ void DeviceWindow::resetDevice()
         int err;
         for (int i = 0; i < ENUM_RETRIES; ++i) {  // Verify enumeration according to the number of times set by "ENUM_RETRIES" [10]
             QThread::msleep(500);  // Wait 500 ms each time
-            err = cp2130_.open(vid_, pid_, serialstr_);
+            err = cp2130_.open(vid_, pid_, serialString_);
             if (err != CP2130::ERROR_NOT_FOUND) {  // Retry only if the device was not found yet (as it may take some time to enumerate)
                 break;
             }
