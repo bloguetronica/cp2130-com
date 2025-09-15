@@ -43,13 +43,13 @@ public:
     quint16 postAssertDelaySpinBoxValue();
     bool preDeassertDelayCheckBoxIsChecked();
     quint16 preDeassertDelaySpinBoxValue();
-    void setCSToggleCheckBox(bool cstglen);
-    void setInterByteDelayCheckBox(bool itbyten);
-    void setInterByteDelaySpinBoxValue(quint16 itbytdly);
-    void setPostAssertDelayCheckBox(bool pstasten);
-    void setPostAssertDelaySpinBoxValue(quint16 itbytdly);
-    void setPreDeassertDelayCheckBox(bool prdasten);
-    void setPreDeassertDelaySpinBoxValue(quint16 itbytdly);
+    void setCSToggleCheckBox(bool csToggleEnable);
+    void setInterByteDelayCheckBox(bool interByteDelayEnable);
+    void setInterByteDelaySpinBoxValue(quint16 interByteDelay);
+    void setPostAssertDelayCheckBox(bool postAssertDelayEnable);
+    void setPostAssertDelaySpinBoxValue(quint16 postAssertDelay);
+    void setPreDeassertDelayCheckBox(bool preDeassertDelayEnable);
+    void setPreDeassertDelaySpinBoxValue(quint16 preDeassertDelay);
 
 private:
     Ui::DelaysDialog *ui;
