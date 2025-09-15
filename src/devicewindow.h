@@ -116,11 +116,11 @@ private:
     void initializeSPIControls();
     void initializeView();
     bool isClipboardTextValid();
-    bool opCheck(const QString &op, int errcnt, QString errstr);
     void readConfiguration();
     void resetDevice();
     void setEventCounter();
     void updateView(quint16 gpios, CP2130::EventCounter evtcntr);
+    bool validateOperation(const QString &operation, int errcnt, QString errstr);
 };
 
 #endif  // DEVICEWINDOW_H
