@@ -49,6 +49,9 @@ public:
     bool isViewEnabled();
     void openDevice(quint16 vid, quint16 pid, const QString &serialstr);
 
+protected:
+    void resizeEvent(QResizeEvent *event);
+
 private slots:
     void on_actionAbout_triggered();
     void on_actionGPIOPinFunctions_triggered();

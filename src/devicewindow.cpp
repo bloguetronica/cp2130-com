@@ -37,9 +37,10 @@
 #include "ui_devicewindow.h"
 
 // Definitions
-const int ENUM_RETRIES = 10;   // Number of enumeration retries
-const int ERR_LIMIT = 10;      // Error limit
-const float TIME_LIMIT = 100;  // Soft time limit per partial transfer, in milliseconds
+const int CENTRAL_HEIGHT = 451;  // Implemented in version 1.5.1
+const int ENUM_RETRIES = 10;     // Number of enumeration retries
+const int ERR_LIMIT = 10;        // Error limit
+const float TIME_LIMIT = 100;    // Soft time limit per partial transfer, in milliseconds
 
 DeviceWindow::DeviceWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -88,6 +89,13 @@ void DeviceWindow::openDevice(quint16 vid, quint16 pid, const QString &serialstr
         }
         this->deleteLater();  // Close window after the subsequent show() call
     }
+}
+
+// Implemented in version 1.5.1
+void DeviceWindow::resizeEvent(QResizeEvent *event)
+{
+    Q_UNUSED(event);
+    this->setFixedHeight(ui->menuBar->height() + CENTRAL_HEIGHT + ui->statusBar->height());
 }
 
 void DeviceWindow::on_actionAbout_triggered()

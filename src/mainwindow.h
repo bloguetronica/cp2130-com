@@ -26,6 +26,7 @@
 #include <QMainWindow>
 #include <QMap>
 #include <QPointer>
+#include <QResizeEvent>
 #include <QString>
 #include "devicewindow.h"
 
@@ -43,6 +44,7 @@ public:
 
 protected:
     void closeEvent(QCloseEvent *event);
+    void resizeEvent(QResizeEvent *event);
 
 private slots:
     void on_actionAbout_triggered();
