@@ -120,26 +120,27 @@ void DeviceWindow::on_actionGPIOPinFunctions_triggered()
     }
 }
 
+// Refactored in version 1.5.1
 void DeviceWindow::on_actionInformation_triggered()
 {
     if (informationDialog_.isNull()) {  // If the dialog is not open (implemented in version 4.0, because the device information dialog is now modeless)
         int errcnt = 0;
         QString errstr;
-        informationDialog_ = new InformationDialog(this);  // The dialog is no longer modal (version 4.0 feature)
-        informationDialog_->setAttribute(Qt::WA_DeleteOnClose);  // It is important to delete the dialog in memory once closed, in order to force the application to retrieve information about the device if the window is opened again
-        informationDialog_->setWindowTitle(tr("Device Information (S/N: %1)").arg(serialString_));
-        informationDialog_->setManufacturerValueLabelText(cp2130_.getManufacturerDesc(errcnt, errstr));
-        informationDialog_->setProductValueLabelText(cp2130_.getProductDesc(errcnt, errstr));
-        informationDialog_->setSerialValueLabelText(cp2130_.getSerialDesc(errcnt, errstr));  // It is important to read the serial number from the OTP ROM, instead of just passing the value of serialstr_
         CP2130::USBConfig config = cp2130_.getUSBConfig(errcnt, errstr);
-        informationDialog_->setVIDValueLabelText(config.vid);
-        informationDialog_->setPIDValueLabelText(config.pid);
-        informationDialog_->setReleaseVersionValueLabelText(config.majrel, config.minrel);
-        informationDialog_->setPowerModeValueLabelText(config.powmode);
-        informationDialog_->setMaxPowerValueLabelText(config.maxpow);
         CP2130::SiliconVersion siversion = cp2130_.getSiliconVersion(errcnt, errstr);
-        informationDialog_->setSiliconVersionValueLabelText(siversion.maj, siversion.min);
         if (validateOperation(tr("device-information-retrieval-op"), errcnt, errstr)) {  // If error check passes (the string "device-information-retrieval-op" should be translated to "Device information retrieval")
+            informationDialog_ = new InformationDialog(this);  // The dialog is no longer modal (version 4.0 feature)
+            informationDialog_->setAttribute(Qt::WA_DeleteOnClose);  // It is important to delete the dialog in memory once closed, in order to force the application to retrieve information about the device if the window is opened again
+            informationDialog_->setWindowTitle(tr("Device Information (S/N: %1)").arg(serialString_));
+            informationDialog_->setManufacturerValueLabelText(cp2130_.getManufacturerDesc(errcnt, errstr));
+            informationDialog_->setProductValueLabelText(cp2130_.getProductDesc(errcnt, errstr));
+            informationDialog_->setSerialValueLabelText(cp2130_.getSerialDesc(errcnt, errstr));  // It is important to read the serial number from the OTP ROM, instead of just passing the value of serialstr_
+            informationDialog_->setVIDValueLabelText(config.vid);
+            informationDialog_->setPIDValueLabelText(config.pid);
+            informationDialog_->setReleaseVersionValueLabelText(config.majrel, config.minrel);
+            informationDialog_->setPowerModeValueLabelText(config.powmode);
+            informationDialog_->setMaxPowerValueLabelText(config.maxpow);
+            informationDialog_->setSiliconVersionValueLabelText(siversion.maj, siversion.min);
             informationDialog_->show();
         }
     } else {
