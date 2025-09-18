@@ -21,6 +21,12 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+// Includes
+#include <QLocale>
+
+// Global variables
+extern QLocale systemLocale;  // Added in version 1.5.1
+
 // Function prototypes
 void closeAboutDialog();
 void showAboutDialog();

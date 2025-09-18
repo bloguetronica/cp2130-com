@@ -23,7 +23,10 @@
 #include "aboutdialog.h"
 #include "common.h"
 
-// Definitions
+// Global definitions
+QLocale systemLocale = QLocale::system();  // Added in version 1.5.1
+
+// Local definitions
 QPointer<AboutDialog> aboutDialog_;
 
 // Closes the about dialog

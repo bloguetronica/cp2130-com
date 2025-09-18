@@ -23,7 +23,6 @@
 
 // Includes
 #include <QLabel>
-#include <QLocale>
 #include <QMainWindow>
 #include <QMap>
 #include <QPointer>
@@ -97,7 +96,6 @@ private:
     CP2130::PinConfig pinConfig_;
     Data write_;
     QLabel *labelStatus_;
-    QLocale locale_ = QLocale::system();
     QMap<QString, CP2130::SPIDelays> spiDelaysMap_;
     QMap<QString, CP2130::SPIMode> spiModeMap_;
     QPointer<InformationDialog> informationDialog_;
