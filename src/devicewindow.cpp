@@ -29,7 +29,6 @@
 #include <QRegExpValidator>
 #include <QThread>
 #include <QVector>
-#include <unistd.h>
 #include "common.h"
 #include "delaysdialog.h"
 #include "dividerdialog.h"
@@ -378,7 +377,7 @@ void DeviceWindow::on_pushButtonRead_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
-    usleep(100);  // Wait 100 us, in order to prevent possible errors after enabling the chip select (workaround implemented in version 3.1)
+    QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors after enabling the chip select (workaround implemented in version 3.1)
     while (bytesProcessed < bytesToRead) {
         if (spiReadProgress.wasCanceled()) {  // If the user clicks "Abort"
             break;  // Abort the SPI read operation
@@ -394,7 +393,7 @@ void DeviceWindow::on_pushButtonRead_clicked()
         bytesProcessed += fragmentSize;
         spiReadProgress.setValue(static_cast<int>(bytesProcessed));
     }
-    usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
+    QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     qint64 elapsedTime = time.elapsed();  // Elapsed time in milliseconds
     timer_->start();  // Restart the timer
@@ -428,7 +427,7 @@ void DeviceWindow::on_pushButtonWrite_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
-    usleep(100);  // Wait 100 us, in order to prevent possible errors after enabling the chip select (workaround implemented in version 3.1)
+    QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors after enabling the chip select (workaround implemented in version 3.1)
     while (bytesProcessed < bytesToWrite) {
         if (spiWriteProgress.wasCanceled()) {  // If the user clicks "Abort"
             break;  // Abort the SPI write operation
@@ -443,7 +442,7 @@ void DeviceWindow::on_pushButtonWrite_clicked()
         bytesProcessed += fragmentSize;
         spiWriteProgress.setValue(static_cast<int>(bytesProcessed));
     }
-    usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
+    QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     qint64 elapsedTime = time.elapsed();  // Elapsed time in milliseconds
     timer_->start();  // Restart the timer
@@ -478,7 +477,7 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
-    usleep(100);  // Wait 100 us, in order to prevent possible errors after enabling the chip select (workaround implemented in version 3.1)
+    QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors after enabling the chip select (workaround implemented in version 3.1)
     while (bytesProcessed < bytesToWriteRead) {
         if (spiWriteReadProgress.wasCanceled()) {  // If the user clicks "Abort"
             break;  // Abort the SPI write and read operation
@@ -494,7 +493,7 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
         bytesProcessed += fragmentSize;
         spiWriteReadProgress.setValue(static_cast<int>(bytesProcessed));
     }
-    usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
+    QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
     qint64 elapsedTime = time.elapsed();  // Elapsed time in milliseconds
     timer_->start();  // Restart the timer
