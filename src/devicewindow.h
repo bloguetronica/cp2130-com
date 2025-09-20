@@ -120,6 +120,8 @@ private:
     void readConfiguration();
     void resetDevice();
     void setEventCounter();
+    Data spiRead(size_t &bytesProcessed, const bool &abort, int &errcnt, QString &errstr);
+    void spiWrite(size_t &bytesProcessed, const bool &abort, int &errcnt, QString &errstr);
     Data spiWriteRead(size_t &bytesProcessed, const bool &abort, int &errcnt, QString &errstr);
     void updateView(quint16 gpios, CP2130::EventCounter evtcntr);
     bool validateOperation(const QString &operation, int errcnt, QString errstr);

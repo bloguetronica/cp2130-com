@@ -365,38 +365,29 @@ void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
 // This function was expanded in version 3.0, in order to support transfers greater than 4096 bytes
 void DeviceWindow::on_pushButtonRead_clicked()
 {
-    size_t fragmentSizeLimit = calculateSizeLimit();
-    size_t bytesToRead = static_cast<size_t>(ui->spinBoxBytesToRead->value());
-    size_t bytesProcessed = 0;
-    QProgressDialog spiReadProgress(tr("Performing SPI read..."), tr("Abort"), 0, static_cast<int>(bytesToRead), this);  // Progress dialog implemented in version 3.0
+    QProgressDialog spiReadProgress(tr("Performing SPI read..."), tr("Abort"), 0, static_cast<int>(ui->spinBoxBytesToRead->value()), this);  // Progress dialog implemented in version 3.0
     spiReadProgress.setWindowTitle(tr("SPI Read"));
     spiReadProgress.setWindowModality(Qt::WindowModal);
     spiReadProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500 ms
-    Data read;
     timer_->stop();  // The update timer is now stopped during SPI transfers (fix implemented in version 3.1)
     QElapsedTimer time;
     time.start();
+    size_t bytesProcessed = 0;
+    bool abortTransfer = false;
     int errcnt = 0;
     QString errstr;
-    cp2130_.selectCS(channel_, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
-    QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors after enabling the chip select (workaround implemented in version 3.1)
-    while (bytesProcessed < bytesToRead) {
-        if (spiReadProgress.wasCanceled()) {  // If the user clicks "Abort"
-            break;  // Abort the SPI read operation
+    QFuture<Data> future = QtConcurrent::run(this, &DeviceWindow::spiWriteRead, std::ref(bytesProcessed), std::ref(abortTransfer), std::ref(errcnt), std::ref(errstr));  // Note that all variables are passed by reference, since their values need to be set and read in real time
+    while (future.isRunning()) {
+        QThread::msleep(1);  // This is required so that this polling loop is not too CPU intensive, while still alowing a 1 ms granularity
+        if (spiReadProgress.wasCanceled()) {
+            abortTransfer = true;  // This effectively aborts the transfer
+        } else if (errcnt > 0) {  // Important!
+            spiReadProgress.cancel();
+        } else {
+            spiReadProgress.setValue(static_cast<int>(bytesProcessed));
         }
-        size_t bytesRemaining = bytesToRead - bytesProcessed;
-        size_t fragmentSize = bytesRemaining > fragmentSizeLimit ? fragmentSizeLimit : bytesRemaining;
-        QVector<quint8> readFragment = cp2130_.spiRead(static_cast<quint32>(fragmentSize), endpointInAddr_, endpointOutAddr_, errcnt, errstr);  // Read from the SPI bus
-        if (errcnt > 0) {  // In case of error
-            spiReadProgress.cancel();  // Important!
-            break;  // Abort the SPI read operation
-        }
-        read.vector += readFragment;  // The returned fragment could be considered valid at this point
-        bytesProcessed += fragmentSize;
-        spiReadProgress.setValue(static_cast<int>(bytesProcessed));
     }
-    QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
-    cp2130_.disableCS(channel_, errcnt, errstr);  // Disable the previously enabled chip select
+    Data read = future.result();
     qint64 elapsedTime = time.elapsed();  // Elapsed time in milliseconds
     timer_->start();  // Restart the timer
     ui->lineEditRead->setText(read.toHexadecimal());  // At least, a partial result should be shown in case of error
@@ -412,36 +403,30 @@ void DeviceWindow::on_pushButtonRead_clicked()
     validateOperation(tr("spi-read-op"), errcnt, errstr);  // The string "spi-read-op" should be translated to "SPI read"
 }
 
-// This function was expanded in version 3.0, in order to support transfers greater than 4096 bytes
+// Modified in version 1.5.1
 void DeviceWindow::on_pushButtonWrite_clicked()
 {
-    size_t fragmentSizeLimit = calculateSizeLimit();
-    size_t bytesToWrite = write_.vector.size();
-    size_t bytesProcessed = 0;
-    QProgressDialog spiWriteProgress(tr("Performing SPI write..."), tr("Abort"), 0, static_cast<int>(bytesToWrite), this);  // Progress dialog implemented in version 3.0
+    QProgressDialog spiWriteProgress(tr("Performing SPI write..."), tr("Abort"), 0, write_.vector.size(), this);  // Progress dialog implemented in version 3.0
     spiWriteProgress.setWindowTitle(tr("SPI Write"));
     spiWriteProgress.setWindowModality(Qt::WindowModal);
     spiWriteProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500 ms
     timer_->stop();  // The update timer is now stopped during SPI transfers (fix implemented in version 3.1)
     QElapsedTimer time;
     time.start();
+    size_t bytesProcessed = 0;
+    bool abortTransfer = false;
     int errcnt = 0;
     QString errstr;
-    cp2130_.selectCS(channel_, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
-    QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors after enabling the chip select (workaround implemented in version 3.1)
-    while (bytesProcessed < bytesToWrite) {
-        if (spiWriteProgress.wasCanceled()) {  // If the user clicks "Abort"
-            break;  // Abort the SPI write operation
+    QFuture<void> future = QtConcurrent::run(this, &DeviceWindow::spiWrite, std::ref(bytesProcessed), std::ref(abortTransfer), std::ref(errcnt), std::ref(errstr));  // Note that all variables are passed by reference, since their values need to be set and read in real time
+    while (future.isRunning()) {
+        QThread::msleep(1);  // This is required so that this polling loop is not too CPU intensive, while still alowing a 1 ms granularity
+        if (spiWriteProgress.wasCanceled()) {
+            abortTransfer = true;  // This effectively aborts the transfer
+        } else if (errcnt > 0) {  // Important!
+            spiWriteProgress.cancel();
+        } else {
+            spiWriteProgress.setValue(static_cast<int>(bytesProcessed));
         }
-        size_t bytesRemaining = bytesToWrite - bytesProcessed;
-        size_t fragmentSize = bytesRemaining > fragmentSizeLimit ? fragmentSizeLimit : bytesRemaining;
-        cp2130_.spiWrite(write_.fragment(bytesProcessed, fragmentSize), endpointOutAddr_, errcnt, errstr);  // Write to the SPI bus
-        if (errcnt > 0) {  // In case of error
-            spiWriteProgress.cancel();  // Important!
-            break;  // Abort the SPI write operation
-        }
-        bytesProcessed += fragmentSize;
-        spiWriteProgress.setValue(static_cast<int>(bytesProcessed));
     }
     QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
     cp2130_.disableCS(channel_, errcnt, errstr);  // Disable the previously enabled chip select
@@ -809,11 +794,60 @@ void DeviceWindow::setEventCounter()
 }
 
 // Implemented in version 1.5.1
+Data DeviceWindow::spiRead(size_t &bytesProcessed, const bool &abort, int &errcnt, QString &errstr)
+{
+    Data read;
+    cp2130_.selectCS(channel_, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
+    QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors after enabling the chip select
+    size_t bytesToRead = static_cast<size_t>(ui->spinBoxBytesToRead->value());
+    size_t fragmentSizeLimit = calculateSizeLimit();
+    while (bytesProcessed < bytesToRead) {
+        if (abort) {  // If the transfer is signalled to be aborted
+            break;  // Abort the SPI read operation
+        }
+        size_t bytesRemaining = bytesToRead - bytesProcessed;
+        size_t fragmentSize = bytesRemaining > fragmentSizeLimit ? fragmentSizeLimit : bytesRemaining;
+        QVector<quint8> readFragment = cp2130_.spiRead(static_cast<quint32>(fragmentSize), endpointInAddr_, endpointOutAddr_, errcnt, errstr);  // Read from the SPI bus
+        if (errcnt > 0) {  // In case of error
+            break;  // Abort the SPI read operation
+        }
+        read.vector += readFragment;  // The returned fragment could be considered valid at this point
+        bytesProcessed += fragmentSize;
+    }
+    QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
+    cp2130_.disableCS(channel_, errcnt, errstr);  // Disable the previously enabled chip select
+    return read;
+}
+
+// Implemented in version 1.5.1
+void DeviceWindow::spiWrite(size_t &bytesProcessed, const bool &abort, int &errcnt, QString &errstr)
+{
+    cp2130_.selectCS(channel_, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
+    QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors after enabling the chip select
+    size_t bytesToWrite = static_cast<size_t>(write_.vector.size());
+    size_t fragmentSizeLimit = calculateSizeLimit();
+    while (bytesProcessed < bytesToWrite) {
+        if (abort) {  // If the transfer is signalled to be aborted
+            break;  // Abort the SPI write operation
+        }
+        size_t bytesRemaining = bytesToWrite - bytesProcessed;
+        size_t fragmentSize = bytesRemaining > fragmentSizeLimit ? fragmentSizeLimit : bytesRemaining;
+        cp2130_.spiWrite(write_.fragment(bytesProcessed, fragmentSize), endpointOutAddr_, errcnt, errstr);  // Write to the SPI bus
+        if (errcnt > 0) {  // In case of error
+            break;  // Abort the SPI write operation
+        }
+        bytesProcessed += fragmentSize;
+    }
+    QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
+    cp2130_.disableCS(channel_, errcnt, errstr);  // Disable the previously enabled chip select
+}
+
+// Implemented in version 1.5.1
 Data DeviceWindow::spiWriteRead(size_t &bytesProcessed, const bool &abort, int &errcnt, QString &errstr)
 {
     Data read;
     cp2130_.selectCS(channel_, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
-    QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors after enabling the chip select (workaround implemented in version 3.1)
+    QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors after enabling the chip select
     size_t bytesToWriteRead = static_cast<size_t>(write_.vector.size());
     size_t fragmentSizeLimit = calculateSizeLimit();
     while (bytesProcessed < bytesToWriteRead) {
@@ -868,7 +902,7 @@ bool DeviceWindow::validateOperation(const QString &operation, int errcnt, QStri
             QMessageBox::critical(this, tr("Error"), tr("Device disconnected.\n\nPlease reconnect it and try again."));
         } else {
             errstr.chop(1);  // Remove the last character, which is always a newline
-            QMessageBox::critical(this, tr("Error"), tr("%1 operation returned the following error(s):\n– %2", "", errcnt).arg(operation, errstr.replace("\n", "\n– ")));
+            QMessageBox::critical(this, tr("Error"), tr("Failed to %1. The operation returned the following error(s):\n– %2", "", errcnt).arg(operation, errstr.replace("\n", "\n– ")));
             erracc_ += errcnt;
             if (erracc_ > ERR_LIMIT) {  // If the session accumulated more errors than the limit set by "ERR_LIMIT" [10]
                 timer_->stop();  // Again, this prevents further errors
