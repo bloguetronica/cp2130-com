@@ -68,14 +68,14 @@ private slots:
     void on_checkBoxGPIO8_clicked();
     void on_checkBoxGPIO9_clicked();
     void on_checkBoxGPIO10_clicked();
-    void on_comboBoxChannel_activated();
+    void on_comboBoxChannel_activated(const QString &text);
     void on_comboBoxCSPinMode_activated();
     void on_comboBoxFrequency_activated();
     void on_comboBoxTriggerMode_activated();
-    void on_lineEditRead_textChanged();
+    void on_lineEditRead_textChanged(const QString &text);
     void on_lineEditWrite_editingFinished();
-    void on_lineEditWrite_textChanged();
-    void on_lineEditWrite_textEdited();
+    void on_lineEditWrite_textChanged(const QString &text);
+    void on_lineEditWrite_textEdited(const QString &text);
     void on_pushButtonClipboardCopyRead_clicked();
     void on_pushButtonClipboardCopyWrite_clicked();
     void on_pushButtonClipboardPasteWrite_clicked();

@@ -265,9 +265,9 @@ void DeviceWindow::on_checkBoxGPIO10_clicked()
     validateOperation(tr("switch GPIO.10"), errcnt, errstr);
 }
 
-void DeviceWindow::on_comboBoxChannel_activated()
+void DeviceWindow::on_comboBoxChannel_activated(const QString &text)
 {
-    channel_ = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());  // Added in version 1.5.1
+    channel_ = static_cast<quint8>(text.toUInt());  // Added in version 1.5.1
     displaySPIMode();  // It is important to note that the chip select corresponding to the selected channel is only enabled during an SPI transfer
 }
 
@@ -288,9 +288,9 @@ void DeviceWindow::on_comboBoxTriggerMode_activated()
 }
 
 // Implemented in version 4.1
-void DeviceWindow::on_lineEditRead_textChanged()
+void DeviceWindow::on_lineEditRead_textChanged(const QString &text)
 {
-    ui->pushButtonClipboardCopyRead->setEnabled(!ui->lineEditRead->text().isEmpty());
+    ui->pushButtonClipboardCopyRead->setEnabled(!text.isEmpty());  // Modified in version 1.5.1
 }
 
 void DeviceWindow::on_lineEditWrite_editingFinished()
@@ -298,19 +298,19 @@ void DeviceWindow::on_lineEditWrite_editingFinished()
     ui->lineEditWrite->setText(write_.toHexadecimal());  // Required to reformat the hexadecimal string
 }
 
-void DeviceWindow::on_lineEditWrite_textChanged()
+void DeviceWindow::on_lineEditWrite_textChanged(const QString &text)
 {
-    ui->pushButtonClipboardCopyWrite->setEnabled(!ui->lineEditWrite->text().isEmpty());  // Added in version 4.1 and modified in version 5.0
-    write_.fromHexadecimal(ui->lineEditWrite->text());  // This also forces a retrim whenever on_lineEditWrite_editingFinished() is triggered, which is useful case the reformatted hexadecimal string does not fit the line edit box (required in order to follow the WYSIWYG principle)
+    ui->pushButtonClipboardCopyWrite->setEnabled(!text.isEmpty());  // Added in version 4.1 and modified in version 1.5.1
+    write_.fromHexadecimal(text);  // This also forces a retrim whenever on_lineEditWrite_editingFinished() is triggered, which is useful case the reformatted hexadecimal string does not fit the line edit box (required in order to follow the WYSIWYG principle)
     bool enableWrite = !write_.vector.isEmpty();  // The buttons "Write" and "Write/Read" are enabled if the string is valid, that is, its conversion leads to a non-empty QVector (method changed in version 2.0 and optimized in version 1.5.1)
     ui->pushButtonWrite->setEnabled(enableWrite);
     ui->pushButtonWriteRead->setEnabled(enableWrite);
 }
 
-void DeviceWindow::on_lineEditWrite_textEdited()
+void DeviceWindow::on_lineEditWrite_textEdited(const QString &text)
 {
     int curPosition = ui->lineEditWrite->cursorPosition();
-    ui->lineEditWrite->setText(ui->lineEditWrite->text().toLower());
+    ui->lineEditWrite->setText(text.toLower());  // Modified in version 1.5.1
     ui->lineEditWrite->setCursorPosition(curPosition);
 }
 
@@ -362,7 +362,7 @@ void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
     }
 }
 
-// This function was expanded in version 3.0, in order to support transfers greater than 4096 bytes
+// Modified in version 1.5.1
 void DeviceWindow::on_pushButtonRead_clicked()
 {
     QProgressDialog spiReadProgress(tr("Performing SPI read..."), tr("Abort"), 0, static_cast<int>(ui->spinBoxBytesToRead->value()), this);  // Progress dialog implemented in version 3.0

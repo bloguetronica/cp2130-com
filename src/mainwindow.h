@@ -49,8 +49,8 @@ protected:
 private slots:
     void on_actionAbout_triggered();
     void on_comboBoxDevices_currentIndexChanged(int index);
-    void on_lineEditPID_textEdited();
-    void on_lineEditVID_textEdited();
+    void on_lineEditPID_textEdited(const QString &text);
+    void on_lineEditVID_textEdited(const QString &text);
     void on_pushButtonOpen_clicked();
     void on_pushButtonRefresh_clicked();
 

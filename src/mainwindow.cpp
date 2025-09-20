@@ -69,18 +69,18 @@ void MainWindow::on_comboBoxDevices_currentIndexChanged(int index)
     ui->pushButtonOpen->setEnabled(index != 0);
 }
 
-void MainWindow::on_lineEditPID_textEdited()
+void MainWindow::on_lineEditPID_textEdited(const QString &text)
 {
     int curPosition = ui->lineEditPID->cursorPosition();
-    ui->lineEditPID->setText(ui->lineEditPID->text().toLower());
+    ui->lineEditPID->setText(text.toLower());  // Modified in version 1.5.1
     ui->lineEditPID->setCursorPosition(curPosition);
     validateInput();
 }
 
-void MainWindow::on_lineEditVID_textEdited()
+void MainWindow::on_lineEditVID_textEdited(const QString &text)
 {
     int curPosition = ui->lineEditVID->cursorPosition();
-    ui->lineEditVID->setText(ui->lineEditVID->text().toLower());
+    ui->lineEditVID->setText(text.toLower());  // Modified in version 1.5.1
     ui->lineEditVID->setCursorPosition(curPosition);
     validateInput();
 }
