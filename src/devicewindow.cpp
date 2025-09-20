@@ -302,7 +302,7 @@ void DeviceWindow::on_lineEditWrite_textChanged()
 {
     ui->pushButtonClipboardCopyWrite->setEnabled(!ui->lineEditWrite->text().isEmpty());  // Added in version 4.1 and modified in version 5.0
     write_.fromHexadecimal(ui->lineEditWrite->text());  // This also forces a retrim whenever on_lineEditWrite_editingFinished() is triggered, which is useful case the reformatted hexadecimal string does not fit the line edit box (required in order to follow the WYSIWYG principle)
-    bool enableWrite = write_.vector.size() != 0;  // The buttons "Write" and "Write/Read" are enabled if the string is valid, that is, its conversion leads to a non-empty QVector (method changed in version 2.0 and optimized in version 1.5.1)
+    bool enableWrite = !write_.vector.isEmpty();  // The buttons "Write" and "Write/Read" are enabled if the string is valid, that is, its conversion leads to a non-empty QVector (method changed in version 2.0 and optimized in version 1.5.1)
     ui->pushButtonWrite->setEnabled(enableWrite);
     ui->pushButtonWriteRead->setEnabled(enableWrite);
 }
@@ -649,15 +649,16 @@ void DeviceWindow::initializeSetClockDividerAction()
 void DeviceWindow::initializeSPIControls()
 {
     ui->comboBoxChannel->clear();  // The combo box is always cleared (revised in version 3.0)
-    if (spiModeMap_.size() != 0) {  // In order for the SPI controls (including transfers) to be enabled, at least one pin should be configured to work as a chip select
+    bool enableSPI = !spiModeMap_.isEmpty();  // Added in version 1.5.1
+    if (enableSPI) {  // In order for the SPI controls (including transfers) to be enabled, at least one pin should be configured to work as a chip select
         QList<quint8> keys = spiModeMap_.keys();
-        for (quint8 key : keys) {
+        for (const quint8 &key : qAsConst(keys)) {
             ui->comboBoxChannel->addItem(QString("%1").arg(key));
         }
         displaySPIMode();
     }
-    ui->groupBoxSPIConfiguration->setEnabled(spiModeMap_.size() != 0);  // It may be desirable to either enable or disable both group boxes, just in case the device configuration changes (revised in version 3.0)
-    ui->groupBoxSPITransfers->setEnabled(spiModeMap_.size() != 0);
+    ui->groupBoxSPIConfiguration->setEnabled(enableSPI);  // It may be desirable to either enable or disable both group boxes, just in case the device configuration changes (revised in version 3.0)
+    ui->groupBoxSPITransfers->setEnabled(enableSPI);
     ui->pushButtonClipboardPasteWrite->setEnabled(isClipboardTextValid());  // Added in version 4.1 and modified in version 5.0
 }
 
@@ -730,6 +731,9 @@ void DeviceWindow::readConfiguration()
         spiDelaysMap_[10] = cp2130_.getSPIDelays(10, errcnt, errstr);  // Implemented in version 3.0
     }
     // Note that both "spiModeMap_" and "spiDelaysMap_" are populated in relation to pins that are configured as chip select pins
+    if (!spiModeMap_.isEmpty()) {  // Added in version 1.5.1
+        channel_ = spiModeMap_.firstKey();
+    }
     endpointInAddr_ = cp2130_.getEndpointInAddr(errcnt, errstr);  // Implemented in version 3.0
     endpointOutAddr_ = cp2130_.getEndpointOutAddr(errcnt, errstr);  // Implemented in version 3.0
     if (errcnt > 0) {
