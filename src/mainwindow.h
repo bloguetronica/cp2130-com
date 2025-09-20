@@ -1,5 +1,5 @@
-/* CP2130 Commander - Version 5.0 for Debian Linux
-   Copyright (c) 2022-2024 Samuel Lourenço
+/* CP2130 Commander - Version 1.5.1 for Debian Linux
+   Copyright (c) 2022-2025 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the Free
@@ -22,9 +22,11 @@
 #define MAINWINDOW_H
 
 // Includes
+#include <QCloseEvent>
 #include <QMainWindow>
 #include <QMap>
 #include <QPointer>
+#include <QResizeEvent>
 #include <QString>
 #include "devicewindow.h"
 
@@ -42,12 +44,13 @@ public:
 
 protected:
     void closeEvent(QCloseEvent *event);
+    void resizeEvent(QResizeEvent *event);
 
 private slots:
     void on_actionAbout_triggered();
     void on_comboBoxDevices_currentIndexChanged(int index);
-    void on_lineEditPID_textEdited();
-    void on_lineEditVID_textEdited();
+    void on_lineEditPID_textEdited(const QString &text);
+    void on_lineEditVID_textEdited(const QString &text);
     void on_pushButtonOpen_clicked();
     void on_pushButtonRefresh_clicked();
 

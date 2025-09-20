@@ -1,5 +1,5 @@
-/* CP2130 Commander - Version 5.0 for Debian Linux
-   Copyright (c) 2022-2024 Samuel Lourenço
+/* CP2130 Commander - Version 1.5.1 for Debian Linux
+   Copyright (c) 2022-2025 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the Free
@@ -43,13 +43,13 @@ public:
     quint16 postAssertDelaySpinBoxValue();
     bool preDeassertDelayCheckBoxIsChecked();
     quint16 preDeassertDelaySpinBoxValue();
-    void setCSToggleCheckBox(bool cstglen);
-    void setInterByteDelayCheckBox(bool itbyten);
-    void setInterByteDelaySpinBoxValue(quint16 itbytdly);
-    void setPostAssertDelayCheckBox(bool pstasten);
-    void setPostAssertDelaySpinBoxValue(quint16 itbytdly);
-    void setPreDeassertDelayCheckBox(bool prdasten);
-    void setPreDeassertDelaySpinBoxValue(quint16 itbytdly);
+    void setCSToggleCheckBox(bool csToggleEnable);
+    void setInterByteDelayCheckBox(bool interByteDelayEnable);
+    void setInterByteDelaySpinBoxValue(quint16 interByteDelay);
+    void setPostAssertDelayCheckBox(bool postAssertDelayEnable);
+    void setPostAssertDelaySpinBoxValue(quint16 postAssertDelay);
+    void setPreDeassertDelayCheckBox(bool preDeassertDelayEnable);
+    void setPreDeassertDelaySpinBoxValue(quint16 preDeassertDelay);
 
 private:
     Ui::DelaysDialog *ui;

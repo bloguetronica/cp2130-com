@@ -1,5 +1,5 @@
-/* CP2130 Commander - Version 5.0 for Debian Linux
-   Copyright (c) 2022-2024 Samuel Lourenço
+/* CP2130 Commander - Version 1.5.1 for Debian Linux
+   Copyright (c) 2022-2025 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the Free
@@ -28,6 +28,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+// Definitions
+const int CENTRAL_HEIGHT = 171;  // Implemented in version 1.5.1
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -49,6 +52,13 @@ void MainWindow::closeEvent(QCloseEvent *event)
     closeAboutDialog();  // See "common.h" and "common.cpp"
 }
 
+// Implemented in version 1.5.1
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    Q_UNUSED(event);
+    this->setFixedHeight(ui->menuBar->height() + CENTRAL_HEIGHT);
+}
+
 void MainWindow::on_actionAbout_triggered()
 {
     showAboutDialog();  // Implemented in "common.h" and "common.cpp" since version 4.0
@@ -59,18 +69,18 @@ void MainWindow::on_comboBoxDevices_currentIndexChanged(int index)
     ui->pushButtonOpen->setEnabled(index != 0);
 }
 
-void MainWindow::on_lineEditPID_textEdited()
+void MainWindow::on_lineEditPID_textEdited(const QString &text)
 {
     int curPosition = ui->lineEditPID->cursorPosition();
-    ui->lineEditPID->setText(ui->lineEditPID->text().toLower());
+    ui->lineEditPID->setText(text.toLower());  // Modified in version 1.5.1
     ui->lineEditPID->setCursorPosition(curPosition);
     validateInput();
 }
 
-void MainWindow::on_lineEditVID_textEdited()
+void MainWindow::on_lineEditVID_textEdited(const QString &text)
 {
     int curPosition = ui->lineEditVID->cursorPosition();
-    ui->lineEditVID->setText(ui->lineEditVID->text().toLower());
+    ui->lineEditVID->setText(text.toLower());  // Modified in version 1.5.1
     ui->lineEditVID->setCursorPosition(curPosition);
     validateInput();
 }

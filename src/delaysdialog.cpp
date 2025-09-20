@@ -1,5 +1,5 @@
-/* CP2130 Commander - Version 5.0 for Debian Linux
-   Copyright (c) 2022-2024 Samuel Lourenço
+/* CP2130 Commander - Version 1.5.1 for Debian Linux
+   Copyright (c) 2022-2025 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the Free
@@ -77,43 +77,43 @@ quint16 DelaysDialog::preDeassertDelaySpinBoxValue()
 }
 
 // Sets the state of "checkBoxCSToggle"
-void DelaysDialog::setCSToggleCheckBox(bool cstglen)
+void DelaysDialog::setCSToggleCheckBox(bool csToggleEnable)
 {
-    ui->checkBoxCSToggle->setChecked(cstglen);
+    ui->checkBoxCSToggle->setChecked(csToggleEnable);
 }
 
 // Sets the state of "checkBoxInterByteDelay"
-void DelaysDialog::setInterByteDelayCheckBox(bool itbyten)
+void DelaysDialog::setInterByteDelayCheckBox(bool interByteDelayEnable)
 {
-    ui->checkBoxInterByteDelay->setChecked(itbyten);
+    ui->checkBoxInterByteDelay->setChecked(interByteDelayEnable);
 }
 
 // Sets the value of "spinBoxInterByteDelay"
-void DelaysDialog::setInterByteDelaySpinBoxValue(quint16 itbytdly)
+void DelaysDialog::setInterByteDelaySpinBoxValue(quint16 interByteDelay)
 {
-    ui->spinBoxInterByteDelay->setValue(itbytdly);
+    ui->spinBoxInterByteDelay->setValue(interByteDelay);
 }
 
 // Sets the state of "checkBoxPostAssertDelay"
-void DelaysDialog::setPostAssertDelayCheckBox(bool pstasten)
+void DelaysDialog::setPostAssertDelayCheckBox(bool postAssertDelayEnable)
 {
-    ui->checkBoxPostAssertDelay->setChecked(pstasten);
+    ui->checkBoxPostAssertDelay->setChecked(postAssertDelayEnable);
 }
 
 // Sets the value of "spinBoxPostAssertDelay"
-void DelaysDialog::setPostAssertDelaySpinBoxValue(quint16 pstastdly)
+void DelaysDialog::setPostAssertDelaySpinBoxValue(quint16 postAssertDelay)
 {
-    ui->spinBoxPostAssertDelay->setValue(pstastdly);
+    ui->spinBoxPostAssertDelay->setValue(postAssertDelay);
 }
 
 // Sets the state of "checkBoxPreDeassertDelay"
-void DelaysDialog::setPreDeassertDelayCheckBox(bool prdasten)
+void DelaysDialog::setPreDeassertDelayCheckBox(bool preDeassertDelayEnable)
 {
-    ui->checkBoxPreDeassertDelay->setChecked(prdasten);
+    ui->checkBoxPreDeassertDelay->setChecked(preDeassertDelayEnable);
 }
 
 // Sets the value of "spinBoxPreDeassertDelay"
-void DelaysDialog::setPreDeassertDelaySpinBoxValue(quint16 prdastdly)
+void DelaysDialog::setPreDeassertDelaySpinBoxValue(quint16 preDeassertDelay)
 {
-    ui->spinBoxPreDeassertDelay->setValue(prdastdly);
+    ui->spinBoxPreDeassertDelay->setValue(preDeassertDelay);
 }

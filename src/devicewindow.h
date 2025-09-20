@@ -1,5 +1,5 @@
-/* CP2130 Commander - Version 5.0 for Debian Linux
-   Copyright (c) 2022-2024 Samuel Lourenço
+/* CP2130 Commander - Version 1.5.1 for Debian Linux
+   Copyright (c) 2022-2025 Samuel Lourenço
 
    This program is free software: you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the Free
@@ -23,7 +23,6 @@
 
 // Includes
 #include <QLabel>
-#include <QLocale>
 #include <QMainWindow>
 #include <QMap>
 #include <QPointer>
@@ -49,6 +48,9 @@ public:
     bool isViewEnabled();
     void openDevice(quint16 vid, quint16 pid, const QString &serialstr);
 
+protected:
+    void resizeEvent(QResizeEvent *event);
+
 private slots:
     void on_actionAbout_triggered();
     void on_actionGPIOPinFunctions_triggered();
@@ -66,14 +68,14 @@ private slots:
     void on_checkBoxGPIO8_clicked();
     void on_checkBoxGPIO9_clicked();
     void on_checkBoxGPIO10_clicked();
-    void on_comboBoxChannel_activated();
+    void on_comboBoxChannel_activated(const QString &text);
     void on_comboBoxCSPinMode_activated();
     void on_comboBoxFrequency_activated();
     void on_comboBoxTriggerMode_activated();
-    void on_lineEditRead_textChanged();
+    void on_lineEditRead_textChanged(const QString &text);
     void on_lineEditWrite_editingFinished();
-    void on_lineEditWrite_textChanged();
-    void on_lineEditWrite_textEdited();
+    void on_lineEditWrite_textChanged(const QString &text);
+    void on_lineEditWrite_textEdited(const QString &text);
     void on_pushButtonClipboardCopyRead_clicked();
     void on_pushButtonClipboardCopyWrite_clicked();
     void on_pushButtonClipboardPasteWrite_clicked();
@@ -94,14 +96,13 @@ private:
     CP2130::PinConfig pinConfig_;
     Data write_;
     QLabel *labelStatus_;
-    QLocale locale_ = QLocale::system();
-    QMap<QString, CP2130::SPIDelays> spiDelaysMap_;
-    QMap<QString, CP2130::SPIMode> spiModeMap_;
+    QMap<quint8, CP2130::SPIDelays> spiDelaysMap_;
+    QMap<quint8, CP2130::SPIMode> spiModeMap_;
     QPointer<InformationDialog> informationDialog_;
     QPointer<PinFunctionsDialog> pinFunctionsDialog_;
-    QString serialstr_;
+    QString serialString_;
     QTimer *timer_;
-    quint8 epin_, epout_;
+    quint8 channel_, endpointInAddr_, endpointOutAddr_;
     quint16 pid_, vid_;
     bool viewEnabled_ = false;
     int erracc_ = 0;
@@ -116,11 +117,14 @@ private:
     void initializeSPIControls();
     void initializeView();
     bool isClipboardTextValid();
-    bool opCheck(const QString &op, int errcnt, QString errstr);
     void readConfiguration();
     void resetDevice();
     void setEventCounter();
+    Data spiRead(size_t &bytesProcessed, const bool &abort, int &errcnt, QString &errstr);
+    void spiWrite(size_t &bytesProcessed, const bool &abort, int &errcnt, QString &errstr);
+    Data spiWriteRead(size_t &bytesProcessed, const bool &abort, int &errcnt, QString &errstr);
     void updateView(quint16 gpios, CP2130::EventCounter evtcntr);
+    bool validateOperation(const QString &operation, int errcnt, QString errstr);
 };
 
 #endif  // DEVICEWINDOW_H
