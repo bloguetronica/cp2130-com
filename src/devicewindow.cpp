@@ -138,7 +138,7 @@ void DeviceWindow::on_actionInformation_triggered()
         QString errstr;
         CP2130::USBConfig config = cp2130_.getUSBConfig(errcnt, errstr);
         CP2130::SiliconVersion siversion = cp2130_.getSiliconVersion(errcnt, errstr);
-        if (validateOperation(tr("device-information-retrieval-op"), errcnt, errstr)) {  // If error check passes (the string "device-information-retrieval-op" should be translated to "Device information retrieval")
+        if (validateOperation(tr("retrieve device information"), errcnt, errstr)) {  // If error check passes
             informationDialog_ = new InformationDialog(this);  // The dialog is no longer modal (version 4.0 feature)
             informationDialog_->setAttribute(Qt::WA_DeleteOnClose);  // It is important to delete the dialog in memory once closed, in order to force the application to retrieve information about the device if the window is opened again
             informationDialog_->setWindowTitle(tr("Device Information (S/N: %1)").arg(serialString_));
@@ -171,9 +171,9 @@ void DeviceWindow::on_actionSetClockDivider_triggered()
     QString errstr;
     DividerDialog dividerDialog(this);  // The clock divider dialog is now a child of the device window, as it should (fixed in version 4.0)
     dividerDialog.setClockDividerSpinBoxValue(cp2130_.getClockDivider(errcnt, errstr));
-    if (validateOperation(tr("clock-divider-retrieval-op"), errcnt, errstr) && dividerDialog.exec() == QDialog::Accepted) {  // If error check passes (the string "clock-divider-retrieval-op" should be translated to "Clock divider retrieval") and if the user click "OK" on the dialog that opens after that, the new clock divider setting is applied
+    if (validateOperation(tr("retrieve clock divider"), errcnt, errstr) && dividerDialog.exec() == QDialog::Accepted) {  // If error check passes and if the user click "OK" on the dialog that opens after that, the new clock divider setting is applied
         cp2130_.setClockDivider(dividerDialog.clockDividerSpinBoxValue(), errcnt, errstr);
-        validateOperation(tr("clock-divider-setting-op"), errcnt, errstr);  // The string "clock-divider-setting-op" should be translated to "Clock divider setting"
+        validateOperation(tr("set clock divider"), errcnt, errstr);
     }
 }
 
@@ -182,7 +182,7 @@ void DeviceWindow::on_checkBoxGPIO0_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO0(ui->checkBoxGPIO0->isChecked(), errcnt, errstr);  // Set GPIO.0 according to the user choice
-    validateOperation(tr("gpio0-switch-op"), errcnt, errstr);  // The string "gpio0-switch-op" should be translated to "GPIO.0 switch"
+    validateOperation(tr("switch GPIO.0"), errcnt, errstr);
 }
 
 void DeviceWindow::on_checkBoxGPIO1_clicked()
@@ -190,7 +190,7 @@ void DeviceWindow::on_checkBoxGPIO1_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO1(ui->checkBoxGPIO1->isChecked(), errcnt, errstr);  // Set GPIO.1 according to the user choice
-    validateOperation(tr("gpio1-switch-op"), errcnt, errstr);  // The string "gpio1-switch-op" should be translated to "GPIO.1 switch"
+    validateOperation(tr("switch GPIO.1"), errcnt, errstr);
 }
 
 void DeviceWindow::on_checkBoxGPIO2_clicked()
@@ -198,7 +198,7 @@ void DeviceWindow::on_checkBoxGPIO2_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO2(ui->checkBoxGPIO2->isChecked(), errcnt, errstr);  // Set GPIO.2 according to the user choice
-    validateOperation(tr("gpio2-switch-op"), errcnt, errstr);  // The string "gpio2-switch-op" should be translated to "GPIO.2 switch"
+    validateOperation(tr("switch GPIO.2"), errcnt, errstr);
 }
 
 void DeviceWindow::on_checkBoxGPIO3_clicked()
@@ -206,7 +206,7 @@ void DeviceWindow::on_checkBoxGPIO3_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO3(ui->checkBoxGPIO3->isChecked(), errcnt, errstr);  // Set GPIO.3 according to the user choice
-    validateOperation(tr("gpio3-switch-op"), errcnt, errstr);  // The string "gpio3-switch-op" should be translated to "GPIO.3 switch"
+    validateOperation(tr("switch GPIO.3"), errcnt, errstr);
 }
 
 void DeviceWindow::on_checkBoxGPIO4_clicked()
@@ -214,7 +214,7 @@ void DeviceWindow::on_checkBoxGPIO4_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO4(ui->checkBoxGPIO4->isChecked(), errcnt, errstr);  // Set GPIO.4 according to the user choice
-    validateOperation(tr("gpio4-switch-op"), errcnt, errstr);  // The string "gpio4-switch-op" should be translated to "GPIO.4 switch"
+    validateOperation(tr("switch GPIO.4"), errcnt, errstr);
 }
 
 void DeviceWindow::on_checkBoxGPIO5_clicked()
@@ -222,7 +222,7 @@ void DeviceWindow::on_checkBoxGPIO5_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO5(ui->checkBoxGPIO5->isChecked(), errcnt, errstr);  // Set GPIO.5 according to the user choice
-    validateOperation(tr("gpio5-switch-op"), errcnt, errstr);  // The string "gpio5-switch-op" should be translated to "GPIO.5 switch"
+    validateOperation(tr("switch GPIO.5"), errcnt, errstr);
 }
 
 void DeviceWindow::on_checkBoxGPIO6_clicked()
@@ -230,7 +230,7 @@ void DeviceWindow::on_checkBoxGPIO6_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO6(ui->checkBoxGPIO6->isChecked(), errcnt, errstr);  // Set GPIO.6 according to the user choice
-    validateOperation(tr("gpio6-switch-op"), errcnt, errstr);  // The string "gpio6-switch-op" should be translated to "GPIO.6 switch"
+    validateOperation(tr("switch GPIO.6"), errcnt, errstr);
 }
 
 void DeviceWindow::on_checkBoxGPIO7_clicked()
@@ -238,7 +238,7 @@ void DeviceWindow::on_checkBoxGPIO7_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO7(ui->checkBoxGPIO7->isChecked(), errcnt, errstr);  // Set GPIO.7 according to the user choice
-    validateOperation(tr("gpio7-switch-op"), errcnt, errstr);  // The string "gpio7-switch-op" should be translated to "GPIO.7 switch"
+    validateOperation(tr("switch GPIO.7"), errcnt, errstr);
 }
 
 void DeviceWindow::on_checkBoxGPIO8_clicked()
@@ -246,7 +246,7 @@ void DeviceWindow::on_checkBoxGPIO8_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO8(ui->checkBoxGPIO8->isChecked(), errcnt, errstr);  // Set GPIO.8 according to the user choice
-    validateOperation(tr("gpio8-switch-op"), errcnt, errstr);  // The string "gpio8-switch-op" should be translated to "GPIO.8 switch"
+    validateOperation(tr("switch GPIO.8"), errcnt, errstr);
 }
 
 void DeviceWindow::on_checkBoxGPIO9_clicked()
@@ -254,7 +254,7 @@ void DeviceWindow::on_checkBoxGPIO9_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO9(ui->checkBoxGPIO9->isChecked(), errcnt, errstr);  // Set GPIO.9 according to the user choice
-    validateOperation(tr("gpio9-switch-op"), errcnt, errstr);  // The string "gpio9-switch-op" should be translated to "GPIO.9 switch"
+    validateOperation(tr("switch GPIO.9"), errcnt, errstr);
 }
 
 void DeviceWindow::on_checkBoxGPIO10_clicked()
@@ -262,7 +262,7 @@ void DeviceWindow::on_checkBoxGPIO10_clicked()
     int errcnt = 0;
     QString errstr;
     cp2130_.setGPIO10(ui->checkBoxGPIO10->isChecked(), errcnt, errstr);  // Set GPIO.10 according to the user choice
-    validateOperation(tr("gpio10-switch-op"), errcnt, errstr);  // The string "gpio10-switch-op" should be translated to "GPIO.10 switch"
+    validateOperation(tr("switch GPIO.10"), errcnt, errstr);
 }
 
 void DeviceWindow::on_comboBoxChannel_activated()
@@ -356,7 +356,7 @@ void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
         int errcnt = 0;
         QString errstr;
         cp2130_.configureSPIDelays(static_cast<quint8>(channel_), spiDelays, errcnt, errstr);
-        if (validateOperation(tr("spi-delays-configuration-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-delays-configuration-op" should be translated to "SPI delays configuration")
+        if (validateOperation(tr("configure SPI delays"), errcnt, errstr)) {
             spiDelaysMap_[channel_] = spiDelays;  // Update "spiDelaysMap_" regarding the current channel (modified in version 1.5.1)
         }
     }
@@ -400,7 +400,7 @@ void DeviceWindow::on_pushButtonRead_clicked()
     } else {
         labelStatus_->setText(tr("SPI read completed. %1 bytes transferred in %2 s.").arg(bytesProcessed).arg(systemLocale.toString(elapsedTime / 1000.0, 'f', 3)));  // Modified in version 1.5.1
     }
-    validateOperation(tr("spi-read-op"), errcnt, errstr);  // The string "spi-read-op" should be translated to "SPI read"
+    validateOperation(tr("read SPI data"), errcnt, errstr);
 }
 
 // Modified in version 1.5.1
@@ -442,7 +442,7 @@ void DeviceWindow::on_pushButtonWrite_clicked()
     } else {
         labelStatus_->setText(tr("SPI write completed. %1 bytes transferred in %2 s.").arg(bytesProcessed).arg(systemLocale.toString(elapsedTime / 1000.0, 'f', 3)));  // Modified in version 1.5.1
     }
-    validateOperation(tr("spi-write-op"), errcnt, errstr);  // The string "spi-write-op" should be translated to "SPI write"
+    validateOperation(tr("write SPI data"), errcnt, errstr);
 }
 
 // Modified in version 1.5.1
@@ -483,7 +483,7 @@ void DeviceWindow::on_pushButtonWriteRead_clicked()
     } else {
         labelStatus_->setText(tr("SPI write and read completed. %1 bytes transferred in %2 s.").arg(2 * bytesProcessed).arg(systemLocale.toString(elapsedTime / 1000.0, 'f', 3)));  // Modified in version 1.5.1
     }
-    validateOperation(tr("spi-write-read-op"), errcnt, errstr);  // The string "spi-write-read-op" should be translated to "SPI write and read"
+    validateOperation(tr("write and read SPI data"), errcnt, errstr);
 }
 
 // Implemented in version 3.0
@@ -517,7 +517,7 @@ void DeviceWindow::update()
     if (pinConfig_.gpio5 == CP2130::PCEVTCNTRRE || pinConfig_.gpio5 == CP2130::PCEVTCNTRFE || pinConfig_.gpio5 == CP2130::PCEVTCNTRNP || pinConfig_.gpio5 == CP2130::PCEVTCNTRPP) {
         evtcntr = cp2130_.getEventCounter(errcnt, errstr);
     }
-    if (validateOperation(tr("update-op"), errcnt, errstr)) {  // If no errors occur (the string "update-op" should be translated to "Update")
+    if (validateOperation(tr("update"), errcnt, errstr)) {  // If no errors occur
         updateView(gpios, evtcntr);  // Update values
     }
 }
@@ -550,7 +550,7 @@ void DeviceWindow::configureSPIMode()
     int errcnt = 0;
     QString errstr;
     cp2130_.configureSPIMode(channel_, spiMode, errcnt, errstr);  // Modified in version 1.5.1
-    if (validateOperation(tr("spi-mode-configuration-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-mode-configuration-op" should be translated to "SPI mode configuration")
+    if (validateOperation(tr("configure SPI mode"), errcnt, errstr)) {  // If no errors occur
         spiModeMap_[channel_] = spiMode;  // Update "spiModeMap_" regarding the current channel (modified in version 1.5.1)
     }
 }
@@ -743,8 +743,8 @@ void DeviceWindow::resetDevice()
     int errcnt = 0;
     QString errstr;
     cp2130_.reset(errcnt, errstr);
-    validateOperation(tr("reset-op"), errcnt, errstr);  // The string "reset-op" should be translated to "Reset"
-    if (cp2130_.isOpen()) {  // If opCheck() passes, thus, not closing the device
+    validateOperation(tr("reset device"), errcnt, errstr);
+    if (cp2130_.isOpen()) {  // If validateOperation() passes, thus, not closing the device
         cp2130_.close();  // Important! - This should be done always, even if the previous reset operation shows an error, because an error doesn't mean that a device reset was not effected
         int err;
         for (int i = 0; i < ENUM_RETRIES; ++i) {  // Verify enumeration according to the number of times set by "ENUM_RETRIES" [10]
@@ -790,7 +790,7 @@ void DeviceWindow::setEventCounter()
     int errcnt = 0;
     QString errstr;
     cp2130_.setEventCounter(evtcntr, errcnt, errstr);
-    validateOperation(tr("event-counter-setting-op"), errcnt, errstr);  // The string "event-counter-setting-op" should be translated to "Event counter setting"
+    validateOperation(tr("set event counter"), errcnt, errstr);
 }
 
 // Implemented in version 1.5.1
