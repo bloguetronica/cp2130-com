@@ -96,13 +96,13 @@ private:
     CP2130::PinConfig pinConfig_;
     Data write_;
     QLabel *labelStatus_;
-    QMap<QString, CP2130::SPIDelays> spiDelaysMap_;
-    QMap<QString, CP2130::SPIMode> spiModeMap_;
+    QMap<quint8, CP2130::SPIDelays> spiDelaysMap_;
+    QMap<quint8, CP2130::SPIMode> spiModeMap_;
     QPointer<InformationDialog> informationDialog_;
     QPointer<PinFunctionsDialog> pinFunctionsDialog_;
     QString serialString_;
     QTimer *timer_;
-    quint8 endpointInAddr_, endpointOutAddr_;
+    quint8 channel_, endpointInAddr_, endpointOutAddr_;
     quint16 pid_, vid_;
     bool viewEnabled_ = false;
     int erracc_ = 0;
@@ -120,6 +120,7 @@ private:
     void readConfiguration();
     void resetDevice();
     void setEventCounter();
+    Data spiWriteRead(size_t &bytesProcessed, const bool &abort, int &errcnt, QString &errstr);
     void updateView(quint16 gpios, CP2130::EventCounter evtcntr);
     bool validateOperation(const QString &operation, int errcnt, QString errstr);
 };

@@ -20,14 +20,17 @@
 
 // Includes
 #include <cmath>
+#include <functional>
 #include <QClipboard>
 #include <QElapsedTimer>
+#include <QFuture>
 #include <QGuiApplication>
 #include <QMessageBox>
 #include <QProgressDialog>
 #include <QRegExp>
 #include <QRegExpValidator>
 #include <QThread>
+#include <QtConcurrent/QtConcurrent>
 #include <QVector>
 #include "common.h"
 #include "delaysdialog.h"
@@ -264,6 +267,7 @@ void DeviceWindow::on_checkBoxGPIO10_clicked()
 
 void DeviceWindow::on_comboBoxChannel_activated()
 {
+    channel_ = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());  // Added in version 1.5.1
     displaySPIMode();  // It is important to note that the chip select corresponding to the selected channel is only enabled during an SPI transfer
 }
 
@@ -332,8 +336,7 @@ void DeviceWindow::on_pushButtonClipboardPasteWrite_clicked()
 // This function no longer reads SPI delays directly (changed in version 3.0)
 void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
 {
-    QString channelName = ui->comboBoxChannel->currentText();
-    CP2130::SPIDelays spiDelays = spiDelaysMap_[channelName];
+    CP2130::SPIDelays spiDelays = spiDelaysMap_[channel_];  // Modified in version 1.5.1
     DelaysDialog delaysDialog(this);  // The SPI delays dialog is now a child of the device window, as it should (fixed in version 4.0)
     delaysDialog.setCSToggleCheckBox(spiDelays.cstglen);
     delaysDialog.setPostAssertDelaySpinBoxValue(spiDelays.pstastdly);
@@ -352,9 +355,9 @@ void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
         spiDelays.itbytdly = delaysDialog.interByteDelaySpinBoxValue();
         int errcnt = 0;
         QString errstr;
-        cp2130_.configureSPIDelays(static_cast<quint8>(channelName.toUInt()), spiDelays, errcnt, errstr);
+        cp2130_.configureSPIDelays(static_cast<quint8>(channel_), spiDelays, errcnt, errstr);
         if (validateOperation(tr("spi-delays-configuration-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-delays-configuration-op" should be translated to "SPI delays configuration")
-            spiDelaysMap_[channelName] = spiDelays;  // Update "spiDelaysMap_" regarding the current channel
+            spiDelaysMap_[channel_] = spiDelays;  // Update "spiDelaysMap_" regarding the current channel (modified in version 1.5.1)
         }
     }
 }
@@ -362,7 +365,6 @@ void DeviceWindow::on_pushButtonConfigureSPIDelays_clicked()
 // This function was expanded in version 3.0, in order to support transfers greater than 4096 bytes
 void DeviceWindow::on_pushButtonRead_clicked()
 {
-    quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
     size_t fragmentSizeLimit = calculateSizeLimit();
     size_t bytesToRead = static_cast<size_t>(ui->spinBoxBytesToRead->value());
     size_t bytesProcessed = 0;
@@ -376,7 +378,7 @@ void DeviceWindow::on_pushButtonRead_clicked()
     time.start();
     int errcnt = 0;
     QString errstr;
-    cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
+    cp2130_.selectCS(channel_, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
     QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors after enabling the chip select (workaround implemented in version 3.1)
     while (bytesProcessed < bytesToRead) {
         if (spiReadProgress.wasCanceled()) {  // If the user clicks "Abort"
@@ -394,7 +396,7 @@ void DeviceWindow::on_pushButtonRead_clicked()
         spiReadProgress.setValue(static_cast<int>(bytesProcessed));
     }
     QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
-    cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
+    cp2130_.disableCS(channel_, errcnt, errstr);  // Disable the previously enabled chip select
     qint64 elapsedTime = time.elapsed();  // Elapsed time in milliseconds
     timer_->start();  // Restart the timer
     ui->lineEditRead->setText(read.toHexadecimal());  // At least, a partial result should be shown in case of error
@@ -413,7 +415,6 @@ void DeviceWindow::on_pushButtonRead_clicked()
 // This function was expanded in version 3.0, in order to support transfers greater than 4096 bytes
 void DeviceWindow::on_pushButtonWrite_clicked()
 {
-    quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
     size_t fragmentSizeLimit = calculateSizeLimit();
     size_t bytesToWrite = write_.vector.size();
     size_t bytesProcessed = 0;
@@ -426,7 +427,7 @@ void DeviceWindow::on_pushButtonWrite_clicked()
     time.start();
     int errcnt = 0;
     QString errstr;
-    cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
+    cp2130_.selectCS(channel_, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
     QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors after enabling the chip select (workaround implemented in version 3.1)
     while (bytesProcessed < bytesToWrite) {
         if (spiWriteProgress.wasCanceled()) {  // If the user clicks "Abort"
@@ -443,7 +444,7 @@ void DeviceWindow::on_pushButtonWrite_clicked()
         spiWriteProgress.setValue(static_cast<int>(bytesProcessed));
     }
     QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
-    cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
+    cp2130_.disableCS(channel_, errcnt, errstr);  // Disable the previously enabled chip select
     qint64 elapsedTime = time.elapsed();  // Elapsed time in milliseconds
     timer_->start();  // Restart the timer
     ui->lineEditRead->clear();
@@ -459,42 +460,32 @@ void DeviceWindow::on_pushButtonWrite_clicked()
     validateOperation(tr("spi-write-op"), errcnt, errstr);  // The string "spi-write-op" should be translated to "SPI write"
 }
 
-// This function was expanded in version 3.0, similar to what was done with on_pushButtonRead_clicked() and on_pushButtonWrite_clicked(), but only to implement a progress dialog
+// Modified in version 1.5.1
 void DeviceWindow::on_pushButtonWriteRead_clicked()
 {
-    quint8 channel = static_cast<quint8>(ui->comboBoxChannel->currentText().toUInt());
-    size_t fragmentSizeLimit = calculateSizeLimit();
-    size_t bytesToWriteRead = write_.vector.size();
-    size_t bytesProcessed = 0;
-    QProgressDialog spiWriteReadProgress(tr("Performing SPI write and read..."), tr("Abort"), 0, static_cast<int>(bytesToWriteRead), this);  // Progress dialog implemented in version 3.0
+    QProgressDialog spiWriteReadProgress(tr("Performing SPI write and read..."), tr("Abort"), 0, write_.vector.size(), this);  // Progress dialog implemented in version 3.0
     spiWriteReadProgress.setWindowTitle(tr("SPI Write/Read"));
     spiWriteReadProgress.setWindowModality(Qt::WindowModal);
     spiWriteReadProgress.setMinimumDuration(500);  // The progress dialog should appear only if the operation takes more than 500 ms
-    Data read;
     timer_->stop();  // The update timer is now stopped during SPI transfers (fix implemented in version 3.1)
     QElapsedTimer time;
     time.start();
+    size_t bytesProcessed = 0;
+    bool abortTransfer = false;
     int errcnt = 0;
     QString errstr;
-    cp2130_.selectCS(channel, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
-    QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors after enabling the chip select (workaround implemented in version 3.1)
-    while (bytesProcessed < bytesToWriteRead) {
-        if (spiWriteReadProgress.wasCanceled()) {  // If the user clicks "Abort"
-            break;  // Abort the SPI write and read operation
+    QFuture<Data> future = QtConcurrent::run(this, &DeviceWindow::spiWriteRead, std::ref(bytesProcessed), std::ref(abortTransfer), std::ref(errcnt), std::ref(errstr));  // Note that all variables are passed by reference, since their values need to be set and read in real time
+    while (future.isRunning()) {
+        QThread::msleep(1);  // This is required so that this polling loop is not too CPU intensive, while still alowing a 1 ms granularity
+        if (spiWriteReadProgress.wasCanceled()) {
+            abortTransfer = true;  // This effectively aborts the transfer
+        } else if (errcnt > 0) {  // Important!
+            spiWriteReadProgress.cancel();
+        } else {
+            spiWriteReadProgress.setValue(static_cast<int>(bytesProcessed));
         }
-        size_t bytesRemaining = bytesToWriteRead - bytesProcessed;
-        size_t fragmentSize = bytesRemaining > fragmentSizeLimit ? fragmentSizeLimit : bytesRemaining;
-        QVector<quint8> readFragment = cp2130_.spiWriteRead(write_.fragment(bytesProcessed, fragmentSize), endpointInAddr_, endpointOutAddr_, errcnt, errstr);  // Write to and read from the SPI bus, simultaneously
-        if (errcnt > 0) {  // In case of error
-            spiWriteReadProgress.cancel();  // Important!
-            break;  // Abort the SPI write and read operation
-        }
-        read.vector += readFragment;  // The returned fragment could be considered valid at this point
-        bytesProcessed += fragmentSize;
-        spiWriteReadProgress.setValue(static_cast<int>(bytesProcessed));
     }
-    QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
-    cp2130_.disableCS(channel, errcnt, errstr);  // Disable the previously enabled chip select
+    Data read = future.result();
     qint64 elapsedTime = time.elapsed();  // Elapsed time in milliseconds
     timer_->start();  // Restart the timer
     ui->lineEditRead->setText(read.toHexadecimal());  // At least, a partial result should be shown if an error occurs
@@ -555,10 +546,9 @@ void DeviceWindow::updatePushButtonClipboardPasteWrite()
 // Calculates the optimal fragment size limit based on the parameters of the currently selected channel (implemented in version 3.1, to replace evaluateSizeLimit())
 size_t DeviceWindow::calculateSizeLimit()
 {
-    QString channelName = ui->comboBoxChannel->currentText();
-    float preDeassertDelay = spiDelaysMap_[channelName].prdasten == true ? spiDelaysMap_[channelName].prdastdly / 100.0 : 0;  // Pre-deassert delay in milliseconds
-    float postAssertDelay = spiDelaysMap_[channelName].pstasten == true ? spiDelaysMap_[channelName].pstastdly / 100.0 : 0;  // Post-assert delay in milliseconds
-    float interByteDelay = spiDelaysMap_[channelName].itbyten == true ? spiDelaysMap_[channelName].itbytdly / 100.0 : 0;  // Inter-byte delay in milliseconds
+    float preDeassertDelay = spiDelaysMap_[channel_].prdasten == true ? spiDelaysMap_[channel_].prdastdly / 100.0 : 0;  // Pre-deassert delay in milliseconds (modified in version 1.5.1)
+    float postAssertDelay = spiDelaysMap_[channel_].pstasten == true ? spiDelaysMap_[channel_].pstastdly / 100.0 : 0;  // Post-assert delay in milliseconds (modified in version 1.5.1)
+    float interByteDelay = spiDelaysMap_[channel_].itbyten == true ? spiDelaysMap_[channel_].itbytdly / 100.0 : 0;  // Inter-byte delay in milliseconds (modified in version 1.5.1)
     float timePerByte = std::pow(2, ui->comboBoxFrequency->currentIndex()) / 1500;  // Time duration for each byte, in milliseconds
     size_t sizeLimit = static_cast<size_t>((TIME_LIMIT + interByteDelay - preDeassertDelay - postAssertDelay) / (timePerByte + interByteDelay));
     return sizeLimit == 0 ? 1 : sizeLimit;  // The size limit cannot be zero
@@ -567,7 +557,6 @@ size_t DeviceWindow::calculateSizeLimit()
 // Configures the SPI mode for the currently selected channel
 void DeviceWindow::configureSPIMode()
 {
-    QString channelName = ui->comboBoxChannel->currentText();
     CP2130::SPIMode spiMode;
     spiMode.csmode = ui->comboBoxCSPinMode->currentIndex() != 0;
     spiMode.cfrq = static_cast<quint8>(ui->comboBoxFrequency->currentIndex());  // Corrected in version 3.0
@@ -575,9 +564,9 @@ void DeviceWindow::configureSPIMode()
     spiMode.cpha = ui->spinBoxCPHA->value() != 0;
     int errcnt = 0;
     QString errstr;
-    cp2130_.configureSPIMode(static_cast<quint8>(channelName.toUInt()), spiMode, errcnt, errstr);
+    cp2130_.configureSPIMode(channel_, spiMode, errcnt, errstr);  // Modified in version 1.5.1
     if (validateOperation(tr("spi-mode-configuration-op"), errcnt, errstr)) {  // If no errors occur (the string "spi-mode-configuration-op" should be translated to "SPI mode configuration")
-        spiModeMap_[channelName] = spiMode;  // Update "spiModeMap_" regarding the current channel
+        spiModeMap_[channel_] = spiMode;  // Update "spiModeMap_" regarding the current channel (modified in version 1.5.1)
     }
 }
 
@@ -609,7 +598,7 @@ void DeviceWindow::disableView()
 // Displays the SPI mode for the currently selected channel
 void DeviceWindow::displaySPIMode()
 {
-    CP2130::SPIMode spiMode = spiModeMap_[ui->comboBoxChannel->currentText()];
+    CP2130::SPIMode spiMode = spiModeMap_[channel_];  // Modified in version 1.5.1
     ui->comboBoxCSPinMode->setCurrentIndex(spiMode.csmode);
     ui->comboBoxFrequency->setCurrentIndex(spiMode.cfrq);
     ui->spinBoxCPOL->setValue(spiMode.cpol);
@@ -661,9 +650,9 @@ void DeviceWindow::initializeSPIControls()
 {
     ui->comboBoxChannel->clear();  // The combo box is always cleared (revised in version 3.0)
     if (spiModeMap_.size() != 0) {  // In order for the SPI controls (including transfers) to be enabled, at least one pin should be configured to work as a chip select
-        QList<QString> keys = spiModeMap_.keys();
-        for (const QString &key : qAsConst(keys)) {  // Fixed in version 4.1, in order to clear Clazy warnings
-            ui->comboBoxChannel->addItem(key);
+        QList<quint8> keys = spiModeMap_.keys();
+        for (quint8 key : keys) {
+            ui->comboBoxChannel->addItem(QString("%1").arg(key));
         }
         displaySPIMode();
     }
@@ -697,48 +686,48 @@ void DeviceWindow::readConfiguration()
     QString errstr;
     pinConfig_ = cp2130_.getPinConfig(errcnt, errstr);
     if (pinConfig_.gpio0 == CP2130::PCCS) {
-        spiModeMap_["0"] = cp2130_.getSPIMode(0, errcnt, errstr);
-        spiDelaysMap_["0"] = cp2130_.getSPIDelays(0, errcnt, errstr);  // Implemented in version 3.0
+        spiModeMap_[0] = cp2130_.getSPIMode(0, errcnt, errstr);
+        spiDelaysMap_[0] = cp2130_.getSPIDelays(0, errcnt, errstr);  // Implemented in version 3.0
     }
     if (pinConfig_.gpio1 == CP2130::PCCS) {
-        spiModeMap_["1"] = cp2130_.getSPIMode(1, errcnt, errstr);
-        spiDelaysMap_["1"] = cp2130_.getSPIDelays(1, errcnt, errstr);  // Implemented in version 3.0
+        spiModeMap_[1] = cp2130_.getSPIMode(1, errcnt, errstr);
+        spiDelaysMap_[1] = cp2130_.getSPIDelays(1, errcnt, errstr);  // Implemented in version 3.0
     }
     if (pinConfig_.gpio2 == CP2130::PCCS) {
-        spiModeMap_["2"] = cp2130_.getSPIMode(2, errcnt, errstr);
-        spiDelaysMap_["2"] = cp2130_.getSPIDelays(2, errcnt, errstr);  // Implemented in version 3.0
+        spiModeMap_[2] = cp2130_.getSPIMode(2, errcnt, errstr);
+        spiDelaysMap_[2] = cp2130_.getSPIDelays(2, errcnt, errstr);  // Implemented in version 3.0
     }
     if (pinConfig_.gpio3 == CP2130::PCCS) {
-        spiModeMap_["3"] = cp2130_.getSPIMode(3, errcnt, errstr);
-        spiDelaysMap_["3"] = cp2130_.getSPIDelays(3, errcnt, errstr);  // Implemented in version 3.0
+        spiModeMap_[3] = cp2130_.getSPIMode(3, errcnt, errstr);
+        spiDelaysMap_[3] = cp2130_.getSPIDelays(3, errcnt, errstr);  // Implemented in version 3.0
     }
     if (pinConfig_.gpio4 == CP2130::PCCS) {
-        spiModeMap_["4"] = cp2130_.getSPIMode(4, errcnt, errstr);
-        spiDelaysMap_["4"] = cp2130_.getSPIDelays(4, errcnt, errstr);  // Implemented in version 3.0
+        spiModeMap_[4] = cp2130_.getSPIMode(4, errcnt, errstr);
+        spiDelaysMap_[4] = cp2130_.getSPIDelays(4, errcnt, errstr);  // Implemented in version 3.0
     }
     if (pinConfig_.gpio5 == CP2130::PCCS) {
-        spiModeMap_["5"] = cp2130_.getSPIMode(5, errcnt, errstr);
-        spiDelaysMap_["5"] = cp2130_.getSPIDelays(5, errcnt, errstr);  // Implemented in version 3.0
+        spiModeMap_[5] = cp2130_.getSPIMode(5, errcnt, errstr);
+        spiDelaysMap_[5] = cp2130_.getSPIDelays(5, errcnt, errstr);  // Implemented in version 3.0
     }
     if (pinConfig_.gpio6 == CP2130::PCCS) {
-        spiModeMap_["6"] = cp2130_.getSPIMode(6, errcnt, errstr);
-        spiDelaysMap_["6"] = cp2130_.getSPIDelays(6, errcnt, errstr);  // Implemented in version 3.0
+        spiModeMap_[6] = cp2130_.getSPIMode(6, errcnt, errstr);
+        spiDelaysMap_[6] = cp2130_.getSPIDelays(6, errcnt, errstr);  // Implemented in version 3.0
     }
     if (pinConfig_.gpio7 == CP2130::PCCS) {
-        spiModeMap_["7"] = cp2130_.getSPIMode(7, errcnt, errstr);
-        spiDelaysMap_["7"] = cp2130_.getSPIDelays(7, errcnt, errstr);  // Implemented in version 3.0
+        spiModeMap_[7] = cp2130_.getSPIMode(7, errcnt, errstr);
+        spiDelaysMap_[7] = cp2130_.getSPIDelays(7, errcnt, errstr);  // Implemented in version 3.0
     }
     if (pinConfig_.gpio8 == CP2130::PCCS) {
-        spiModeMap_["8"] = cp2130_.getSPIMode(8, errcnt, errstr);
-        spiDelaysMap_["8"] = cp2130_.getSPIDelays(8, errcnt, errstr);  // Implemented in version 3.0
+        spiModeMap_[8] = cp2130_.getSPIMode(8, errcnt, errstr);
+        spiDelaysMap_[8] = cp2130_.getSPIDelays(8, errcnt, errstr);  // Implemented in version 3.0
     }
     if (pinConfig_.gpio9 == CP2130::PCCS) {
-        spiModeMap_["9"] = cp2130_.getSPIMode(9, errcnt, errstr);
-        spiDelaysMap_["9"] = cp2130_.getSPIDelays(9, errcnt, errstr);  // Implemented in version 3.0
+        spiModeMap_[9] = cp2130_.getSPIMode(9, errcnt, errstr);
+        spiDelaysMap_[9] = cp2130_.getSPIDelays(9, errcnt, errstr);  // Implemented in version 3.0
     }
     if (pinConfig_.gpio10 == CP2130::PCCS) {
-        spiModeMap_["10"] = cp2130_.getSPIMode(10, errcnt, errstr);
-        spiDelaysMap_["10"] = cp2130_.getSPIDelays(10, errcnt, errstr);  // Implemented in version 3.0
+        spiModeMap_[10] = cp2130_.getSPIMode(10, errcnt, errstr);
+        spiDelaysMap_[10] = cp2130_.getSPIDelays(10, errcnt, errstr);  // Implemented in version 3.0
     }
     // Note that both "spiModeMap_" and "spiDelaysMap_" are populated in relation to pins that are configured as chip select pins
     endpointInAddr_ = cp2130_.getEndpointInAddr(errcnt, errstr);  // Implemented in version 3.0
@@ -813,6 +802,32 @@ void DeviceWindow::setEventCounter()
     QString errstr;
     cp2130_.setEventCounter(evtcntr, errcnt, errstr);
     validateOperation(tr("event-counter-setting-op"), errcnt, errstr);  // The string "event-counter-setting-op" should be translated to "Event counter setting"
+}
+
+// Implemented in version 1.5.1
+Data DeviceWindow::spiWriteRead(size_t &bytesProcessed, const bool &abort, int &errcnt, QString &errstr)
+{
+    Data read;
+    cp2130_.selectCS(channel_, errcnt, errstr);  // Enable the chip select corresponding to the selected channel, and disable any others
+    QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors after enabling the chip select (workaround implemented in version 3.1)
+    size_t bytesToWriteRead = static_cast<size_t>(write_.vector.size());
+    size_t fragmentSizeLimit = calculateSizeLimit();
+    while (bytesProcessed < bytesToWriteRead) {
+        if (abort) {  // If the transfer is signalled to be aborted
+            break;  // Abort the SPI write and read operation
+        }
+        size_t bytesRemaining = bytesToWriteRead - bytesProcessed;
+        size_t fragmentSize = bytesRemaining > fragmentSizeLimit ? fragmentSizeLimit : bytesRemaining;
+        QVector<quint8> readFragment = cp2130_.spiWriteRead(write_.fragment(bytesProcessed, fragmentSize), endpointInAddr_, endpointOutAddr_, errcnt, errstr);  // Write to and read from the SPI bus, simultaneously
+        if (errcnt > 0) {  // In case of error
+            break;  // Abort the SPI write and read operation
+        }
+        read.vector += readFragment;  // The returned fragment could be considered valid at this point
+        bytesProcessed += fragmentSize;
+    }
+    QThread::usleep(100);  // Wait 100 us, in order to prevent possible errors while disabling the chip select (workaround)
+    cp2130_.disableCS(channel_, errcnt, errstr);  // Disable the previously enabled chip select
+    return read;
 }
 
 // Updates the view (expanded in version 3.0)
